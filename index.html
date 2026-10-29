@@ -3,120 +3,81 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>連江縣老宅延壽機能復新計畫 - 3D 政策微縮城市展廳</title>
+  <title>連江縣老宅延壽機能復新計畫 - 3D 政策微縮群島</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --primary: #d35400;
-      --primary-dark: #a04000;
-      --primary-light: #fef5e7;
-      --ocean-blue: #0b69a3;
-      --accent-yellow: #f1c40f;
-      --accent-green: #27ae60;
-      --ink: #1e272e;
-      --ink-soft: #485460;
-      --border-color: #dcdde1;
-      --glass-bg: rgba(255, 255, 255, 0.94);
-      --glass-border: rgba(255, 255, 255, 0.9);
-      --shadow: 0 16px 36px rgba(0, 0, 0, 0.14);
-      --badge-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      --primary: #c85327;
+      --primary-dark: #9c3c16;
+      --primary-light: #fef4ee;
+      --ink: #1e242c;
+      --ink-soft: #4b5563;
+      --glass-bg: rgba(255, 252, 248, 0.92);
+      --glass-border: rgba(255, 255, 255, 0.85);
+      --shadow: 0 16px 36px rgba(28, 22, 16, 0.14);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
     body, html {
       width: 100%; height: 100%; overflow: hidden;
       font-family: "Noto Sans TC", "Source Han Sans TW", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: radial-gradient(circle at center, #f5f6fa 0%, #dcdde1 100%);
+      background: #0f1c2e;
       color: var(--ink); user-select: none;
     }
     #canvas-container { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
 
-    /* 通用玻璃面板（字體與間距全面加大） */
+    /* 毛玻璃通用面板（簡約高質感、不遮擋 3D 場景） */
     .glass-panel {
       background: var(--glass-bg);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
-      border: 2px solid var(--glass-border);
+      border: 1.5px solid var(--glass-border);
       box-shadow: var(--shadow);
       border-radius: 20px;
       z-index: 10;
       position: absolute;
     }
 
-    /* 頂部 Header Banner (參考圖風格：鮮豔、大字體、具備展板質感) */
-    #top-banner {
-      top: 16px; left: 16px; right: 16px;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 14px 24px;
-      background: linear-gradient(135deg, rgba(15, 59, 120, 0.94) 0%, rgba(200, 83, 39, 0.92) 100%);
-      border: 2px solid rgba(255, 255, 255, 0.4);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.22);
-      border-radius: 20px; z-index: 20; position: absolute; color: #fff;
+    /* 左上標題品牌卡 (大字體、典雅微縮風) */
+    #brand-card {
+      top: 20px; left: 20px; padding: 18px 26px;
+      display: flex; flex-direction: column; gap: 4px; cursor: pointer;
     }
-    .banner-left { display: flex; align-items: center; gap: 16px; }
-    .avatar-badge {
-      width: 52px; height: 52px; border-radius: 50%; background: #fff;
-      display: flex; align-items: center; justify-content: center; font-size: 28px;
-      box-shadow: 0 4px 14px rgba(0,0,0,0.25); border: 2.5px solid var(--accent-yellow); flex-shrink: 0;
+    #brand-card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(200, 83, 39, 0.18); }
+    .brand-tag {
+      display: inline-flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 800;
+      color: var(--primary); background: var(--primary-light); padding: 4px 12px; border-radius: 999px;
+      width: fit-content; letter-spacing: 0.5px;
     }
-    .banner-title-area h1 {
-      font-size: 24px; font-weight: 900; letter-spacing: 0.8px;
-      display: flex; align-items: center; gap: 10px; color: #fff; text-shadow: 0 2px 6px rgba(0,0,0,0.3);
-    }
-    .banner-title-area h1 .sub-badge {
-      font-size: 13px; font-weight: 800; background: var(--accent-yellow); color: #1e272e;
-      padding: 3px 12px; border-radius: 999px; text-shadow: none;
-    }
-    .banner-title-area p {
-      font-size: 14px; font-weight: 600; color: #f1f2f6; margin-top: 2px; opacity: 0.95;
-    }
-    .banner-tags {
-      display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-    }
-    .b-tag {
-      display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
-      border-radius: 999px; font-size: 13.5px; font-weight: 800;
-      background: rgba(255,255,255,0.2); backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,255,255,0.4); color: #fff; cursor: pointer; transition: 0.2s;
-    }
-    .b-tag:hover { background: #fff; color: var(--primary); transform: translateY(-2px); }
-    .b-tag.green { background: rgba(39, 174, 96, 0.85); }
-    .b-tag.orange { background: rgba(211, 84, 0, 0.9); }
+    #brand-card h1 { font-size: 24px; font-weight: 900; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+    #brand-card h1 span { color: var(--primary); }
+    #brand-card p { font-size: 13px; color: var(--ink-soft); font-weight: 600; margin-top: 2px; }
 
-    /* 右側五大要素拆解展示面板 (比照參考圖 ② 結構) */
-    #deconstruct-board {
-      top: 100px; right: 16px; width: 330px; padding: 20px;
-      max-height: calc(100vh - 190px); overflow-y: auto;
+    /* 右上功能導覽列 (字體清晰大顆、按鍵好點擊) */
+    #resource-dock {
+      top: 20px; right: 20px; display: flex; gap: 10px; z-index: 10; position: absolute; flex-wrap: wrap; justify-content: flex-end;
     }
-    .board-header {
-      display: flex; align-items: center; justify-content: space-between;
-      margin-bottom: 12px; padding-bottom: 10px; border-bottom: 2px solid #f1f2f6;
+    .dock-btn {
+      background: var(--glass-bg); border: 1.5px solid var(--glass-border);
+      padding: 11px 18px; border-radius: 14px; cursor: pointer; font-size: 14.5px;
+      font-weight: 800; display: inline-flex; align-items: center; gap: 8px;
+      color: var(--ink); box-shadow: 0 4px 16px rgba(0,0,0,0.06); transition: all 0.2s;
     }
-    .board-header h3 {
-      font-size: 18px; font-weight: 900; color: var(--primary); display: flex; align-items: center; gap: 8px;
+    .dock-btn:hover {
+      background: #ffffff; color: var(--primary); transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(200,83,39,0.18); border-color: var(--primary);
     }
-    .decomp-item {
-      background: #f8f9fa; border-radius: 14px; padding: 12px 14px; margin-bottom: 10px;
-      border: 1.5px solid #e9ecef; cursor: pointer; transition: all 0.2s;
+    .dock-btn.highlight {
+      background: var(--primary); color: #fff; border-color: var(--primary);
     }
-    .decomp-item:hover {
-      background: var(--primary-light); border-color: var(--primary); transform: translateX(-4px);
-    }
-    .decomp-item-title {
-      font-size: 15.5px; font-weight: 800; color: var(--ink); display: flex; justify-content: space-between; align-items: center;
-    }
-    .decomp-item-desc {
-      font-size: 13px; color: var(--ink-soft); margin-top: 4px; line-height: 1.4;
-    }
-    .decomp-item-cap {
-      display: inline-block; font-size: 12px; font-weight: 800; padding: 2px 8px;
-      border-radius: 6px; background: #e8f5e9; color: #2e7d32; margin-top: 4px;
+    .dock-btn.highlight:hover {
+      background: var(--primary-dark); color: #fff;
     }
 
-    /* 左側資訊詳情抽屜卡 (大字體) */
+    /* 左側詳細抽屜卡片 (大字體好閱讀) */
     #detail-card {
-      top: 100px; left: 16px; width: 380px; max-height: calc(100vh - 190px);
+      top: 130px; left: 20px; width: 380px; max-height: calc(100vh - 220px);
       overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
     }
@@ -125,22 +86,21 @@
       display: inline-block; padding: 6px 14px; border-radius: 999px;
       font-size: 13px; font-weight: 800; background: var(--primary); color: #fff;
     }
-    .card-title { font-size: 22px; font-weight: 900; color: var(--ink); margin-top: 2px; }
+    .card-title { font-size: 22px; font-weight: 900; margin-top: 2px; color: var(--ink); }
     .card-desc { font-size: 15px; color: var(--ink-soft); line-height: 1.6; font-weight: 500; }
     .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0; }
     .stat-box {
-      background: rgba(255,255,255,0.85); padding: 12px 14px; border-radius: 14px;
-      border: 1.5px solid #e1d8cf;
+      background: rgba(255,255,255,0.75); padding: 12px 14px; border-radius: 14px;
+      border: 1px solid #ebdcd0;
     }
     .stat-box .val { font-size: 20px; font-weight: 900; color: var(--primary); font-family: Georgia, serif; }
-    .stat-box .lbl { font-size: 13px; color: #666; font-weight: 700; margin-top: 2px; }
+    .stat-box .lbl { font-size: 13px; color: #777; font-weight: 700; margin-top: 2px; }
 
-    /* 底部 HUD 導覽列與功能按鍵 */
+    /* 底部 HUD 視角與光影控制列 */
     #hud-bottom {
-      bottom: 20px; left: 50%; transform: translateX(-50%);
-      padding: 10px 24px; display: flex; gap: 14px; align-items: center;
-      border-radius: 999px; z-index: 20; background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18); border: 2px solid #fff;
+      bottom: 24px; left: 50%; transform: translateX(-50%);
+      padding: 10px 24px; display: flex; gap: 12px; align-items: center;
+      border-radius: 999px; z-index: 10;
     }
     .hud-btn {
       background: transparent; border: none; font-size: 14.5px; font-weight: 800;
@@ -148,38 +108,12 @@
       color: var(--ink-soft); display: flex; align-items: center; gap: 6px;
     }
     .hud-btn:hover, .hud-btn.active {
-      background: var(--primary); color: #fff; box-shadow: 0 4px 12px rgba(211, 84, 0, 0.35);
+      background: #ffffff; color: var(--primary); box-shadow: 0 4px 14px rgba(0,0,0,0.1);
     }
 
-    /* 3D 場景內飄浮的微縮指向標籤 (World HUD Pins / 參考圖風格) */
-    .world-pin {
-      position: absolute; transform: translate(-50%, -100%);
-      pointer-events: auto; cursor: pointer; z-index: 5;
-      display: flex; flex-direction: column; align-items: center;
-      transition: transform 0.2s ease, filter 0.2s;
-    }
-    .world-pin:hover {
-      transform: translate(-50%, -110%) scale(1.1); filter: brightness(1.08); z-index: 15;
-    }
-    .pin-bubble {
-      background: #ffffff; border: 2.5px solid var(--primary);
-      padding: 6px 14px; border-radius: 999px; font-size: 13.5px; font-weight: 900;
-      color: var(--ink); box-shadow: var(--badge-shadow); white-space: nowrap;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .pin-bubble.blue { border-color: var(--ocean-blue); color: var(--ocean-blue); }
-    .pin-bubble.green { border-color: var(--accent-green); color: var(--accent-green); }
-    .pin-pointer {
-      width: 0; height: 0;
-      border-left: 6px solid transparent; border-right: 6px solid transparent;
-      border-top: 8px solid var(--primary);
-    }
-    .pin-bubble.blue + .pin-pointer { border-top-color: var(--ocean-blue); }
-    .pin-bubble.green + .pin-pointer { border-top-color: var(--accent-green); }
-
-    /* 彈出式全螢幕/置中 Modal (超大字體、寬敞排版) */
+    /* 彈出式 Modal (超大字體、寬裕排版) */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(20, 24, 30, 0.6);
+      position: fixed; inset: 0; background: rgba(15, 28, 46, 0.65);
       backdrop-filter: blur(8px); z-index: 100; display: none;
       align-items: center; justify-content: center;
     }
@@ -202,7 +136,7 @@
     }
     .modal-close:hover { background: #ff4757; color: #fff; }
 
-    /* 試算表與情境矩陣樣式 */
+    /* 試算表樣式 */
     .calc-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
     @media (max-width: 800px) { .calc-grid { grid-template-columns: 1fr; } }
     .form-row { margin-bottom: 16px; }
@@ -224,7 +158,7 @@
     .res-metric .val { font-size: 28px; font-weight: 900; color: var(--primary); }
     .res-metric .val.green { color: #27ae60; }
 
-    /* 情境矩陣快速選擇列 */
+    /* 40 組情境膠囊列 */
     .scenario-pill-list {
       display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px;
     }
@@ -234,7 +168,7 @@
     }
     .s-pill:hover, .s-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    /* 表格樣式 (超大字體高清晰) */
+    /* 表格通用 */
     .custom-table {
       width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 14px;
       font-size: 15px; border: 1.5px solid #dfe4ea; border-radius: 14px; overflow: hidden;
@@ -248,7 +182,7 @@
     }
     .custom-table tr:hover td { background: #fdfaf6; }
 
-    /* QA 手風琴樣式 */
+    /* QA 手風琴 */
     .qa-box {
       border: 2px solid #e1e8ed; border-radius: 14px; margin-bottom: 12px; overflow: hidden; transition: 0.2s;
     }
@@ -265,13 +199,13 @@
 
     /* 載入畫面 */
     #loader {
-      position: fixed; inset: 0; background: #eef2f7; z-index: 999;
+      position: fixed; inset: 0; background: #0f1c2e; z-index: 999;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-weight: 900; color: var(--primary); gap: 18px; font-size: 18px;
+      font-weight: 900; color: #f1c40f; gap: 18px; font-size: 18px;
     }
     .spinner {
-      width: 54px; height: 54px; border: 5px solid rgba(211, 84, 0, 0.2);
-      border-top-color: var(--primary); border-radius: 50%;
+      width: 54px; height: 54px; border: 5px solid rgba(241, 196, 15, 0.2);
+      border-top-color: #f1c40f; border-radius: 50%;
       animation: spin 0.8s linear infinite;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -291,84 +225,36 @@
 
   <div id="loader">
     <div class="spinner"></div>
-    <div>依照幾何規則施工建構中：連江縣「老宅延壽」3D 政策微縮群島…</div>
+    <div>正在載入連江縣「老宅延壽」高畫質 3D 動態政策微縮群島…</div>
   </div>
 
   <div id="canvas-container"></div>
-  <div id="labels-container" style="position:absolute; inset:0; pointer-events:none; z-index:8;"></div>
 
-  <!-- 頂部 Header Banner (大字體、展板微縮風貌) -->
-  <div id="top-banner">
-    <div class="banner-left">
-      <div class="avatar-badge">🏝️</div>
-      <div class="banner-title-area">
-        <h1>
-          連江老宅延壽 3D 政策島
-          <span class="sub-badge">115-116年度政策</span>
-        </h1>
-        <p>「依照幾何規則施工，將繁雜法規與補助拆解為直覺可視的 3D 探索世界！」</p>
-      </div>
-    </div>
-    <div class="banner-tags">
-      <div class="b-tag green" onclick="openModal('calc')">🧮 40組情境即時試算</div>
-      <div class="b-tag" onclick="openModal('agencies')">🏢 32家初評機構</div>
-      <div class="b-tag" onclick="openModal('qa')">📖 50題QA全解析</div>
-      <div class="b-tag" onclick="openModal('forms')">📑 6大申請表單</div>
-      <div class="b-tag" onclick="openModal('flow')">📜 舊有房屋證明流程</div>
-      <div class="b-tag orange" onclick="openModal('qrcode')">📱 手機/平板線上版</div>
-    </div>
+  <!-- 左上標題品牌卡 (經典乾淨微縮城市風格) -->
+  <div id="brand-card" class="glass-panel" onclick="switchView('overview')">
+    <div class="brand-tag">🏛️ 連江縣 115-116 年度政策</div>
+    <h1>連江老宅延壽島 <span>3D</span></h1>
+    <p>老宅機能復新計畫 3D 微縮互動展示模組</p>
   </div>
 
-  <!-- 右側老宅五大要素拆解展示板 (比照參考圖 ② 結構) -->
-  <div id="deconstruct-board" class="glass-panel">
-    <div class="board-header">
-      <h3>🏛️ 延壽 5 大改善維度</h3>
-      <span style="font-size:12px; font-weight:800; color:#888;">幾何拆解</span>
-    </div>
-    <div class="decomp-item" onclick="focusDimension('roof')">
-      <div class="decomp-item-title">
-        <span>🏠 屋頂防水防漏</span>
-        <span class="decomp-item-cap">上限 20 萬</span>
-      </div>
-      <div class="decomp-item-desc">解決東北季風滲水，施作防水層、斜屋頂隔熱修繕。單價上限 3,500元/㎡。</div>
-    </div>
-    <div class="decomp-item" onclick="focusDimension('facade')">
-      <div class="decomp-item-title">
-        <span>🧱 外牆防水拉皮</span>
-        <span class="decomp-item-cap">上限 20 萬</span>
-      </div>
-      <div class="decomp-item-desc">抗鹽霧侵蝕、外牆磁磚補強、抿石子防水防蝕塗料施工。</div>
-    </div>
-    <div class="decomp-item" onclick="focusDimension('piping')">
-      <div class="decomp-item-title">
-        <span>🚰 公共管線更新</span>
-        <span class="decomp-item-cap">上限 10 萬</span>
-      </div>
-      <div class="decomp-item-desc">老舊給排水管路、弱電配線與瓦斯天然氣管線防風防震固定。</div>
-    </div>
-    <div class="decomp-item" onclick="focusDimension('accessibility')">
-      <div class="decomp-item-title">
-        <span>🦽 室外無障礙改善</span>
-        <span class="decomp-item-cap">上限 5 萬</span>
-      </div>
-      <div class="decomp-item-desc">門前防滑坡道、安全抓握扶手、高低差平整化，友善在宅安心養老。</div>
-    </div>
-    <div class="decomp-item" onclick="focusDimension('interior')">
-      <div class="decomp-item-title">
-        <span>🛋️ 私人室內修繕</span>
-        <span class="decomp-item-cap" style="background:#fee2e2; color:#b91c1c;">弱勢加碼 30 萬</span>
-      </div>
-      <div class="decomp-item-desc">一般戶最高 20 萬；含 65 歲以上長輩或弱勢族群享加碼補助至 30 萬元！</div>
-    </div>
+  <!-- 右上資源導覽列 -->
+  <div id="resource-dock">
+    <button class="dock-btn highlight" onclick="openModal('calc')">🧮 40組情境試算</button>
+    <button class="dock-btn" onclick="openModal('agencies')">🏢 32家初評機構</button>
+    <button class="dock-btn" onclick="openModal('qa')">📖 50題QA全解析</button>
+    <button class="dock-btn" onclick="openModal('forms')">📑 6大申請表單</button>
+    <button class="dock-btn" onclick="openModal('flow')">📜 舊有房屋證明登記</button>
+    <button class="dock-btn" onclick="openModal('media')">🎬 宣傳影片與簡報</button>
+    <button class="dock-btn" onclick="openModal('qrcode')">📱 手機/平板線上版</button>
   </div>
 
-  <!-- 左側詳細抽屜卡片 (大字體) -->
+  <!-- 左側詳細抽屜卡片 -->
   <div id="detail-card" class="glass-panel hidden">
     <div style="display:flex; justify-content:space-between; align-items:center;">
-      <span class="badge" id="card-badge">南竿鄉示範島</span>
+      <span class="badge" id="card-badge">南竿鄉本島</span>
       <button onclick="closeDetailCard()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#777;">✕</button>
     </div>
-    <div class="card-title" id="card-title">媽祖巨神像與示範聚落</div>
+    <div class="card-title" id="card-title">媽祖巨神像地標與示範公寓</div>
     <div class="card-desc" id="card-desc">連江縣政核心腹地，重點示範老舊透天與4-6層連棟公寓之整合拉皮與公共設施活化。</div>
     <div class="stat-grid">
       <div class="stat-box">
@@ -393,27 +279,24 @@
     </button>
   </div>
 
-  <!-- 底部 HUD 控制台 (大字體按鈕) -->
-  <div id="hud-bottom">
-    <button class="hud-btn active" onclick="switchView('overview')">🌐 全島俯瞰</button>
+  <!-- 底部 HUD 導覽列 -->
+  <div id="hud-bottom" class="glass-panel">
+    <button class="hud-btn active" onclick="switchView('overview')">🌐 全景俯瞰</button>
     <button class="hud-btn" onclick="switchView('nangan')">🏝️ 南竿本島</button>
     <button class="hud-btn" onclick="switchView('beigan')">🏛️ 北竿芹壁</button>
     <button class="hud-btn" onclick="switchView('dongyin')">💡 東引燈塔</button>
-    <button class="hud-btn" onclick="switchView('juguang')">🦽 莒光銀髮</button>
+    <button class="hud-btn" onclick="switchView('juguang')">🦽 莒光安老</button>
     <div style="width:2px; height:20px; background:#dcdde1; margin:0 4px;"></div>
     <button class="hud-btn" onclick="cycleLighting()">☀️ 光影切換</button>
-    <button class="hud-btn" onclick="togglePins()">🏷️ 3D標籤</button>
   </div>
 
-  <!-- 彈出視窗 1：40 組情境即時試算與動態試算表 -->
+  <!-- 彈出視窗 1：40 組情境即時試算 -->
   <div id="modal-calc" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>🧮 115年度老宅延壽機能復新補助即時試算</h2>
+        <h2>🧮 115年度老宅延壽機能復新補助即時試算 (40組情境)</h2>
         <button class="modal-close" onclick="closeModal('calc')">✕</button>
       </div>
-
-      <!-- 快速切換 40 組官方真實情境 -->
       <div style="margin-bottom:14px;">
         <div style="font-size:15px; font-weight:800; margin-bottom:8px; color:var(--ink);">
           ⚡ 點選官方 40 組情境手冊真實案例快速載入：
@@ -494,7 +377,7 @@
     </div>
   </div>
 
-  <!-- 彈出視窗 2：32 家國土管理署初評機構一覽 -->
+  <!-- 彈出視窗 2：32 家初評機構 -->
   <div id="modal-agencies" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
@@ -523,7 +406,7 @@
     </div>
   </div>
 
-  <!-- 彈出視窗 3：50 題 QA 全手風琴全文檢索 -->
+  <!-- 彈出視窗 3：50 題 QA 全解析 -->
   <div id="modal-qa" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
@@ -546,55 +429,43 @@
     </div>
   </div>
 
-  <!-- 彈出視窗 4：6 大官方申請表單下載 -->
+  <!-- 彈出視窗 4：6 大申請表單 -->
   <div id="modal-forms" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <h2>📑 官方 6 大申請書表與自我評估表直接下載</h2>
+        <h2>📑 官方 6 大申請書表直接下載</h2>
         <button class="modal-close" onclick="closeModal('forms')">✕</button>
       </div>
-      <p style="font-size:15px; color:var(--ink-soft); margin-bottom:18px;">
-        點擊下方按鈕即可直接下載連江縣工務處指定之標準 Word 格式申請書表（.docx）：
-      </p>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
         <div style="background:#f8f9fa; border:2px solid #e9ecef; border-radius:16px; padding:18px;">
           <h4 style="font-size:17px; font-weight:900; color:var(--ink); margin-bottom:10px;">🏠 透天住宅類（全棟專屬）</h4>
-          <a href="assets/forms/修繕需求申請表_透天住宅類.docx" download class="b-tag orange" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
+          <a href="assets/forms/修繕需求申請表_透天住宅類.docx" download class="dock-btn highlight" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
             📥 修繕需求申請表 (.docx)
           </a>
-          <a href="assets/forms/申請補助計畫書_透天住宅類.docx" download class="b-tag" style="display:block; text-align:center; margin-bottom:8px; background:#485460; text-decoration:none;">
+          <a href="assets/forms/申請補助計畫書_透天住宅類.docx" download class="dock-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
             📥 申請補助計畫書 (.docx)
           </a>
-          <a href="assets/forms/申請補助自我評估表_透天住宅類.docx" download class="b-tag" style="display:block; text-align:center; background:#0b69a3; text-decoration:none;">
+          <a href="assets/forms/申請補助自我評估表_透天住宅類.docx" download class="dock-btn" style="display:block; text-align:center; text-decoration:none;">
             📥 申請補助自我評估表 (.docx)
           </a>
         </div>
         <div style="background:#f8f9fa; border:2px solid #e9ecef; border-radius:16px; padding:18px;">
           <h4 style="font-size:17px; font-weight:900; color:var(--ink); margin-bottom:10px;">🏢 集合公寓類（共益設施）</h4>
-          <a href="assets/forms/修繕需求申請表_公寓類.docx" download class="b-tag orange" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
+          <a href="assets/forms/修繕需求申請表_公寓類.docx" download class="dock-btn highlight" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
             📥 修繕需求申請表 (.docx)
           </a>
-          <a href="assets/forms/申請補助計畫書_公寓類.docx" download class="b-tag" style="display:block; text-align:center; margin-bottom:8px; background:#485460; text-decoration:none;">
+          <a href="assets/forms/申請補助計畫書_公寓類.docx" download class="dock-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
             📥 申請補助計畫書 (.docx)
           </a>
-          <a href="assets/forms/申請補助自我評估表_公寓類.docx" download class="b-tag" style="display:block; text-align:center; background:#0b69a3; text-decoration:none;">
+          <a href="assets/forms/申請補助自我評估表_公寓類.docx" download class="dock-btn" style="display:block; text-align:center; text-decoration:none;">
             📥 申請補助自我評估表 (.docx)
           </a>
         </div>
       </div>
-      <div style="margin-top:20px; padding:16px; background:#e8f4fd; border-radius:14px; border:1.5px solid #b8daff; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <div style="font-size:16px; font-weight:800; color:#0b69a3;">連江縣老宅延壽計畫 115年度官方公版簡報 (PPTX)</div>
-          <div style="font-size:13.5px; color:#555; margin-top:2px;">含全縣座談會完整修訂定稿版投影片（25 MB）</div>
-        </div>
-        <a href="assets/115年度連江老宅簡報_公版(1151013修正定稿版).pptx" download class="b-tag green" style="text-decoration:none; white-space:nowrap;">
-          📥 下載公版簡報
-        </a>
-      </div>
     </div>
   </div>
 
-  <!-- 彈出視窗 5：舊有房屋證明與地政登記流程大圖 -->
+  <!-- 彈出視窗 5：舊有房屋證明與登記流程 -->
   <div id="modal-flow" class="modal-overlay">
     <div class="modal-content" style="max-width:1050px;">
       <div class="modal-header">
@@ -637,28 +508,47 @@
     </div>
   </div>
 
-  <!-- 彈出視窗 6：手機/平板直連線上版 QR Code -->
+  <!-- 彈出視窗 6：影音播放與公版簡報 -->
+  <div id="modal-media" class="modal-overlay">
+    <div class="modal-content" style="max-width:760px;">
+      <div class="modal-header">
+        <h2>🎬 政策宣導影音與公版簡報</h2>
+        <button class="modal-close" onclick="closeModal('media')">✕</button>
+      </div>
+      <div style="margin-bottom:18px;">
+        <video controls style="width:100%; max-height:400px; border-radius:14px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+          <source src="assets/老宅延壽計畫.mp4" type="video/mp4">
+          您的瀏覽器不支援影片播放。
+        </video>
+      </div>
+      <div style="padding:16px; background:#f8f9fa; border-radius:14px; border:1px solid #ddd; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <div style="font-size:16px; font-weight:800; color:var(--ink);">連江縣老宅延壽計畫 115年度官方公版簡報 (PPTX)</div>
+          <div style="font-size:13px; color:#666; margin-top:2px;">最新官方宣傳說明會全套定稿投影片（25 MB）</div>
+        </div>
+        <a href="assets/115年度連江老宅簡報_公版(1151013修正定稿版).pptx" download class="dock-btn highlight" style="text-decoration:none;">
+          📥 下載簡報
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- 彈出視窗 7：手機/平板 QR-Code -->
   <div id="modal-qrcode" class="modal-overlay">
-    <div class="modal-content" style="max-width:540px; text-align:center;">
+    <div class="modal-content" style="max-width:520px; text-align:center;">
       <div class="modal-header">
         <h2>📱 手機／平板線上版直連</h2>
         <button class="modal-close" onclick="closeModal('qrcode')">✕</button>
       </div>
-      <p style="font-size:15px; color:var(--ink-soft); margin-bottom:18px;">
-        用手機或平板相機直接對準下方 QR-Code，免安裝任何軟體即可隨開即玩 3D 政策微縮島！
+      <p style="font-size:15px; color:var(--ink-soft); margin-bottom:16px;">
+        手機相機直接對準下方 QR-Code，立即在行動裝置上體驗 3D 政策微縮島！
       </p>
-      <div style="width:220px; height:220px; margin:0 auto 18px; padding:14px; background:#fff; border-radius:20px; border:3px dashed var(--primary); box-shadow:0 8px 24px rgba(211,84,0,0.18); display:flex; align-items:center; justify-content:center;">
-        <img src="data:image/jpeg;base64,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" alt="QR Code" style="width:100%; height:100%; object-fit:contain; border-radius:10px;">
-      </div>
-      <div style="font-size:16px; font-weight:900; color:var(--ink); margin-bottom:6px;">
-        🌐 雲端線上正式網址：
+      <div style="width:220px; height:220px; margin:0 auto 16px; padding:12px; background:#fff; border-radius:20px; border:3px dashed var(--primary); display:flex; align-items:center; justify-content:center;">
+        <img src="data:image/jpeg;base64,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" alt="QR Code" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <a href="https://pwb6331-hub.github.io/matsu-policy-island/" target="_blank" style="color:var(--primary); font-size:15px; font-weight:800; word-break:break-all;">
         https://pwb6331-hub.github.io/matsu-policy-island/
       </a>
-      <div style="margin-top:16px; font-size:13px; color:#888;">
-        諮詢窗口：連江縣政府工務處 ＆ 福建金門馬祖建築師公會駐府服務台（0836-25330 #6338）
-      </div>
     </div>
   </div>
 
@@ -671,47 +561,36 @@
     };
   </script>
 
-  <!-- WebGL / Three.js 核心 3D 造島引擎 -->
+  <!-- WebGL / Three.js 旗艦 3D 動態政策島引擎 -->
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
-    // -----------------------------------------------------------------
-    // 1. 場景全域變數與初始化
-    // -----------------------------------------------------------------
     let scene, camera, renderer, controls;
     let oceanMesh, oceanGeometry;
+    let skyMesh;
     let lighthouseLightCone;
     let ships = [];
-    let worldPins = [];
-    let showPins = true;
     let lightingState = 0; // 0: 晨曦暖陽, 1: 暮色夕照, 2: 藍調夜景
     let dirLight, hemiLight, ambientLight;
 
     const container = document.getElementById('canvas-container');
-    const labelsContainer = document.getElementById('labels-container');
 
     initEngine();
-    buildWorld3F();
-    setupPins();
+    buildFlagshipWorld();
     animate();
 
-    // -----------------------------------------------------------------
-    // 2. 幾何造島系統（依照規則，一個物件、一個座標、一個幾何結構蓋出世界）
-    // -----------------------------------------------------------------
     function initEngine() {
       scene = new THREE.Scene();
-      scene.background = new THREE.Color(0xf1f5f9);
-      scene.fog = new THREE.FogExp2(0xf1f5f9, 0.009);
-
-      camera = new THREE.PerspectiveCamera(40, window.innerWidth / window.innerHeight, 1, 1000);
-      camera.position.set(50, 42, 60);
+      
+      camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 1, 1200);
+      camera.position.set(52, 45, 65);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.15;
+      renderer.toneMappingExposure = 1.2;
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
       container.appendChild(renderer.domElement);
@@ -721,11 +600,12 @@
       controls.dampingFactor = 0.05;
       controls.maxPolarAngle = Math.PI / 2.05;
       controls.minDistance = 15;
-      controls.maxDistance = 180;
+      controls.maxDistance = 190;
       controls.target.set(0, 4, 0);
 
       setupLighting();
-      createOcean();
+      createSkyDome();
+      createRealisticOcean();
 
       window.addEventListener('resize', onResize);
       setTimeout(() => {
@@ -734,305 +614,300 @@
       }, 500);
     }
 
+    // 高質感天空穹頂 (Sky Dome 漸層光影)
+    function createSkyDome() {
+      const skyGeo = new THREE.SphereGeometry(400, 32, 24);
+      skyGeo.scale(-1, 1, 1);
+
+      // 建立漸層 Canvas Texture
+      const canvas = document.createElement('canvas');
+      canvas.width = 128;
+      canvas.height = 512;
+      const ctx = canvas.getContext('2d');
+      const grad = ctx.createLinearGradient(0, 0, 0, 512);
+      grad.addColorStop(0.0, '#74b9ff');
+      grad.addColorStop(0.5, '#dfe6e9');
+      grad.addColorStop(0.85, '#ffeaa7');
+      grad.addColorStop(1.0, '#fdcb6e');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 128, 512);
+
+      const skyTex = new THREE.CanvasTexture(canvas);
+      const skyMat = new THREE.MeshBasicMaterial({ map: skyTex });
+      skyMesh = new THREE.Mesh(skyGeo, skyMat);
+      scene.add(skyMesh);
+
+      scene.fog = new THREE.FogExp2(0xdfe6e9, 0.005);
+    }
+
     function setupLighting() {
-      ambientLight = new THREE.AmbientLight(0xfff5ea, 1.2);
+      ambientLight = new THREE.AmbientLight(0xfff8ee, 1.3);
       scene.add(ambientLight);
 
-      hemiLight = new THREE.HemisphereLight(0xdff0ff, 0x8a7256, 1.1);
-      hemiLight.position.set(0, 50, 0);
+      hemiLight = new THREE.HemisphereLight(0xe8f4f8, 0x8d775f, 1.2);
+      hemiLight.position.set(0, 60, 0);
       scene.add(hemiLight);
 
-      dirLight = new THREE.DirectionalLight(0xfff1dc, 2.4);
-      dirLight.position.set(45, 60, 35);
+      dirLight = new THREE.DirectionalLight(0xfffaed, 2.6);
+      dirLight.position.set(50, 70, 40);
       dirLight.castShadow = true;
       dirLight.shadow.mapSize.width = 2048;
       dirLight.shadow.mapSize.height = 2048;
       dirLight.shadow.camera.near = 10;
-      dirLight.shadow.camera.far = 180;
-      dirLight.shadow.camera.left = -50;
-      dirLight.shadow.camera.right = 50;
-      dirLight.shadow.camera.top = 50;
-      dirLight.shadow.camera.bottom = -50;
-      dirLight.shadow.bias = -0.0005;
+      dirLight.shadow.camera.far = 200;
+      dirLight.shadow.camera.left = -60;
+      dirLight.shadow.camera.right = 60;
+      dirLight.shadow.camera.top = 60;
+      dirLight.shadow.camera.bottom = -60;
+      dirLight.shadow.bias = -0.0004;
       scene.add(dirLight);
     }
 
-    function createOcean() {
-      oceanGeometry = new THREE.PlaneGeometry(160, 160, 90, 90);
+    // 高細分動態海浪（雙層色調 + 多重正弦干涉）
+    function createRealisticOcean() {
+      oceanGeometry = new THREE.PlaneGeometry(240, 240, 100, 100);
       oceanGeometry.rotateX(-Math.PI / 2);
 
-      const oceanMaterial = new THREE.MeshStandardMaterial({
-        color: 0x1a8cbe,
-        roughness: 0.15,
-        metalness: 0.25,
+      const oceanMat = new THREE.MeshStandardMaterial({
+        color: 0x0984e3,
+        roughness: 0.12,
+        metalness: 0.35,
         flatShading: true,
         transparent: true,
-        opacity: 0.92
+        opacity: 0.94
       });
 
-      oceanMesh = new THREE.Mesh(oceanGeometry, oceanMaterial);
-      oceanMesh.position.y = 0.2;
+      oceanMesh = new THREE.Mesh(oceanGeometry, oceanMat);
+      oceanMesh.position.y = 0.25;
       oceanMesh.receiveShadow = true;
       scene.add(oceanMesh);
     }
 
     // -----------------------------------------------------------------
-    // 3. 3F 造島幾何施工大工廠（Primitive Geometry + 數學演算法 + 座標系統）
+    // 旗艦 3D 微縮群島施工核心
     // -----------------------------------------------------------------
-    function buildWorld3F() {
-      const islandGroup = new THREE.Group();
-      scene.add(islandGroup);
+    function buildFlagshipWorld() {
+      const worldGroup = new THREE.Group();
+      scene.add(worldGroup);
 
-      // (A) 四大主島嶼基座 (依照座標建置)
-      // 南竿 (中心核心), 北竿 (北方文化聚落), 東引 (東方國之北疆峭壁), 莒光 (西南方銀髮安養)
-      const islandsConfig = [
-        { id: 'nangan', name: '南竿島', pos: [0, 0, 0], rTop: 16, rBot: 18, h: 4.5, cliffColor: 0x7c7365, grassColor: 0x4caf50 },
-        { id: 'beigan', name: '北竿島', pos: [-24, 0, -14], rTop: 12, rBot: 14, h: 4.8, cliffColor: 0x8a7f72, grassColor: 0x43a047 },
-        { id: 'dongyin', name: '東引島', pos: [22, 0, -20], rTop: 9, rBot: 11, h: 6.5, cliffColor: 0x615b53, grassColor: 0x388e3c },
-        { id: 'juguang', name: '莒光島', pos: [-16, 0, 20], rTop: 10, rBot: 12, h: 3.8, cliffColor: 0x857a6e, grassColor: 0x66bb6a }
+      // (1) 四大主島嶼 (精密高低差地形 + 花崗岩斷崖 + 濱海沙灘)
+      const islandsData = [
+        { key: 'nangan', name: '南竿島', pos: [0, 0, 0], r: 17, h: 4.8, cliff: 0x635d55, grass: 0x4caf50 },
+        { key: 'beigan', name: '北竿島', pos: [-26, 0, -15], r: 13, h: 5.2, cliff: 0x756c62, grass: 0x43a047 },
+        { key: 'dongyin', name: '東引島', pos: [24, 0, -22], r: 10, h: 7.2, cliff: 0x57514a, grass: 0x388e3c },
+        { key: 'juguang', name: '莒光島', pos: [-18, 0, 22], r: 11, h: 4.2, cliff: 0x6e665d, grass: 0x66bb6a }
       ];
 
-      islandsConfig.forEach(cfg => {
-        const islandNode = createIslandTerrain(cfg);
-        islandGroup.add(islandNode);
+      islandsData.forEach(isl => {
+        worldGroup.add(createDetailedIsland(isl));
       });
 
-      // (B) 跨海石拱橋與木棧道 (橋梁結構)
-      createArchedBridge([0, 0, 0], [-24, 0, -14], islandGroup);
-      createWoodenBridge([0, 0, 0], [-16, 0, 20], islandGroup);
+      // (2) 連接離島的跨海景觀石拱橋與木棧道
+      createArchedStoneBridge([0, 0, 0], [-26, 0, -15], worldGroup);
+      createScenicWoodenBridge([0, 0, 0], [-18, 0, 22], worldGroup);
 
-      // (C) 各島專屬地標與建築細部
-      buildNanganFeatures(islandGroup);
-      buildBeiganFeatures(islandGroup);
-      buildDongyinFeatures(islandGroup);
-      buildJuguangFeatures(islandGroup);
+      // (3) 各島專屬精緻文化建築與地標
+      buildNanganFeatures(worldGroup);
+      buildBeiganFeatures(worldGroup);
+      buildDongyinFeatures(worldGroup);
+      buildJuguangFeatures(worldGroup);
 
-      // (D) 動態船隻巡弋
-      createFleet(islandGroup);
+      // (4) 動態巡弋船隊
+      buildFleet(worldGroup);
     }
 
-    // 建造島嶼地形（階梯式高低差山丘 + 金色沙灘海岸線 + 花崗岩峭壁）
-    function createIslandTerrain(cfg) {
+    // 精緻島嶼地形（基岩斷崖 + 金沙灘 + 起伏山丘階梯）
+    function createDetailedIsland(data) {
       const g = new THREE.Group();
-      g.position.set(cfg.pos[0], cfg.pos[1], cfg.pos[2]);
+      g.position.set(data.pos[0], data.pos[1], data.pos[2]);
 
-      // 1. 基底海蝕峭壁 (多邊形圓台)
-      const cliffGeo = new THREE.CylinderGeometry(cfg.rTop, cfg.rBot, cfg.h, 9);
-      const cliffMat = new THREE.MeshStandardMaterial({ color: cfg.cliffColor, roughness: 0.9, flatShading: true });
+      // 1. 基底海蝕峭壁 (8邊形圓台，帶花崗岩粗獷切面)
+      const cliffGeo = new THREE.CylinderGeometry(data.r, data.r + 2.2, data.h, 8);
+      const cliffMat = new THREE.MeshStandardMaterial({ color: data.cliff, roughness: 0.92, flatShading: true });
       const cliff = new THREE.Mesh(cliffGeo, cliffMat);
-      cliff.position.y = cfg.h / 2;
+      cliff.position.y = data.h / 2;
       cliff.castShadow = true;
       cliff.receiveShadow = true;
       g.add(cliff);
 
       // 2. 金色沙灘圍邊
-      const beachGeo = new THREE.CylinderGeometry(cfg.rTop + 1.2, cfg.rTop + 1.8, 0.4, 9);
-      const beachMat = new THREE.MeshStandardMaterial({ color: 0xe6caa0, roughness: 0.8, flatShading: true });
+      const beachGeo = new THREE.CylinderGeometry(data.r + 1.2, data.r + 1.8, 0.45, 8);
+      const beachMat = new THREE.MeshStandardMaterial({ color: 0xe6caa0, roughness: 0.85, flatShading: true });
       const beach = new THREE.Mesh(beachGeo, beachMat);
-      beach.position.y = cfg.h + 0.1;
+      beach.position.y = data.h + 0.15;
       beach.receiveShadow = true;
       g.add(beach);
 
-      // 3. 頂層翠綠草坪台地
-      const grassGeo = new THREE.CylinderGeometry(cfg.rTop, cfg.rTop + 0.2, 0.5, 9);
-      const grassMat = new THREE.MeshStandardMaterial({ color: cfg.grassColor, roughness: 0.7, flatShading: true });
+      // 3. 翠綠草坪台地
+      const grassGeo = new THREE.CylinderGeometry(data.r, data.r + 0.3, 0.55, 8);
+      const grassMat = new THREE.MeshStandardMaterial({ color: data.grass, roughness: 0.72, flatShading: true });
       const grass = new THREE.Mesh(grassGeo, grassMat);
-      grass.position.y = cfg.h + 0.35;
+      grass.position.y = data.h + 0.45;
       grass.receiveShadow = true;
       g.add(grass);
 
-      // 4. 第二層高低差山丘 (Hill Elevation)
-      const hillGeo = new THREE.CylinderGeometry(cfg.rTop * 0.55, cfg.rTop * 0.75, 2.2, 8);
-      const hillMat = new THREE.MeshStandardMaterial({ color: cfg.grassColor - 0x071505, roughness: 0.8, flatShading: true });
+      // 4. 二階高起起伏山丘 (Hill Top)
+      const hillGeo = new THREE.CylinderGeometry(data.r * 0.55, data.r * 0.75, 2.6, 7);
+      const hillMat = new THREE.MeshStandardMaterial({ color: data.grass - 0x081708, roughness: 0.8, flatShading: true });
       const hill = new THREE.Mesh(hillGeo, hillMat);
-      hill.position.set(-cfg.rTop * 0.15, cfg.h + 1.4, -cfg.rTop * 0.1);
+      hill.position.set(-data.r * 0.15, data.h + 1.7, -data.r * 0.1);
       hill.castShadow = true;
       hill.receiveShadow = true;
       g.add(hill);
 
-      // 5. 植被演算法：群聚生成樹木 (圓柱樹幹 + 多面體樹冠)
-      plantForest(g, cfg.rTop, cfg.h + 0.6);
+      // 5. 隨機群聚植被 (圓柱樹幹 + 雙層十二面體樹冠)
+      plantStylizedTrees(g, data.r, data.h + 0.7);
 
       return g;
     }
 
-    // 樹木群聚演算法 (Primitive Geometry: Cylinder + Dodecahedron)
-    function plantForest(group, radius, baseY) {
-      const treeCount = Math.floor(radius * 1.6);
+    // 樹木群聚演算法
+    function plantStylizedTrees(group, radius, baseY) {
+      const count = Math.floor(radius * 1.8);
       const trunkMat = new THREE.MeshStandardMaterial({ color: 0x5d4037, roughness: 0.9 });
-      const foliageColors = [0x2e7d32, 0x388e3c, 0x43a047, 0x689f38, 0x81c784];
+      const foliageColors = [0x2e7d32, 0x388e3c, 0x43a047, 0x558b2f, 0x7cb342];
 
-      for (let i = 0; i < treeCount; i++) {
+      for (let i = 0; i < count; i++) {
         const ang = Math.random() * Math.PI * 2;
-        const dist = 3 + Math.random() * (radius - 4);
+        const dist = 3.2 + Math.random() * (radius - 4.5);
         const x = Math.cos(ang) * dist;
         const z = Math.sin(ang) * dist;
 
-        // 避開主要建築區域
         if (Math.abs(x) < 2.5 && Math.abs(z) < 2.5) continue;
 
         const tree = new THREE.Group();
-        const treeScale = 0.75 + Math.random() * 0.5;
+        const s = 0.75 + Math.random() * 0.5;
 
-        // 圓柱樹幹
-        const trunkGeo = new THREE.CylinderGeometry(0.18, 0.25, 1.4, 5);
+        // 樹幹
+        const trunkGeo = new THREE.CylinderGeometry(0.18, 0.26, 1.5, 5);
         const trunk = new THREE.Mesh(trunkGeo, trunkMat);
-        trunk.position.y = 0.7;
+        trunk.position.y = 0.75;
         trunk.castShadow = true;
         tree.add(trunk);
 
-        // 十二面體樹冠 (雙層)
-        const foliageMat = new THREE.MeshStandardMaterial({
-          color: foliageColors[Math.floor(Math.random() * foliageColors.length)],
-          roughness: 0.65, flatShading: true
-        });
-        const crownGeo1 = new THREE.DodecahedronGeometry(0.9, 0);
-        const crown1 = new THREE.Mesh(crownGeo1, foliageMat);
-        crown1.position.y = 1.8;
+        // 樹冠 (雙層多面體)
+        const fColor = foliageColors[Math.floor(Math.random() * foliageColors.length)];
+        const crownMat = new THREE.MeshStandardMaterial({ color: fColor, roughness: 0.65, flatShading: true });
+
+        const crown1 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.95, 0), crownMat);
+        crown1.position.y = 1.9;
         crown1.castShadow = true;
         tree.add(crown1);
 
-        const crownGeo2 = new THREE.DodecahedronGeometry(0.65, 0);
-        const crown2 = new THREE.Mesh(crownGeo2, foliageMat);
-        crown2.position.y = 2.4;
+        const crown2 = new THREE.Mesh(new THREE.DodecahedronGeometry(0.68, 0), crownMat);
+        crown2.position.y = 2.6;
         crown2.castShadow = true;
         tree.add(crown2);
 
-        tree.scale.set(treeScale, treeScale, treeScale);
+        tree.scale.set(s, s, s);
         tree.rotation.y = Math.random() * Math.PI;
         tree.position.set(x, baseY, z);
         group.add(tree);
       }
     }
 
-    // (B) 跨海石拱橋
-    function createArchedBridge(posA, posB, parent) {
-      const bridgeGroup = new THREE.Group();
-      const pA = new THREE.Vector3(posA[0], 4.8, posA[2]);
-      const pB = new THREE.Vector3(posB[0], 4.8, posB[2]);
+    // 跨海石拱橋
+    function createArchedStoneBridge(posA, posB, parent) {
+      const pA = new THREE.Vector3(posA[0], 5.0, posA[2]);
+      const pB = new THREE.Vector3(posB[0], 5.0, posB[2]);
       const mid = new THREE.Vector3().addVectors(pA, pB).multiplyScalar(0.5);
-      const len = pA.distanceTo(pB) * 0.45;
+      const len = pA.distanceTo(pB) * 0.46;
 
-      const bridgeGeo = new THREE.BoxGeometry(2.4, 0.4, len);
-      const bridgeMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.8, flatShading: true });
+      const bridgeGeo = new THREE.BoxGeometry(2.6, 0.45, len);
+      const bridgeMat = new THREE.MeshStandardMaterial({ color: 0x9e9e9e, roughness: 0.82, flatShading: true });
       const bridge = new THREE.Mesh(bridgeGeo, bridgeMat);
       bridge.position.copy(mid);
-      bridge.position.y = 3.6;
+      bridge.position.y = 3.8;
       bridge.lookAt(pB);
       bridge.castShadow = true;
-      bridgeGroup.add(bridge);
+      parent.add(bridge);
 
-      // 石拱墩
-      const pierGeo = new THREE.CylinderGeometry(0.8, 1.2, 3.8, 6);
-      const pier = new THREE.Mesh(pierGeo, bridgeMat);
-      pier.position.set(mid.x, 1.8, mid.z);
+      // 石橋墩
+      const pier = new THREE.Mesh(new THREE.CylinderGeometry(0.9, 1.3, 4.0, 6), bridgeMat);
+      pier.position.set(mid.x, 2.0, mid.z);
       pier.castShadow = true;
-      bridgeGroup.add(pier);
-
-      parent.add(bridgeGroup);
+      parent.add(pier);
     }
 
-    // 木造吊橋棧道
-    function createWoodenBridge(posA, posB, parent) {
-      const pA = new THREE.Vector3(posA[0], 4.2, posA[2]);
-      const pB = new THREE.Vector3(posB[0], 4.2, posB[2]);
+    // 跨海木棧吊橋
+    function createScenicWoodenBridge(posA, posB, parent) {
+      const pA = new THREE.Vector3(posA[0], 4.5, posA[2]);
+      const pB = new THREE.Vector3(posB[0], 4.5, posB[2]);
       const mid = new THREE.Vector3().addVectors(pA, pB).multiplyScalar(0.5);
-      const len = pA.distanceTo(pB) * 0.4;
+      const len = pA.distanceTo(pB) * 0.42;
 
-      const woodGeo = new THREE.BoxGeometry(2.0, 0.25, len);
-      const woodMat = new THREE.MeshStandardMaterial({ color: 0x8d6e63, roughness: 0.85 });
+      const woodGeo = new THREE.BoxGeometry(2.2, 0.3, len);
+      const woodMat = new THREE.MeshStandardMaterial({ color: 0x8d6e63, roughness: 0.88 });
       const wood = new THREE.Mesh(woodGeo, woodMat);
       wood.position.copy(mid);
-      wood.position.y = 2.8;
+      wood.position.y = 3.0;
       wood.lookAt(pB);
       wood.castShadow = true;
       parent.add(wood);
     }
 
-    // (C-1) 南竿核心：媽祖巨神像 + 連棟拉皮公寓 + 政策任務紅旗與寶箱
+    // (A) 南竿：媽祖神像高台 + 連棟拉皮公寓群 + 太陽能光電 + 外掛景觀電梯
     function buildNanganFeatures(parent) {
       const g = new THREE.Group();
-      g.position.set(0, 5.0, 0);
+      g.position.set(0, 5.3, 0);
 
-      // 1. 鵝卵石主步道 (從碼頭通往神像與聚落)
-      const pathGeo = new THREE.BoxGeometry(2.2, 0.1, 14);
-      const pathMat = new THREE.MeshStandardMaterial({ color: 0xbdc3c7, roughness: 0.9 });
-      const path = new THREE.Mesh(pathGeo, pathMat);
-      path.position.set(0, 0.05, 1);
+      // 鵝卵石主步道
+      const path = new THREE.Mesh(new THREE.BoxGeometry(2.4, 0.12, 14), new THREE.MeshStandardMaterial({ color: 0xbdc3c7, roughness: 0.9 }));
+      path.position.set(0, 0.06, 1);
       path.receiveShadow = true;
       g.add(path);
 
-      // 2. 媽祖巨神像地標 (最高山巔)
-      const altarGeo = new THREE.CylinderGeometry(2.8, 3.2, 1.6, 8);
-      const altarMat = new THREE.MeshStandardMaterial({ color: 0xecf0f1, roughness: 0.5 });
-      const altar = new THREE.Mesh(altarGeo, altarMat);
-      altar.position.set(-2, 2.2, -4);
+      // 媽祖巨神像高台壇座
+      const altar = new THREE.Mesh(new THREE.CylinderGeometry(3.0, 3.4, 1.8, 8), new THREE.MeshStandardMaterial({ color: 0xecf0f1, roughness: 0.5 }));
+      altar.position.set(-2, 2.3, -4);
       altar.castShadow = true;
       g.add(altar);
 
-      // 神像本體 (簡潔立體白玉像)
-      const statueGeo = new THREE.CylinderGeometry(0.8, 1.4, 5.2, 8);
-      const statueMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
-      const statue = new THREE.Mesh(statueGeo, statueMat);
-      statue.position.set(-2, 5.6, -4);
+      // 神像本體 (白玉微縮立雕)
+      const statue = new THREE.Mesh(new THREE.CylinderGeometry(0.85, 1.5, 5.5, 8), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 }));
+      statue.position.set(-2, 5.8, -4);
       statue.castShadow = true;
       g.add(statue);
 
-      // 3. 連棟拉皮公寓 (現代節能外牆 + 屋頂太陽能光電)
+      // 示範連棟拉皮公寓 (現代節能外牆 + 太陽能板 + 外掛玻璃電梯)
       for (let i = 0; i < 3; i++) {
         const bldg = new THREE.Group();
-        bldg.position.set(3.5 + i * 2.8, 0, 1.5 - i * 0.5);
+        bldg.position.set(3.6 + i * 2.9, 0, 1.5 - i * 0.5);
 
         // 主體
-        const bGeo = new THREE.BoxGeometry(2.4, 4.8, 3.2);
-        const bMat = new THREE.MeshStandardMaterial({ color: 0xfdfcfb, roughness: 0.6 });
-        const bMesh = new THREE.Mesh(bGeo, bMat);
-        bMesh.position.y = 2.4;
+        const bMesh = new THREE.Mesh(new THREE.BoxGeometry(2.5, 5.0, 3.4), new THREE.MeshStandardMaterial({ color: 0xfdfcfb, roughness: 0.6 }));
+        bMesh.position.y = 2.5;
         bMesh.castShadow = true;
         bldg.add(bMesh);
 
         // 屋頂太陽能板
-        const solarGeo = new THREE.BoxGeometry(2.0, 0.15, 2.6);
-        const solarMat = new THREE.MeshStandardMaterial({ color: 0x1a237e, metalness: 0.7, roughness: 0.3 });
-        const solar = new THREE.Mesh(solarGeo, solarMat);
-        solar.position.set(0, 4.95, 0);
+        const solar = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.16, 2.8), new THREE.MeshStandardMaterial({ color: 0x1a237e, metalness: 0.75, roughness: 0.25 }));
+        solar.position.set(0, 5.15, 0);
         solar.rotation.x = 0.15;
         bldg.add(solar);
 
-        // 外掛無障礙透明景觀電梯井 (南竿示範特色)
+        // 外掛無障礙透明景觀電梯井
         if (i === 1) {
-          const elevGeo = new THREE.BoxGeometry(1.2, 5.2, 1.2);
-          const elevMat = new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.4 });
-          const elev = new THREE.Mesh(elevGeo, elevMat);
-          elev.position.set(0, 2.6, 1.8);
+          const elev = new THREE.Mesh(new THREE.BoxGeometry(1.3, 5.5, 1.3), new THREE.MeshStandardMaterial({ color: 0xd35400, roughness: 0.4 }));
+          elev.position.set(0, 2.75, 1.9);
           elev.castShadow = true;
           bldg.add(elev);
         }
         g.add(bldg);
       }
 
-      // 4. 政策任務紅旗 (Quest Flag)
-      const flagPoleGeo = new THREE.CylinderGeometry(0.08, 0.08, 4.2, 6);
-      const flagPoleMat = new THREE.MeshStandardMaterial({ color: 0xbdc3c7, metalness: 0.8 });
-      const pole = new THREE.Mesh(flagPoleGeo, flagPoleMat);
-      pole.position.set(0, 2.1, 5.5);
+      // 政策任務紅旗
+      const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 4.4, 6), new THREE.MeshStandardMaterial({ color: 0xbdc3c7, metalness: 0.8 }));
+      pole.position.set(0, 2.2, 5.5);
       g.add(pole);
 
       const flagGeo = new THREE.BufferGeometry();
-      const flagVertices = new Float32Array([
-        0, 4.0, 5.5,
-        0, 3.2, 5.5,
-        1.4, 3.6, 5.5
-      ]);
-      flagGeo.setAttribute('position', new THREE.BufferAttribute(flagVertices, 3));
-      const flagMat = new THREE.MeshBasicMaterial({ color: 0xe74c3c, side: THREE.DoubleSide });
-      const flag = new THREE.Mesh(flagGeo, flagMat);
+      flagGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0, 4.2, 5.5, 0, 3.4, 5.5, 1.5, 3.8, 5.5]), 3));
+      const flag = new THREE.Mesh(flagGeo, new THREE.MeshBasicMaterial({ color: 0xe74c3c, side: THREE.DoubleSide }));
       g.add(flag);
 
-      // 5. 補助金驚喜寶箱 (最高 30 萬加碼金)
-      const chestGeo = new THREE.BoxGeometry(1.2, 0.85, 0.85);
-      const chestMat = new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.5 });
-      const chest = new THREE.Mesh(chestGeo, chestMat);
+      // 補助金寶箱 (最高 30 萬)
+      const chest = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.85, 0.85), new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.5 }));
       chest.position.set(-2.5, 0.45, 4.5);
       chest.castShadow = true;
       g.add(chest);
@@ -1040,337 +915,163 @@
       parent.add(g);
     }
 
-    // (C-2) 北竿文化：芹壁花崗岩石屋聚落 + 紅色馬鞍形封火山牆 + 壓石
+    // (B) 北竿：芹壁人字砌石屋聚落 + 紅色馬鞍形封火山牆 + 壓石
     function buildBeiganFeatures(parent) {
       const g = new THREE.Group();
-      g.position.set(-24, 5.3, -14);
+      g.position.set(-26, 5.7, -15);
 
-      // 依山而建的三棟芹壁特色石屋
       const houseCoords = [
-        { x: -2.5, z: 0, scale: 1.1, rot: 0.2 },
-        { x: 1.5, z: -2.5, scale: 1.25, rot: -0.15 },
-        { x: 1.0, z: 2.2, scale: 0.95, rot: 0.3 }
+        { x: -2.6, z: 0, s: 1.15, rot: 0.2 },
+        { x: 1.6, z: -2.6, s: 1.3, rot: -0.15 },
+        { x: 1.2, z: 2.4, s: 1.0, rot: 0.3 }
       ];
 
       houseCoords.forEach(c => {
         const h = new THREE.Group();
         h.position.set(c.x, 0, c.z);
         h.rotation.y = c.rot;
-        h.scale.set(c.scale, c.scale, c.scale);
+        h.scale.set(c.s, c.s, c.s);
 
-        // 石砌主牆 (人字砌花崗岩色調)
-        const wallGeo = new THREE.BoxGeometry(3.2, 2.4, 2.8);
-        const wallMat = new THREE.MeshStandardMaterial({ color: 0xd7ccc8, roughness: 0.9, flatShading: true });
-        const wall = new THREE.Mesh(wallGeo, wallMat);
-        wall.position.y = 1.2;
+        // 花崗岩石砌主牆
+        const wall = new THREE.Mesh(new THREE.BoxGeometry(3.3, 2.5, 2.9), new THREE.MeshStandardMaterial({ color: 0xd7ccc8, roughness: 0.92, flatShading: true }));
+        wall.position.y = 1.25;
         wall.castShadow = true;
         h.add(wall);
 
-        // 紅色馬鞍形封火山牆 (閩東文化辨識標誌)
-        const roofGeo = new THREE.ConeGeometry(2.4, 1.4, 4);
+        // 紅色馬鞍形封火山牆
+        const roofGeo = new THREE.ConeGeometry(2.5, 1.5, 4);
         roofGeo.rotateY(Math.PI / 4);
-        const roofMat = new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.6 });
-        const roof = new THREE.Mesh(roofGeo, roofMat);
-        roof.position.y = 3.0;
+        const roof = new THREE.Mesh(roofGeo, new THREE.MeshStandardMaterial({ color: 0xc0392b, roughness: 0.6 }));
+        roof.position.y = 3.1;
         roof.scale.set(1.1, 0.9, 1.0);
         roof.castShadow = true;
         h.add(roof);
 
-        // 屋頂防風壓石 (數顆小方塊)
+        // 防風壓石
         for (let j = -1; j <= 1; j++) {
-          const rockGeo = new THREE.BoxGeometry(0.35, 0.2, 0.35);
-          const rockMat = new THREE.MeshStandardMaterial({ color: 0x795548 });
-          const rock = new THREE.Mesh(rockGeo, rockMat);
-          rock.position.set(j * 0.8, 3.2, 0);
+          const rock = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.2, 0.35), new THREE.MeshStandardMaterial({ color: 0x795548 }));
+          rock.position.set(j * 0.8, 3.3, 0);
           h.add(rock);
         }
 
         g.add(h);
       });
 
-      // 技師現場初評 NPC 小人物 (比照參考圖)
-      createSurveyorNPC(g, 0, 0, 1.2);
-
       parent.add(g);
     }
 
-    // (C-3) 東引國之北疆：高聳歐風燈塔 + 旋轉探照金光錐 + 海蝕斷崖
+    // (C) 東引：國之北疆峭壁 + 歐風燈塔 + 旋轉探照金光
     function buildDongyinFeatures(parent) {
       const g = new THREE.Group();
-      g.position.set(22, 7.0, -20);
+      g.position.set(24, 7.8, -22);
 
-      // 歐風燈塔三段式錐身
-      const baseGeo = new THREE.CylinderGeometry(1.4, 1.8, 1.8, 12);
       const whiteMat = new THREE.MeshStandardMaterial({ color: 0xfafafa, roughness: 0.4 });
-      const base = new THREE.Mesh(baseGeo, whiteMat);
-      base.position.y = 0.9;
+      const base = new THREE.Mesh(new THREE.CylinderGeometry(1.5, 1.9, 2.0, 12), whiteMat);
+      base.position.y = 1.0;
       base.castShadow = true;
       g.add(base);
 
-      const shaftGeo = new THREE.CylinderGeometry(0.9, 1.3, 4.5, 12);
-      const shaft = new THREE.Mesh(shaftGeo, whiteMat);
-      shaft.position.y = 4.0;
+      const shaft = new THREE.Mesh(new THREE.CylinderGeometry(1.0, 1.4, 4.8, 12), whiteMat);
+      shaft.position.y = 4.3;
       shaft.castShadow = true;
       g.add(shaft);
 
-      // 燈塔頂端觀景台與黑色花崗岩穹頂
-      const topGeo = new THREE.CylinderGeometry(1.2, 1.0, 0.8, 12);
-      const blackMat = new THREE.MeshStandardMaterial({ color: 0x212121, metalness: 0.7 });
-      const top = new THREE.Mesh(topGeo, blackMat);
-      top.position.y = 6.6;
+      const blackMat = new THREE.MeshStandardMaterial({ color: 0x212121, metalness: 0.75 });
+      const top = new THREE.Mesh(new THREE.CylinderGeometry(1.3, 1.1, 0.85, 12), blackMat);
+      top.position.y = 7.1;
       g.add(top);
 
-      const domeGeo = new THREE.SphereGeometry(0.85, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2);
-      const dome = new THREE.Mesh(domeGeo, blackMat);
-      dome.position.y = 7.0;
+      const dome = new THREE.Mesh(new THREE.SphereGeometry(0.9, 12, 8, 0, Math.PI * 2, 0, Math.PI / 2), blackMat);
+      dome.position.y = 7.5;
       g.add(dome);
 
-      // 360 度旋轉探照金光錐 (半透明柔和金光)
-      const coneGeo = new THREE.ConeGeometry(8, 26, 16, 1, true);
+      // 360 度旋轉探照金光錐
+      const coneGeo = new THREE.ConeGeometry(9, 28, 16, 1, true);
       coneGeo.rotateX(Math.PI / 2);
       const coneMat = new THREE.MeshBasicMaterial({
-        color: 0xffea00, transparent: true, opacity: 0.28, side: THREE.DoubleSide, blending: THREE.AdditiveBlending
+        color: 0xffea00, transparent: true, opacity: 0.3, side: THREE.DoubleSide, blending: THREE.AdditiveBlending
       });
       lighthouseLightCone = new THREE.Mesh(coneGeo, coneMat);
-      lighthouseLightCone.position.set(0, 6.6, 0);
+      lighthouseLightCone.position.set(0, 7.1, 0);
       g.add(lighthouseLightCone);
 
       parent.add(g);
     }
 
-    // (C-4) 莒光島：東莒燈塔 + 大埔聚落 + 亮黃色銀髮無障礙木棧緩坡與扶手
+    // (D) 莒光：東莒花崗岩聚落 + 銀髮無障礙緩坡道
     function buildJuguangFeatures(parent) {
       const g = new THREE.Group();
-      g.position.set(-16, 4.3, 20);
+      g.position.set(-18, 4.7, 22);
 
-      // 大埔花崗岩聚落房屋
-      const hGeo = new THREE.BoxGeometry(3.0, 2.2, 2.6);
-      const hMat = new THREE.MeshStandardMaterial({ color: 0xd7ccc8, roughness: 0.8 });
-      const house = new THREE.Mesh(hGeo, hMat);
-      house.position.set(1.5, 1.1, -1.0);
+      const house = new THREE.Mesh(new THREE.BoxGeometry(3.2, 2.3, 2.8), new THREE.MeshStandardMaterial({ color: 0xd7ccc8, roughness: 0.85 }));
+      house.position.set(1.6, 1.15, -1.0);
       house.castShadow = true;
       g.add(house);
 
-      // 醒目的銀髮無障礙緩坡道 (黃色防滑條 + 雙側安全扶手)
-      const rampGeo = new THREE.BoxGeometry(1.8, 0.2, 6.0);
-      const rampMat = new THREE.MeshStandardMaterial({ color: 0xf1c40f, roughness: 0.6 });
-      const ramp = new THREE.Mesh(rampGeo, rampMat);
-      ramp.position.set(-2.0, 0.6, 1.0);
+      // 醒目黃色無障礙緩坡道
+      const ramp = new THREE.Mesh(new THREE.BoxGeometry(2.0, 0.22, 6.4), new THREE.MeshStandardMaterial({ color: 0xf1c40f, roughness: 0.6 }));
+      ramp.position.set(-2.0, 0.65, 1.0);
       ramp.rotation.x = -0.15;
       ramp.castShadow = true;
       g.add(ramp);
 
-      // 兩側安全把手扶手
-      for (let side of [-0.85, 0.85]) {
-        const railGeo = new THREE.CylinderGeometry(0.05, 0.05, 5.8, 6);
-        const railMat = new THREE.MeshStandardMaterial({ color: 0xe67e22, metalness: 0.8 });
-        const rail = new THREE.Mesh(railGeo, railMat);
-        rail.position.set(-2.0 + side, 1.2, 1.0);
+      // 安全扶手
+      for (let side of [-0.95, 0.95]) {
+        const rail = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.06, 6.2, 6), new THREE.MeshStandardMaterial({ color: 0xe67e22, metalness: 0.8 }));
+        rail.position.set(-2.0 + side, 1.3, 1.0);
         rail.rotation.x = -0.15;
         g.add(rail);
       }
 
-      // 長輩居民 NPC (持拐杖站在坡道旁)
-      createElderlyNPC(g, -2.0, 1.1, -1.2);
-
       parent.add(g);
     }
 
-    // 建構 NPC：建築師／現場初評技師 (白安全帽 + 亮橘背心 + 藍褲)
-    function createSurveyorNPC(parent, x, y, z) {
-      const npc = new THREE.Group();
-      npc.position.set(x, y, z);
-
-      // 軀幹
-      const bodyGeo = new THREE.CylinderGeometry(0.25, 0.25, 0.7, 6);
-      const vestMat = new THREE.MeshStandardMaterial({ color: 0xff6f00 });
-      const body = new THREE.Mesh(bodyGeo, vestMat);
-      body.position.y = 0.75;
-      body.castShadow = true;
-      npc.add(body);
-
-      // 頭部
-      const headGeo = new THREE.SphereGeometry(0.2, 8, 8);
-      const skinMat = new THREE.MeshStandardMaterial({ color: 0xffcc80 });
-      const head = new THREE.Mesh(headGeo, skinMat);
-      head.position.y = 1.25;
-      npc.add(head);
-
-      // 工務安全帽
-      const hatGeo = new THREE.CylinderGeometry(0.26, 0.28, 0.12, 8);
-      const hatMat = new THREE.MeshStandardMaterial({ color: 0xffffff });
-      const hat = new THREE.Mesh(hatGeo, hatMat);
-      hat.position.y = 1.38;
-      npc.add(hat);
-
-      parent.add(npc);
-    }
-
-    // 建構 NPC：銀髮長輩居民
-    function createElderlyNPC(parent, x, y, z) {
-      const npc = new THREE.Group();
-      npc.position.set(x, y, z);
-
-      const bodyGeo = new THREE.CylinderGeometry(0.24, 0.24, 0.65, 6);
-      const clothMat = new THREE.MeshStandardMaterial({ color: 0x3f51b5 });
-      const body = new THREE.Mesh(bodyGeo, clothMat);
-      body.position.y = 0.7;
-      body.castShadow = true;
-      npc.add(body);
-
-      const headGeo = new THREE.SphereGeometry(0.2, 8, 8);
-      const skinMat = new THREE.MeshStandardMaterial({ color: 0xffcc80 });
-      const head = new THREE.Mesh(headGeo, skinMat);
-      head.position.y = 1.15;
-      npc.add(head);
-
-      // 拐杖
-      const caneGeo = new THREE.CylinderGeometry(0.04, 0.04, 0.9, 5);
-      const caneMat = new THREE.MeshStandardMaterial({ color: 0x5d4037 });
-      const cane = new THREE.Mesh(caneGeo, caneMat);
-      cane.position.set(0.35, 0.45, 0.1);
-      npc.add(cane);
-
-      parent.add(npc);
-    }
-
-    // (D) 動態船隻巡弋生態 (臺馬之星客輪 + 傳統雙帆漁船)
-    function createFleet(parent) {
+    // 動態船隻巡弋生態
+    function buildFleet(parent) {
       // 1. 臺馬之星 (雙層大型客輪)
       const ferry = new THREE.Group();
-      const hullGeo = new THREE.BoxGeometry(2.4, 1.2, 7.5);
-      const hullMat = new THREE.MeshStandardMaterial({ color: 0x1565c0, roughness: 0.5 });
-      const hull = new THREE.Mesh(hullGeo, hullMat);
-      hull.position.y = 0.6;
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(2.6, 1.3, 8.0), new THREE.MeshStandardMaterial({ color: 0x1565c0, roughness: 0.5 }));
+      hull.position.y = 0.65;
       hull.castShadow = true;
       ferry.add(hull);
 
-      const cabinGeo = new THREE.BoxGeometry(1.8, 1.4, 4.8);
-      const cabinMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 });
-      const cabin = new THREE.Mesh(cabinGeo, cabinMat);
-      cabin.position.set(0, 1.8, -0.4);
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(2.0, 1.5, 5.2), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.3 }));
+      cabin.position.set(0, 1.9, -0.4);
       cabin.castShadow = true;
       ferry.add(cabin);
 
       // 雙煙囪
-      for (let s of [-0.35, 0.35]) {
-        const funGeo = new THREE.CylinderGeometry(0.2, 0.2, 0.8, 6);
-        const funMat = new THREE.MeshStandardMaterial({ color: 0xc62828 });
-        const fun = new THREE.Mesh(funGeo, funMat);
-        fun.position.set(s, 2.8, -1.2);
+      for (let s of [-0.4, 0.4]) {
+        const fun = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.85, 6), new THREE.MeshStandardMaterial({ color: 0xc62828 }));
+        fun.position.set(s, 2.9, -1.3);
         ferry.add(fun);
       }
 
-      ferry.position.set(16, 0.2, 14);
+      ferry.position.set(18, 0.2, 16);
       parent.add(ferry);
-      ships.push({ mesh: ferry, radius: 24, speed: 0.003, angle: 0, type: 'ferry' });
+      ships.push({ mesh: ferry, radius: 26, speed: 0.0028, angle: 0, type: 'ferry' });
 
-      // 2. 傳統雙帆木造漁船 (隨波搖曳)
+      // 2. 傳統雙帆漁船
       const boat = new THREE.Group();
-      const bHullGeo = new THREE.BoxGeometry(1.2, 0.6, 3.2);
-      const bHullMat = new THREE.MeshStandardMaterial({ color: 0x6d4c41, roughness: 0.8 });
-      const bHull = new THREE.Mesh(bHullGeo, bHullMat);
-      bHull.position.y = 0.3;
+      const bHull = new THREE.Mesh(new THREE.BoxGeometry(1.3, 0.65, 3.4), new THREE.MeshStandardMaterial({ color: 0x6d4c41, roughness: 0.85 }));
+      bHull.position.y = 0.35;
       bHull.castShadow = true;
       boat.add(bHull);
 
-      // 雙帆
-      for (let zOffset of [-0.6, 0.6]) {
+      for (let zOffset of [-0.65, 0.65]) {
         const sailGeo = new THREE.BufferGeometry();
-        const sailVertices = new Float32Array([
-          0, 0.5, zOffset,
-          0, 2.4, zOffset,
-          0.8, 1.2, zOffset
-        ]);
-        sailGeo.setAttribute('position', new THREE.BufferAttribute(sailVertices, 3));
-        const sailMat = new THREE.MeshStandardMaterial({ color: 0xfff8e1, side: THREE.DoubleSide });
-        const sail = new THREE.Mesh(sailGeo, sailMat);
+        sailGeo.setAttribute('position', new THREE.BufferAttribute(new Float32Array([0, 0.5, zOffset, 0, 2.5, zOffset, 0.85, 1.3, zOffset]), 3));
+        const sail = new THREE.Mesh(sailGeo, new THREE.MeshStandardMaterial({ color: 0xfff8e1, side: THREE.DoubleSide }));
         boat.add(sail);
       }
 
-      boat.position.set(-12, 0.2, -6);
+      boat.position.set(-14, 0.2, -7);
       parent.add(boat);
-      ships.push({ mesh: boat, radius: 14, speed: -0.005, angle: Math.PI / 2, type: 'sailboat' });
+      ships.push({ mesh: boat, radius: 15, speed: -0.0045, angle: Math.PI / 2, type: 'sailboat' });
     }
 
     // -----------------------------------------------------------------
-    // 4. 3D 浮動指向標籤系統 (World HUD Pins / 參考圖風格)
-    // -----------------------------------------------------------------
-    const PIN_DEFS = [
-      { id: 'pin-nangan-statue', text: '⛰️ 媽祖巨神像地標', pos: [-2, 11.0, -4], color: 'blue', island: 'nangan' },
-      { id: 'pin-nangan-apt', text: '🏢 示範連棟公寓群', pos: [6, 10.0, 1.5], color: 'orange', island: 'nangan' },
-      { id: 'pin-nangan-quest', text: '🚩 補助申請任務點', pos: [0, 9.5, 5.5], color: 'green', island: 'nangan' },
-      { id: 'pin-nangan-chest', text: '🎁 最高30萬補助寶箱', pos: [-2.5, 6.5, 4.5], color: 'orange', island: 'nangan' },
-      { id: 'pin-beigan-stones', text: '🏛️ 芹壁石屋與封火山牆', pos: [-24, 10.5, -14], color: 'blue', island: 'beigan' },
-      { id: 'pin-beigan-npc', text: '👷 初評技師駐點 NPC', pos: [-24, 7.5, -12.5], color: 'green', island: 'beigan' },
-      { id: 'pin-bridge', text: '🌉 跨海拱橋與步道', pos: [-12, 6.5, -7], color: 'blue', island: 'nangan' },
-      { id: 'pin-dongyin-light', text: '💡 東引歐風燈塔', pos: [22, 15.0, -20], color: 'blue', island: 'dongyin' },
-      { id: 'pin-juguang-ramp', text: '🦽 銀髮無障礙緩坡', pos: [-18, 7.5, 21], color: 'green', island: 'juguang' },
-      { id: 'pin-ferry', text: '🚢 臺馬之星巡航客輪', pos: [16, 4.0, 14], color: 'blue', island: 'nangan' }
-    ];
-
-    function setupPins() {
-      labelsContainer.innerHTML = '';
-      worldPins = [];
-
-      PIN_DEFS.forEach(p => {
-        const el = document.createElement('div');
-        el.className = 'world-pin';
-        el.id = p.id;
-        el.innerHTML = `
-          <div class="pin-bubble ${p.color}">
-            <span>${p.text}</span>
-          </div>
-          <div class="pin-pointer"></div>
-        `;
-        el.onclick = () => {
-          onPinClick(p);
-        };
-        labelsContainer.appendChild(el);
-        worldPins.push({ el: el, pos: new THREE.Vector3(p.pos[0], p.pos[1], p.pos[2]), def: p });
-      });
-    }
-
-    function updatePins() {
-      if (!showPins) {
-        labelsContainer.style.display = 'none';
-        return;
-      }
-      labelsContainer.style.display = 'block';
-
-      const tempV = new THREE.Vector3();
-      const widthHalf = window.innerWidth / 2;
-      const heightHalf = window.innerHeight / 2;
-
-      worldPins.forEach(item => {
-        tempV.copy(item.pos);
-        tempV.project(camera);
-
-        // 判斷在攝影機前方
-        if (tempV.z < 1) {
-          const x = (tempV.x * widthHalf) + widthHalf;
-          const y = -(tempV.y * heightHalf) + heightHalf;
-          item.el.style.display = 'flex';
-          item.el.style.left = `${x}px`;
-          item.el.style.top = `${y}px`;
-        } else {
-          item.el.style.display = 'none';
-        }
-      });
-    }
-
-    function onPinClick(p) {
-      switchView(p.island);
-      showIslandDetail(p.island);
-    }
-
-    window.togglePins = function() {
-      showPins = !showPins;
-      updatePins();
-    };
-
-    // -----------------------------------------------------------------
-    // 5. 動態迴圈與即時動畫
+    // 動態迴圈與即時動畫
     // -----------------------------------------------------------------
     let clock = new THREE.Clock();
 
@@ -1378,27 +1079,27 @@
       requestAnimationFrame(animate);
       const time = clock.getElapsedTime();
 
-      // 1. 動態海浪 (多重正弦波反光演算法)
+      // 1. 動態海浪
       if (oceanGeometry) {
         const pos = oceanGeometry.attributes.position;
         for (let i = 0; i < pos.count; i++) {
           const u = pos.getX(i);
           const v = pos.getZ(i);
-          const wave = Math.sin(u * 0.22 + time * 1.6) * 0.24 +
-                       Math.cos(v * 0.18 + time * 1.4) * 0.22 +
-                       Math.sin((u + v) * 0.12 + time * 0.9) * 0.18;
+          const wave = Math.sin(u * 0.2 + time * 1.5) * 0.25 +
+                       Math.cos(v * 0.16 + time * 1.3) * 0.22 +
+                       Math.sin((u + v) * 0.11 + time * 0.85) * 0.18;
           pos.setY(i, wave);
         }
         pos.needsUpdate = true;
         oceanGeometry.computeVertexNormals();
       }
 
-      // 2. 燈塔旋轉金光錐
+      // 2. 燈塔探照光束旋轉
       if (lighthouseLightCone) {
         lighthouseLightCone.rotation.y = time * 0.8;
       }
 
-      // 3. 船隻巡弋與隨波起伏
+      // 3. 船隻巡弋與波浪起伏
       ships.forEach(s => {
         s.angle += s.speed;
         s.mesh.position.x = Math.cos(s.angle) * s.radius;
@@ -1411,7 +1112,6 @@
       });
 
       controls.update();
-      updatePins();
       renderer.render(scene, camera);
     }
 
@@ -1421,15 +1121,13 @@
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
 
-    // -----------------------------------------------------------------
-    // 6. 視角平滑轉移與光影控制
-    // -----------------------------------------------------------------
+    // 視角切換
     const CAMERA_PRESETS = {
-      overview: { pos: [50, 42, 60], target: [0, 4, 0] },
+      overview: { pos: [52, 45, 65], target: [0, 4, 0] },
       nangan:   { pos: [12, 14, 20], target: [0, 4, 0] },
-      beigan:   { pos: [-14, 16, -4], target: [-24, 5, -14] },
-      dongyin:  { pos: [34, 18, -10], target: [22, 7, -20] },
-      juguang:  { pos: [-8, 14, 30], target: [-16, 4, 20] }
+      beigan:   { pos: [-15, 16, -4], target: [-26, 5, -15] },
+      dongyin:  { pos: [36, 18, -10], target: [24, 7, -22] },
+      juguang:  { pos: [-9, 14, 32], target: [-18, 4, 22] }
     };
 
     window.switchView = function(viewKey) {
@@ -1470,21 +1168,18 @@
       lightingState = (lightingState + 1) % 3;
       if (lightingState === 0) {
         // 晨曦暖陽
-        scene.background.set(0xf1f5f9);
-        scene.fog.color.set(0xf1f5f9);
-        ambientLight.color.set(0xfff5ea);
-        dirLight.color.set(0xfff1dc);
-        dirLight.intensity = 2.4;
+        scene.fog.color.set(0xdfe6e9);
+        ambientLight.color.set(0xfff8ee);
+        dirLight.color.set(0xfffaed);
+        dirLight.intensity = 2.6;
       } else if (lightingState === 1) {
         // 暮色夕照
-        scene.background.set(0xfbe9e7);
         scene.fog.color.set(0xfbe9e7);
         ambientLight.color.set(0xffccbc);
         dirLight.color.set(0xff7043);
-        dirLight.intensity = 2.8;
+        dirLight.intensity = 3.0;
       } else {
         // 藍調夜景
-        scene.background.set(0x0a192f);
         scene.fog.color.set(0x0a192f);
         ambientLight.color.set(0x1e3a8a);
         dirLight.color.set(0x60a5fa);
@@ -1492,13 +1187,11 @@
       }
     };
 
-    // -----------------------------------------------------------------
-    // 7. 詳細抽屜卡片與五大要素切換
-    // -----------------------------------------------------------------
+    // 抽屜卡片
     const ISLAND_DETAILS = {
       nangan: {
-        badge: '南竿鄉示範島',
-        title: '媽祖巨神像與示範聚落',
+        badge: '南竿鄉本島',
+        title: '媽祖巨神像地標與示範公寓',
         desc: '連江縣政與交通樞紐中心，示範 4-6 層公寓立面拉皮、太陽能光電導入、外掛無障礙電梯與公共管線地下化防蝕更新。',
         stats: ['30 年+', '最高 30 萬', '65 %', '3,500 元']
       },
@@ -1538,19 +1231,10 @@
     window.closeDetailCard = function() {
       document.getElementById('detail-card').classList.add('hidden');
     };
-
-    window.focusDimension = function(dimKey) {
-      openModal('calc');
-      document.getElementById('calc-item').value = dimKey;
-      onItemChange();
-    };
   </script>
 
-  <!-- 業務邏輯模組 (40組情境、32家初評機構、50題QA、試算表計算) -->
+  <!-- 業務邏輯模組 -->
   <script>
-    // -----------------------------------------------------------------
-    // 1. 初始化 40 組情境快捷膠囊
-    // -----------------------------------------------------------------
     function initScenarioPills() {
       const container = document.getElementById('scenario-pill-container');
       container.innerHTML = '';
@@ -1569,8 +1253,6 @@
 
     function loadScenario(s) {
       document.getElementById('calc-bldg-type').value = s.type === 'apartment' ? 'apartment' : 'house';
-      
-      // 判斷項目對應
       const itemSelect = document.getElementById('calc-item');
       if (s.item.includes('屋頂')) itemSelect.value = 'roof';
       else if (s.item.includes('外牆')) itemSelect.value = 'facade';
@@ -1586,10 +1268,7 @@
       calculateSubsidy();
     }
 
-    window.onBldgTypeChange = function() {
-      calculateSubsidy();
-    };
-
+    window.onBldgTypeChange = function() { calculateSubsidy(); };
     window.onItemChange = function() {
       const item = document.getElementById('calc-item').value;
       const rowArea = document.getElementById('row-area');
@@ -1604,30 +1283,24 @@
       calculateSubsidy();
     };
 
-    // 核心精算公式：Min(工程報價×65%, 面積×3500元, 法定天花板)
     window.calculateSubsidy = function() {
       const item = document.getElementById('calc-item').value;
       const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
       const area = parseFloat(document.getElementById('calc-area').value) || 0;
       const isVulnerable = document.getElementById('calc-vulnerable').checked;
 
-      // 1. 法定天花板
       let ceiling = 20;
       if (item === 'pipe') ceiling = 10;
       else if (item === 'ramp') ceiling = 5;
       else if (item === 'interior') ceiling = isVulnerable ? 30 : 20;
       else ceiling = isVulnerable ? 30 : 20;
 
-      // 2. 65% 實支
       const calc65 = cost * 0.65;
-
-      // 3. 面積單價上限 (3500元/㎡ = 0.35 萬元/㎡)
       let unitLimit = 999999;
       if ((item === 'roof' || item === 'facade') && area > 0) {
         unitLimit = area * 0.35;
       }
 
-      // 4. 三準則取小值 Min
       let grant = Math.min(calc65, ceiling);
       let bindingReason = '';
 
@@ -1653,9 +1326,6 @@
       document.getElementById('res-reason').innerText = bindingReason;
     };
 
-    // -----------------------------------------------------------------
-    // 2. 初評機構名冊渲染與即時搜尋過濾
-    // -----------------------------------------------------------------
     function renderAgencies(list) {
       const tbody = document.getElementById('agencies-tbody');
       tbody.innerHTML = '';
@@ -1667,7 +1337,7 @@
           <td>${a.leader}</td>
           <td style="font-size:14px;">${a.address}</td>
           <td>
-            <a href="tel:${a.phone.replace(/[^0-9]/g, '')}" style="color:var(--ocean-blue); font-weight:800; text-decoration:none;">
+            <a href="tel:${a.phone.replace(/[^0-9]/g, '')}" style="color:var(--primary); font-weight:800; text-decoration:none;">
               📞 ${a.phone}
             </a>
           </td>
@@ -1687,16 +1357,12 @@
       renderAgencies(filtered);
     };
 
-    // -----------------------------------------------------------------
-    // 3. QA 手冊渲染、分類與全文即時搜尋
-    // -----------------------------------------------------------------
     let curQACategory = 'all';
-
     function renderQA(list) {
       const container = document.getElementById('qa-container');
       container.innerHTML = '';
       if (list.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:30px; color:#888; font-size:16px;">查無相符之問題，請嘗試更換關鍵字。</div>';
+        container.innerHTML = '<div style="text-align:center; padding:30px; color:#888; font-size:16px;">查無相符之問題。</div>';
         return;
       }
       list.forEach(item => {
@@ -1732,9 +1398,6 @@
       renderQA(list);
     };
 
-    // -----------------------------------------------------------------
-    // 4. Modal 控制
-    // -----------------------------------------------------------------
     window.openModal = function(key) {
       const modal = document.getElementById(`modal-${key}`);
       if (modal) {
@@ -1755,7 +1418,6 @@
       if (modal) modal.classList.remove('active');
     };
 
-    // 點擊遮罩關閉
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) overlay.classList.remove('active');
