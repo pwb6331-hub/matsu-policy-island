@@ -296,10 +296,11 @@
 
   <!-- 左側詳細抽屜卡片 -->
   <div id="detail-card" class="glass-panel hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
       <span class="badge" id="card-badge">南竿鄉本島</span>
       <button onclick="closeDetailCard()" style="background:none; border:none; font-size:20px; cursor:pointer; color:#888;">✕</button>
     </div>
+    <div id="card-hero" class="card-hero-banner"></div>
     <div>
       <div class="card-title" id="card-title">媽祖巨神像與福澳港示範區</div>
       <div class="card-subtitle" id="card-sub">政經樞紐・連棟示範</div>
@@ -534,6 +535,15 @@
 
     function updateOceanWaves(time) {
       if (!seaGeometry || !originalSeaPositions) return;
+      if (foamRings && foamRings.length > 0) {
+        const pulse = 1 + Math.sin(time * 2.5) * 0.06;
+        const op = 0.55 + Math.sin(time * 2.5) * 0.15;
+        foamRings.forEach(f => {
+          f.scale.set(pulse, pulse, 1);
+          if (f.material) f.material.opacity = op;
+        });
+      }
+
       const pos = seaGeometry.attributes.position;
       const orig = originalSeaPositions.array;
       const pArr = pos.array;
@@ -559,26 +569,81 @@
       return { x, z };
     }
 
+    let foamRings = [];
+
+    // -----------------------------------------------------------------
+    // 3. 高畫質微縮黏土紋理 (1024x1024 環形步道與花崗岩鋪石)
+    // -----------------------------------------------------------------
     function createClayStoneTexture() {
       const cvs = document.createElement('canvas');
-      cvs.width = 256; cvs.height = 256;
+      cvs.width = 1024; cvs.height = 1024;
       const ctx = cvs.getContext('2d');
-      ctx.fillStyle = '#eddcd0';
-      ctx.fillRect(0, 0, 256, 256);
       
-      ctx.strokeStyle = '#dfc3b2';
-      ctx.lineWidth = 3;
-      for (let i = 0; i < 256; i += 32) {
-        ctx.beginPath(); ctx.moveTo(0, i); ctx.lineTo(256, i); ctx.stroke();
-        ctx.beginPath(); ctx.moveTo(i, 0); ctx.lineTo(i, 256); ctx.stroke();
+      // 1. 基底暖灰泥色
+      ctx.fillStyle = '#f4ede4';
+      ctx.fillRect(0, 0, 1024, 1024);
+      
+      // 2. 微細花崗岩紋理雜色
+      for (let i = 0; i < 3000; i++) {
+        const rx = Math.random() * 1024;
+        const ry = Math.random() * 1024;
+        ctx.fillStyle = Math.random() > 0.5 ? 'rgba(180, 160, 140, 0.12)' : 'rgba(255, 255, 255, 0.22)';
+        ctx.beginPath();
+        ctx.arc(rx, ry, Math.random() * 2 + 0.8, 0, Math.PI * 2);
+        ctx.fill();
       }
-      return new THREE.CanvasTexture(cvs);
+
+      // 3. 外圍淺磚色環形走道 (Terracotta Ring Walkway)
+      const cx = 512, cy = 512;
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(cx, cy, 470, 0, Math.PI * 2);
+      ctx.lineWidth = 44;
+      ctx.strokeStyle = '#c86b52';
+      ctx.stroke();
+
+      // 走道外緣細白飾線
+      ctx.beginPath();
+      ctx.arc(cx, cy, 492, 0, Math.PI * 2);
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = '#ffffff';
+      ctx.stroke();
+
+      // 走道內緣暖褐飾線
+      ctx.beginPath();
+      ctx.arc(cx, cy, 448, 0, Math.PI * 2);
+      ctx.lineWidth = 3.5;
+      ctx.strokeStyle = '#9c4c34';
+      ctx.stroke();
+
+      // 磚道格縫細節
+      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+      for (let ang = 0; ang < Math.PI * 2; ang += Math.PI / 36) {
+        const x1 = cx + Math.cos(ang) * 448;
+        const y1 = cy + Math.sin(ang) * 448;
+        const x2 = cx + Math.cos(ang) * 492;
+        const y2 = cy + Math.sin(ang) * 492;
+        ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
+      }
+      ctx.restore();
+
+      // 4. 中心聚落花崗岩鋪石網格 (精緻石板路)
+      ctx.strokeStyle = 'rgba(195, 178, 162, 0.45)';
+      ctx.lineWidth = 2.5;
+      for (let i = 180; i <= 844; i += 52) {
+        ctx.beginPath(); ctx.moveTo(180, i); ctx.lineTo(844, i); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(i, 180); ctx.lineTo(i, 844); ctx.stroke();
+      }
+
+      const tex = new THREE.CanvasTexture(cvs);
+      tex.anisotropy = 8;
+      return tex;
     }
 
     function buildIslands() {
       const stoneTex = createClayStoneTexture();
-      stoneTex.wrapS = THREE.RepeatWrapping;
-      stoneTex.wrapT = THREE.RepeatWrapping;
+      foamRings = [];
 
       DATA.islands.forEach((isleData) => {
         const { x, z } = axialToWorld(isleData.axial.q, isleData.axial.r);
@@ -586,9 +651,10 @@
         isleGroup.position.set(x, 0, z);
         isleGroup.userData = { isle: isleData };
 
-        const topGeo = new THREE.CylinderGeometry(R, R + 0.25, TOP, 6);
+        // 1. 主島微切角平臺 (六角島嶼上層)
+        const topGeo = new THREE.CylinderGeometry(R, R + 0.18, TOP, 6);
         const topMat = new THREE.MeshStandardMaterial({
-          map: stoneTex, color: 0xf5eee6, roughness: 0.84, metalness: 0.04
+          map: stoneTex, color: 0xffffff, roughness: 0.86, metalness: 0.02
         });
         const islandTop = new THREE.Mesh(topGeo, topMat);
         islandTop.position.y = TOP / 2;
@@ -597,16 +663,29 @@
         islandTop.castShadow = true;
         isleGroup.add(islandTop);
 
-        const rimGeo = new THREE.RingGeometry(R + 0.05, R + 0.35, 6);
-        const rimMat = new THREE.MeshBasicMaterial({
+        // 2. 下層花崗岩岩基 (Stepped Granite Cliff Base)
+        const cliffGeo = new THREE.CylinderGeometry(R + 0.2, R + 0.5, 0.45, 6);
+        const cliffMat = new THREE.MeshStandardMaterial({
+          color: 0x7a7066, roughness: 0.95, flatShading: true
+        });
+        const cliff = new THREE.Mesh(cliffGeo, cliffMat);
+        cliff.position.y = -0.15;
+        cliff.rotation.y = Math.PI / 6;
+        cliff.receiveShadow = true;
+        isleGroup.add(cliff);
+
+        // 3. 水面動態浪花白圈 (Animated Shore Foam Ring)
+        const foamGeo = new THREE.RingGeometry(R + 0.3, R + 0.7, 36);
+        const foamMat = new THREE.MeshBasicMaterial({
           color: 0xffffff, transparent: true, opacity: 0.65, side: THREE.DoubleSide
         });
-        const rim = new THREE.Mesh(rimGeo, rimMat);
-        rim.rotation.x = -Math.PI / 2;
-        rim.rotation.z = Math.PI / 6;
-        rim.position.y = WATER_Y + 0.04;
-        isleGroup.add(rim);
+        const foam = new THREE.Mesh(foamGeo, foamMat);
+        foam.rotation.x = -Math.PI / 2;
+        foam.position.y = WATER_Y + 0.02;
+        isleGroup.add(foam);
+        foamRings.push(foam);
 
+        // 4. 島名地標浮動標籤
         const badgeDiv = document.createElement('div');
         badgeDiv.className = 'island-badge-label';
         badgeDiv.innerHTML = `📍 ${isleData.name}`;
@@ -615,7 +694,7 @@
           flyToIsland(isleGroup.position, isleData);
         };
         const cssLabel = new CSS2DObject(badgeDiv);
-        cssLabel.position.set(0, TOP + 2.2, 0);
+        cssLabel.position.set(0, TOP + 2.3, 0);
         isleGroup.add(cssLabel);
 
         decorateIsland(isleGroup, isleData.id);
@@ -635,106 +714,154 @@
       islandObjects.position.set(0, TOP, 0);
 
       if (id === 'nangan') {
-        const pedestal = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.45, 0.85), new THREE.MeshStandardMaterial({ color: clayStone }));
-        pedestal.position.set(0.65, 0.22, -0.6);
-        pedestal.castShadow = true;
-        const statue = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.38, 1.35, 10), new THREE.MeshStandardMaterial({ color: clayWhite, roughness: 0.55 }));
-        statue.position.set(0.65, 1.05, -0.6);
-        statue.castShadow = true;
-        const crown = new THREE.Mesh(new THREE.SphereGeometry(0.16, 12, 12), new THREE.MeshStandardMaterial({ color: 0xffd152, metalness: 0.3, roughness: 0.3 }));
-        crown.position.set(0.65, 1.82, -0.6);
-        islandObjects.add(pedestal, statue, crown);
+        // 1. 南竿媽祖巨神像 (精緻白玉石雕像、階梯八角基座、金色華冠與圭板)
+        const plinth = new THREE.Mesh(new THREE.CylinderGeometry(0.65, 0.75, 0.22, 8), new THREE.MeshStandardMaterial({ color: 0x8a7e72, roughness: 0.9 }));
+        plinth.position.set(0.65, 0.11, -0.6);
+        plinth.castShadow = true;
 
-        const apt1 = createAptWithElevator(0.85, 1.25, 0.75, 0xeddcd0, clayRoof);
-        apt1.position.set(-0.6, 0, 0.3);
-        const apt2 = createMiniHouse(0.7, 0.9, 0.65, 0xdfd3c5, clayRed, true);
-        apt2.position.set(-0.25, 0, -0.65);
+        const pedestal = new THREE.Mesh(new THREE.BoxGeometry(0.72, 0.32, 0.72), new THREE.MeshStandardMaterial({ color: 0xa89d91, roughness: 0.85 }));
+        pedestal.position.set(0.65, 0.38, -0.6);
+        pedestal.castShadow = true;
+
+        const lotus = new THREE.Mesh(new THREE.CylinderGeometry(0.42, 0.32, 0.14, 12), new THREE.MeshStandardMaterial({ color: 0xffe89e, roughness: 0.5, metalness: 0.2 }));
+        lotus.position.set(0.65, 0.61, -0.6);
+
+        const statueBody = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.38, 1.25, 12), new THREE.MeshStandardMaterial({ color: clayWhite, roughness: 0.55 }));
+        statueBody.position.set(0.65, 1.3, -0.6);
+        statueBody.castShadow = true;
+
+        const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.18, 0.14, 0.24, 8), new THREE.MeshStandardMaterial({ color: 0xffd152, metalness: 0.4, roughness: 0.3 }));
+        crown.position.set(0.65, 2.02, -0.6);
+
+        const ruyi = new THREE.Mesh(new THREE.BoxGeometry(0.06, 0.35, 0.08), new THREE.MeshStandardMaterial({ color: 0xffd152, metalness: 0.3 }));
+        ruyi.position.set(0.65, 1.45, -0.42);
+        ruyi.rotation.x = -0.3;
+
+        islandObjects.add(plinth, pedestal, lotus, statueBody, crown, ruyi);
+
+        // 2. 示範連棟公寓群 (外掛透明景觀電梯 + 屋頂太陽能光電 + 冷氣防墜鐵框)
+        const apt1 = createAptWithElevator(0.9, 1.35, 0.8, 0xeddcd0, clayRoof);
+        apt1.position.set(-0.65, 0, 0.25);
+        const apt2 = createMiniHouse(0.75, 0.95, 0.7, 0xdfd3c5, clayRed, true);
+        apt2.position.set(-0.25, 0, -0.7);
         islandObjects.add(apt1, apt2);
 
-        const pier = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 1.1), new THREE.MeshStandardMaterial({ color: 0x8a7f74 }));
-        pier.position.set(1.4, -0.15, 0.4);
-        const cBox = new THREE.Mesh(new THREE.BoxGeometry(0.15, 0.12, 0.28), new THREE.MeshStandardMaterial({ color: 0x2563eb }));
-        cBox.position.set(1.35, 0.05, 0.3);
-        islandObjects.add(pier, cBox);
+        // 3. 福澳港碼頭與繫船柱
+        const pier = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.18, 1.2), new THREE.MeshStandardMaterial({ color: 0x8a7f74, roughness: 0.85 }));
+        pier.position.set(1.42, -0.12, 0.4);
+        const beacon = new THREE.Mesh(new THREE.CylinderGeometry(0.06, 0.08, 0.38, 8), new THREE.MeshStandardMaterial({ color: 0xd97706 }));
+        beacon.position.set(1.5, 0.15, -0.15);
+        islandObjects.add(pier, beacon);
 
       } else if (id === 'beigan') {
-        const qinbi1 = createMatsuStoneHouse(0.85, 0.65, 0.7, clayStone, clayRed);
-        qinbi1.position.set(-0.4, 0, -0.2);
-        const qinbi2 = createMatsuStoneHouse(0.75, 0.55, 0.65, 0xb8aba0, clayRed);
-        qinbi2.position.set(0.45, 0, 0.3);
-        const qinbi3 = createMatsuStoneHouse(0.65, 0.5, 0.55, 0xa5998e, clayRoof);
-        qinbi3.position.set(0.3, 0, -0.65);
+        // 北竿芹壁閩東石屋聚落 (人字砌花崗岩 + 經典紅色馬鞍型封火山牆 + 壓瓦石)
+        const qinbi1 = createMatsuStoneHouse(0.92, 0.68, 0.76, clayStone, clayRed);
+        qinbi1.position.set(-0.45, 0, -0.2);
+        const qinbi2 = createMatsuStoneHouse(0.8, 0.58, 0.7, 0xb8aba0, clayRed);
+        qinbi2.position.set(0.48, 0, 0.35);
+        const qinbi3 = createMatsuStoneHouse(0.7, 0.52, 0.6, 0xa5998e, clayRoof);
+        qinbi3.position.set(0.32, 0, -0.7);
         islandObjects.add(qinbi1, qinbi2, qinbi3);
 
       } else if (id === 'dongyin') {
-        const cliffBase = new THREE.Mesh(new THREE.ConeGeometry(0.65, 0.4, 6), new THREE.MeshStandardMaterial({ color: clayStone, roughness: 0.9 }));
-        cliffBase.position.set(0.4, 0.2, -0.3);
+        // 東引島燈塔 (國之北疆花崗岩峭壁 + 修長歐風白圓柱燈塔 + 柔和動態光束)
+        const cliffBase = new THREE.Mesh(new THREE.ConeGeometry(0.75, 0.45, 7), new THREE.MeshStandardMaterial({ color: clayStone, roughness: 0.95 }));
+        cliffBase.position.set(0.42, 0.22, -0.32);
         
-        const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.32, 1.5, 18), new THREE.MeshStandardMaterial({ color: clayWhite, roughness: 0.45 }));
-        tower.position.set(0.4, 1.05, -0.3);
+        const tower = new THREE.Mesh(new THREE.CylinderGeometry(0.19, 0.3, 1.5, 20), new THREE.MeshStandardMaterial({ color: clayWhite, roughness: 0.4 }));
+        tower.position.set(0.42, 1.12, -0.32);
         tower.castShadow = true;
         
-        const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.22, 0.25, 12), new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.8 }));
-        lantern.position.set(0.4, 1.9, -0.3);
+        const gallery = new THREE.Mesh(new THREE.CylinderGeometry(0.32, 0.32, 0.05, 16), new THREE.MeshStandardMaterial({ color: 0x1f2937, metalness: 0.8 }));
+        gallery.position.set(0.42, 1.88, -0.32);
 
-        const dome = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x1d2731 }));
-        dome.position.set(0.4, 2.02, -0.3);
+        const lantern = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.2, 0.22, 16), new THREE.MeshStandardMaterial({ color: 0x222222, metalness: 0.85 }));
+        lantern.position.set(0.42, 2.01, -0.32);
 
-        const beamGeo = new THREE.ConeGeometry(0.85, 4.2, 16, 1, true);
+        const dome = new THREE.Mesh(new THREE.SphereGeometry(0.22, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x111827 }));
+        dome.position.set(0.42, 2.12, -0.32);
+
+        // 柔和半透明夜巡旋轉光束 (窄光錐、柔和自然)
+        const beamGeo = new THREE.ConeGeometry(0.55, 3.8, 16, 1, true);
         const beamMat = new THREE.MeshBasicMaterial({
-          color: 0xffea88, transparent: true, opacity: 0.38, side: THREE.DoubleSide,
+          color: 0xffea88, transparent: true, opacity: 0.28, side: THREE.DoubleSide,
           blending: THREE.AdditiveBlending, depthWrite: false
         });
         lighthouseBeam = new THREE.Mesh(beamGeo, beamMat);
-        lighthouseBeam.position.set(0.4, 1.9, -0.3);
+        lighthouseBeam.position.set(0.42, 2.01, -0.32);
         lighthouseBeam.rotation.x = Math.PI / 2;
         lighthouseBeam.rotation.z = Math.PI / 4;
 
-        islandObjects.add(cliffBase, tower, lantern, dome, lighthouseBeam);
+        islandObjects.add(cliffBase, tower, gallery, lantern, dome, lighthouseBeam);
 
-        const dyHouse = createMiniHouse(0.8, 0.65, 0.65, 0xd0c4b6, clayRoof, false);
+        // 防風管線固定之透天石屋
+        const dyHouse = createMiniHouse(0.85, 0.68, 0.7, 0xd0c4b6, clayRoof, false);
         dyHouse.position.set(-0.55, 0, 0.3);
         const acUnit = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.12), new THREE.MeshStandardMaterial({ color: 0x334155 }));
-        acUnit.position.set(-0.55, 0.45, 0.66);
+        acUnit.position.set(-0.55, 0.45, 0.68);
         islandObjects.add(dyHouse, acUnit);
 
       } else if (id === 'chukuang') {
-        const tLight = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.34, 1.25, 16), new THREE.MeshStandardMaterial({ color: clayStone, roughness: 0.8 }));
-        tLight.position.set(0.55, 0.62, -0.4);
+        // 莒光鄉 (東莒花崗岩燈塔 + 大埔聚落在宅安老無障礙木坡道)
+        const tLight = new THREE.Mesh(new THREE.CylinderGeometry(0.22, 0.34, 1.35, 18), new THREE.MeshStandardMaterial({ color: clayWhite, roughness: 0.7 }));
+        tLight.position.set(0.55, 0.68, -0.4);
         tLight.castShadow = true;
-        const tCap = new THREE.Mesh(new THREE.DodecahedronGeometry(0.18), new THREE.MeshStandardMaterial({ color: 0xffdf78, emissive: 0xffa500, emissiveIntensity: 0.35 }));
-        tCap.position.set(0.55, 1.35, -0.4);
+        const tCap = new THREE.Mesh(new THREE.SphereGeometry(0.24, 16, 12, 0, Math.PI * 2, 0, Math.PI / 2), new THREE.MeshStandardMaterial({ color: 0x1e293b, metalness: 0.7 }));
+        tCap.position.set(0.55, 1.36, -0.4);
         islandObjects.add(tLight, tCap);
 
-        const dapuHouse = createMatsuStoneHouse(0.75, 0.55, 0.6, 0xaf9f90, clayRoof);
-        dapuHouse.position.set(-0.45, 0, 0.15);
+        const dapuHouse = createMatsuStoneHouse(0.8, 0.58, 0.65, 0xaf9f90, clayRoof);
+        dapuHouse.position.set(-0.48, 0, 0.15);
         islandObjects.add(dapuHouse);
 
-        const rampGeo = new THREE.BoxGeometry(0.25, 0.08, 0.55);
-        const rampMat = new THREE.MeshStandardMaterial({ color: 0xfacc15, roughness: 0.5 });
+        // 無障礙友善緩坡道 (政策亮點)
+        const rampGeo = new THREE.BoxGeometry(0.28, 0.08, 0.6);
+        const rampMat = new THREE.MeshStandardMaterial({ color: 0xf59e0b, roughness: 0.6 });
         const ramp = new THREE.Mesh(rampGeo, rampMat);
-        ramp.position.set(-0.45, 0.04, 0.55);
-        ramp.rotation.x = -0.15;
+        ramp.position.set(-0.48, 0.04, 0.58);
+        ramp.rotation.x = -0.14;
         islandObjects.add(ramp);
 
-        const bench = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.1, 0.12), new THREE.MeshStandardMaterial({ color: 0x78350f }));
-        bench.position.set(0.1, 0.05, 0.5);
+        const bench = new THREE.Mesh(new THREE.BoxGeometry(0.3, 0.1, 0.12), new THREE.MeshStandardMaterial({ color: 0x78350f }));
+        bench.position.set(0.12, 0.05, 0.55);
         islandObjects.add(bench);
       }
 
-      for (let i = 0; i < 3; i++) {
+      // 精緻微縮行道樹 (多層簇冠松樹 + 粉嫩櫻花樹)
+      for (let i = 0; i < 4; i++) {
         const treeGroup = new THREE.Group();
-        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.25, 6), new THREE.MeshStandardMaterial({ color: 0x5c4433 }));
-        trunk.position.y = 0.125;
-        const foliage = new THREE.Mesh(new THREE.DodecahedronGeometry(0.22, 1), new THREE.MeshStandardMaterial({ color: 0x547a46, roughness: 0.85 }));
-        foliage.position.y = 0.32;
+        const trunk = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.05, 0.28, 6), new THREE.MeshStandardMaterial({ color: 0x5c4433 }));
+        trunk.position.y = 0.14;
+        
+        const isSakura = (i === 1 || i === 3);
+        const leafCol = isSakura ? 0xfba4a4 : (i % 2 === 0 ? 0x4a7c59 : 0x608048);
+        const foliage = new THREE.Mesh(new THREE.DodecahedronGeometry(0.22, 1), new THREE.MeshStandardMaterial({ color: leafCol, roughness: 0.85 }));
+        foliage.position.y = 0.35;
         foliage.castShadow = true;
-        treeGroup.add(trunk, foliage);
 
-        const rad = 1.35 + seedRand() * 0.2;
-        const ang = (i * Math.PI * 2) / 3 + seedRand() * 0.6;
+        const foliageTop = new THREE.Mesh(new THREE.DodecahedronGeometry(0.14, 1), new THREE.MeshStandardMaterial({ color: leafCol, roughness: 0.85 }));
+        foliageTop.position.y = 0.48;
+        foliageTop.scale.set(0.9, 0.9, 0.9);
+
+        treeGroup.add(trunk, foliage, foliageTop);
+
+        const rad = 1.4 + (i * 0.15);
+        const ang = (i * Math.PI * 2) / 4 + (seedRand() * 0.4);
         treeGroup.position.set(Math.cos(ang) * rad, 0, Math.sin(ang) * rad);
         islandObjects.add(treeGroup);
+      }
+
+      // 微縮路燈與休憩座椅
+      for (let i = 0; i < 2; i++) {
+        const ang = (i * Math.PI) + 0.8;
+        const lamp = new THREE.Group();
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.02, 0.02, 0.42, 6), new THREE.MeshStandardMaterial({ color: 0x334155, metalness: 0.8 }));
+        pole.position.y = 0.21;
+        const bulb = new THREE.Mesh(new THREE.SphereGeometry(0.05, 8, 8), new THREE.MeshStandardMaterial({ color: 0xffea88, emissive: 0xffa022, emissiveIntensity: 0.4 }));
+        bulb.position.y = 0.42;
+        lamp.add(pole, bulb);
+        lamp.position.set(Math.cos(ang) * 1.55, 0, Math.sin(ang) * 1.55);
+        islandObjects.add(lamp);
       }
 
       group.add(islandObjects);
@@ -742,24 +869,26 @@
 
     function createAptWithElevator(w, h, d, wallCol, roofCol) {
       const aptGroup = new THREE.Group();
-      const bodyMat = new THREE.MeshStandardMaterial({ color: wallCol, roughness: 0.8 });
+      const bodyMat = new THREE.MeshStandardMaterial({ color: wallCol, roughness: 0.82 });
       const body = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), bodyMat);
       body.position.y = h / 2;
       body.castShadow = true;
       body.receiveShadow = true;
       aptGroup.add(body);
 
-      const solarMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, metalness: 0.7, roughness: 0.2 });
-      const solar = new THREE.Mesh(new THREE.BoxGeometry(w * 0.7, 0.04, d * 0.65), solarMat);
+      // 屋頂太陽能光電板
+      const solarMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, metalness: 0.75, roughness: 0.2 });
+      const solar = new THREE.Mesh(new THREE.BoxGeometry(w * 0.72, 0.04, d * 0.68), solarMat);
       solar.position.set(0, h + 0.02, 0);
       solar.rotation.x = 0.12;
       aptGroup.add(solar);
 
+      // 外掛透明景觀電梯塔 (政策示範)
       const shaftMat = new THREE.MeshStandardMaterial({
-        color: 0x93c5fd, transparent: true, opacity: 0.65, roughness: 0.2, metalness: 0.3
+        color: 0x93c5fd, transparent: true, opacity: 0.65, roughness: 0.2, metalness: 0.4
       });
-      const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.24, h + 0.1, 0.24), shaftMat);
-      shaft.position.set(w / 2 + 0.12, (h + 0.1) / 2, 0);
+      const shaft = new THREE.Mesh(new THREE.BoxGeometry(0.26, h + 0.12, 0.26), shaftMat);
+      shaft.position.set(w / 2 + 0.13, (h + 0.12) / 2, 0);
       shaft.castShadow = true;
       aptGroup.add(shaft);
 
@@ -776,28 +905,30 @@
       wall.receiveShadow = true;
       houseGroup.add(wall);
 
+      // 經典閩東紅色馬鞍型封火山牆
       const fireWallMat = new THREE.MeshStandardMaterial({ color: roofCol, roughness: 0.75 });
-      const fwGeo = new THREE.BoxGeometry(0.08, h * 0.6, d + 0.12);
+      const fwGeo = new THREE.BoxGeometry(0.08, h * 0.65, d + 0.14);
       const fwLeft = new THREE.Mesh(fwGeo, fireWallMat);
       fwLeft.position.set(-w / 2 - 0.02, h + 0.12, 0);
-      fwLeft.rotation.z = 0.18;
-      
+      fwLeft.rotation.z = 0.2;
+
       const fwRight = new THREE.Mesh(fwGeo, fireWallMat);
       fwRight.position.set(w / 2 + 0.02, h + 0.12, 0);
-      fwRight.rotation.z = -0.18;
+      fwRight.rotation.z = -0.2;
       houseGroup.add(fwLeft, fwRight);
 
-      const roofGeo = new THREE.ConeGeometry(w * 0.72, 0.32, 4);
-      const roofMat = new THREE.MeshStandardMaterial({ color: 0x9a4427, roughness: 0.8 });
+      // 屋頂瓦片與壓瓦石
+      const roofGeo = new THREE.ConeGeometry(w * 0.75, 0.34, 4);
+      const roofMat = new THREE.MeshStandardMaterial({ color: 0x9a4427, roughness: 0.82 });
       const roof = new THREE.Mesh(roofGeo, roofMat);
       roof.rotation.y = Math.PI / 4;
-      roof.position.y = h + 0.16;
+      roof.position.y = h + 0.17;
       roof.castShadow = true;
       houseGroup.add(roof);
 
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         const stone = new THREE.Mesh(new THREE.DodecahedronGeometry(0.05), wallMat);
-        stone.position.set((seedRand() - 0.5) * w * 0.6, h + 0.28, (seedRand() - 0.5) * d * 0.5);
+        stone.position.set((seedRand() - 0.5) * w * 0.65, h + 0.28, (seedRand() - 0.5) * d * 0.55);
         houseGroup.add(stone);
       }
 
@@ -813,9 +944,9 @@
       wall.receiveShadow = true;
       bGroup.add(wall);
 
-      const roof = new THREE.Mesh(new THREE.ConeGeometry(w * 0.7, 0.28, 4), new THREE.MeshStandardMaterial({ color: roofCol, roughness: 0.7 }));
+      const roof = new THREE.Mesh(new THREE.ConeGeometry(w * 0.72, 0.3, 4), new THREE.MeshStandardMaterial({ color: roofCol, roughness: 0.72 }));
       roof.rotation.y = Math.PI / 4;
-      roof.position.y = h + 0.14;
+      roof.position.y = h + 0.15;
       roof.castShadow = true;
       bGroup.add(roof);
 
@@ -823,121 +954,154 @@
       return bGroup;
     }
 
-    function createNightWindows(group, w, h, d) {
-      const winGeo = new THREE.PlaneGeometry(0.12, 0.14);
-      const winMat = new THREE.MeshStandardMaterial({
-        color: 0xffdf88, emissive: 0xffa022, emissiveIntensity: 0.35, roughness: 0.4
-      });
-      nightGlowMaterials.push(winMat);
-
-      for (let y = 0.22; y < h; y += 0.32) {
-        const winFront = new THREE.Mesh(winGeo, winMat);
-        winFront.position.set(0, y, d / 2 + 0.005);
-        group.add(winFront);
-      }
-    }
-
+    // -----------------------------------------------------------------
+    // 4. 島際平滑無縫拱橋 (精緻原木甲板與水中支撐柱)
+    // -----------------------------------------------------------------
     function connectBridges() {
-      const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xd9c9be, roughness: 0.9 });
-      for (let i = 0; i < DATA.islands.length - 1; i++) {
-        const p1 = axialToWorld(DATA.islands[i].axial.q, DATA.islands[i].axial.r);
-        const p2 = axialToWorld(DATA.islands[i+1].axial.q, DATA.islands[i+1].axial.r);
+      // 連接四鄉五島：南竿<->北竿、北竿<->東引、南竿<->莒光
+      const bridgePairs = [
+        [0, 1], // 南竿 <-> 北竿
+        [1, 2], // 北竿 <-> 東引
+        [0, 3]  // 南竿 <-> 莒光
+      ];
 
-        const midX = (p1.x + p2.x) / 2;
-        const midZ = (p1.z + p2.z) / 2;
-        const dist = Math.hypot(p2.x - p1.x, p2.z - p1.z);
+      const plankMat = new THREE.MeshStandardMaterial({ color: 0x9a6540, roughness: 0.82 });
+      const pierMat = new THREE.MeshStandardMaterial({ color: 0x7c7268, roughness: 0.95 });
 
-        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.1, dist * 0.58), bridgeMat);
-        bridge.position.set(midX, TOP - 0.06, midZ);
-        bridge.lookAt(p2.x, TOP - 0.06, p2.z);
-        scene.add(bridge);
-      }
+      bridgePairs.forEach(([idx1, idx2]) => {
+        const p1 = axialToWorld(DATA.islands[idx1].axial.q, DATA.islands[idx1].axial.r);
+        const p2 = axialToWorld(DATA.islands[idx2].axial.q, DATA.islands[idx2].axial.r);
+
+        const dx = p2.x - p1.x;
+        const dz = p2.z - p1.z;
+        const totalDist = Math.hypot(dx, dz);
+        const angle = Math.atan2(dz, dx);
+
+        // 起點與終點緊貼島嶼邊界 (保留 R 距離)
+        const startOffset = R * 0.88;
+        const endOffset = totalDist - (R * 0.88);
+        const spanDist = endOffset - startOffset;
+
+        const bridgeGroup = new THREE.Group();
+        const steps = 14;
+
+        for (let s = 0; s <= steps; s++) {
+          const t = s / steps;
+          const curDist = startOffset + t * spanDist;
+          const curX = p1.x + Math.cos(angle) * curDist;
+          const curZ = p1.z + Math.sin(angle) * curDist;
+          
+          // 微弧拱橋造型
+          const archY = TOP - 0.05 + Math.sin(t * Math.PI) * 0.22;
+
+          const plank = new THREE.Mesh(new THREE.BoxGeometry(0.32, 0.05, spanDist / steps * 0.92), plankMat);
+          plank.position.set(curX, archY, curZ);
+          plank.rotation.y = -angle + Math.PI / 2;
+          plank.castShadow = true;
+          bridgeGroup.add(plank);
+
+          // 水中橋墩 (每 4 步一根)
+          if (s % 5 === 2) {
+            const pierH = archY - WATER_Y;
+            const pier = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.1, pierH, 8), pierMat);
+            pier.position.set(curX, WATER_Y + pierH / 2, curZ);
+            pier.castShadow = true;
+            bridgeGroup.add(pier);
+          }
+        }
+
+        scene.add(bridgeGroup);
+      });
     }
 
     // -----------------------------------------------------------------
-    // 4. 多艘船舶航行海面 (臺馬之星 + 傳統漁船 + 巡邏快艇)
+    // 5. 左側詳細抽屜卡片與精緻地標形象橫幅
     // -----------------------------------------------------------------
-    function createFleetShips() {
-      // 1. 臺馬之星
-      ferryBoat = new THREE.Group();
-      const hullMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a });
-      const hull = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.14, 0.65), hullMat);
-      hull.position.y = 0.07;
-      const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.38), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-      cabin.position.set(0, 0.19, -0.06);
-      const funnel = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), new THREE.MeshStandardMaterial({ color: 0xd34e36 }));
-      funnel.position.set(0, 0.31, -0.1);
-      ferryBoat.add(hull, cabin, funnel);
-      scene.add(ferryBoat);
-
-      // 2. 馬祖傳統雙帆木造漁船
-      fishingBoat = new THREE.Group();
-      const fHull = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.1, 0.42), new THREE.MeshStandardMaterial({ color: 0x854d0e }));
-      fHull.position.y = 0.05;
-      const mast1 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.35), new THREE.MeshStandardMaterial({ color: 0x451a03 }));
-      mast1.position.set(0, 0.22, 0.05);
-      const sail1 = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), new THREE.MeshStandardMaterial({ color: 0x991b1b, side: THREE.DoubleSide }));
-      sail1.position.set(0.08, 0.24, 0.05);
-      sail1.rotation.y = Math.PI / 4;
-      fishingBoat.add(fHull, mast1, sail1);
-      fishingBoat.position.set(4.5, WATER_Y, -2.5);
-      scene.add(fishingBoat);
-
-      // 3. 小型巡邏快艇
-      patrolBoat = new THREE.Group();
-      const pHull = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.45, 4), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-      pHull.rotation.x = -Math.PI / 2;
-      pHull.position.y = 0.05;
-      const pCabin = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.16), new THREE.MeshStandardMaterial({ color: 0x0284c7 }));
-      pCabin.position.set(0, 0.12, -0.05);
-      patrolBoat.add(pHull, pCabin);
-      patrolBoat.position.set(-3.5, WATER_Y, 2.5);
-      scene.add(patrolBoat);
-    }
-
-    // -----------------------------------------------------------------
-    // 5. 點擊射線與相機平滑飛行
-    // -----------------------------------------------------------------
-    const raycaster = new THREE.Raycaster();
-    const mouse = new THREE.Vector2();
-
-    function onPointerClick(e) {
-      if (e.target.closest('#brand-card, #detail-card, #resource-dock, #hud-bottom, .modal-overlay, .island-badge-label')) return;
-
-      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
-      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
-      raycaster.setFromCamera(mouse, camera);
-
-      const intersects = raycaster.intersectObjects(islandMeshes, false);
-      if (intersects.length > 0) {
-        const hitTop = intersects[0].object;
-        const isleData = hitTop.parent.userData.isle;
-        flyToIsland(hitTop.parent.position, isleData);
-      }
-    }
-
-    let isFlying = false;
-    let flyStartPos = new THREE.Vector3();
-    let flyEndPos = new THREE.Vector3();
-    let flyStartLook = new THREE.Vector3();
-    let flyEndLook = new THREE.Vector3();
-    let flyProgress = 0;
-
-    function flyToIsland(targetPos, data) {
-      isFlying = true;
-      flyProgress = 0;
-      flyStartPos.copy(camera.position);
-      flyStartLook.copy(controls.target);
-
-      flyEndLook.set(targetPos.x, TOP, targetPos.z);
-      flyEndPos.set(targetPos.x + 3.6, TOP + 5.5, targetPos.z + 6.8);
-
-      showDetailCard(data);
-    }
+    const LANDMARK_HERO_SVGS = {
+      nangan: `
+        <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gNangan" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#1e3a8a"/>
+              <stop offset="50%" stop-color="#2563eb"/>
+              <stop offset="100%" stop-color="#f59e0b"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="140" fill="url(#gNangan)"/>
+          <circle cx="330" cy="38" r="28" fill="#fef3c7" opacity="0.9"/>
+          <path d="M0 140 L0 100 Q80 85 160 105 T320 95 L400 115 L400 140 Z" fill="#0f172a" opacity="0.75"/>
+          <path d="M120 140 L160 65 L180 65 L220 140 Z" fill="#ffffff" opacity="0.9"/>
+          <circle cx="170" cy="56" r="10" fill="#fbbf24"/>
+          <text x="20" y="125" fill="#ffffff" font-size="14" font-weight="900" letter-spacing="1">南竿鄉・媽祖巨神像與福澳港示範區</text>
+        </svg>
+      `,
+      beigan: `
+        <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gBeigan" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0284c7"/>
+              <stop offset="60%" stop-color="#38bdf8"/>
+              <stop offset="100%" stop-color="#fcd34d"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="140" fill="url(#gBeigan)"/>
+          <path d="M0 140 L0 105 Q120 80 240 115 T400 100 L400 140 Z" fill="#334155" opacity="0.8"/>
+          <!-- 芹壁馬鞍封火山牆意象 -->
+          <path d="M80 120 L80 82 Q110 65 140 82 L140 120 Z" fill="#b91c1c"/>
+          <rect x="92" y="88" width="36" height="32" fill="#e2e8f0"/>
+          <path d="M160 125 L160 90 Q190 75 220 90 L220 125 Z" fill="#991b1b"/>
+          <rect x="172" y="96" width="36" height="29" fill="#cbd5e1"/>
+          <text x="20" y="125" fill="#ffffff" font-size="14" font-weight="900" letter-spacing="1">北竿鄉・芹壁閩東聚落石屋與封火山牆</text>
+        </svg>
+      `,
+      dongyin: `
+        <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gDongyin" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#0f172a"/>
+              <stop offset="60%" stop-color="#1e293b"/>
+              <stop offset="100%" stop-color="#0369a1"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="140" fill="url(#gDongyin)"/>
+          <!-- 峭壁岩石與百年燈塔 -->
+          <path d="M220 140 L260 70 L340 70 L400 140 Z" fill="#475569"/>
+          <polygon points="290,70 310,70 307,24 293,24" fill="#ffffff"/>
+          <rect x="290" y="18" width="20" height="6" fill="#111827"/>
+          <circle cx="300" cy="14" r="5" fill="#fef08a"/>
+          <!-- 旋轉光芒 -->
+          <polygon points="300,14 0,0 0,60" fill="#fef08a" opacity="0.32"/>
+          <text x="20" y="125" fill="#ffffff" font-size="14" font-weight="900" letter-spacing="1">東引鄉・歐風東引島燈塔與國之北疆峭壁</text>
+        </svg>
+      `,
+      chukuang: `
+        <svg viewBox="0 0 400 140" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="gChukuang" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#9a3412"/>
+              <stop offset="50%" stop-color="#ea580c"/>
+              <stop offset="100%" stop-color="#fbbf24"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="140" fill="url(#gChukuang)"/>
+          <circle cx="320" cy="50" r="32" fill="#fffbeb" opacity="0.95"/>
+          <polygon points="80,140 100,60 120,60 140,140" fill="#f8fafc"/>
+          <rect x="96" y="52" width="28" height="8" fill="#1e293b"/>
+          <path d="M0 140 Q150 110 300 125 T400 135 L400 140 Z" fill="#78350f" opacity="0.8"/>
+          <text x="20" y="125" fill="#ffffff" font-size="14" font-weight="900" letter-spacing="1">莒光鄉・東莒花崗岩燈塔與大埔銀髮樂齡示範</text>
+        </svg>
+      `
+    };
 
     function showDetailCard(data) {
       const card = document.getElementById('detail-card');
       document.getElementById('card-badge').innerText = data.name;
+      
+      const hero = document.getElementById('card-hero');
+      if (hero && LANDMARK_HERO_SVGS[data.id]) {
+        hero.innerHTML = LANDMARK_HERO_SVGS[data.id];
+      }
+
       document.getElementById('card-title').innerText = data.landmark;
       document.getElementById('card-sub').innerText = data.sub;
       document.getElementById('card-desc').innerText = data.desc;
