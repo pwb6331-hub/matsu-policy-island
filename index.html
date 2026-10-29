@@ -936,6 +936,21 @@
       return houseGroup;
     }
 
+    
+    function createNightWindows(group, w, h, d) {
+      const winGeo = new THREE.PlaneGeometry(0.12, 0.14);
+      const winMat = new THREE.MeshStandardMaterial({
+        color: 0xffdf88, emissive: 0xffa022, emissiveIntensity: 0.35, roughness: 0.4
+      });
+      nightGlowMaterials.push(winMat);
+
+      for (let y = 0.22; y < h; y += 0.32) {
+        const winFront = new THREE.Mesh(winGeo, winMat);
+        winFront.position.set(0, y, d / 2 + 0.005);
+        group.add(winFront);
+      }
+    }
+
     function createMiniHouse(w, h, d, wallCol, roofCol, isApt) {
       const bGroup = new THREE.Group();
       const wall = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), new THREE.MeshStandardMaterial({ color: wallCol, roughness: 0.85 }));
@@ -1092,6 +1107,88 @@
         </svg>
       `
     };
+
+    
+    // -----------------------------------------------------------------
+    // 4. 多艘船舶航行海面 (臺馬之星 + 傳統漁船 + 巡邏快艇)
+    // -----------------------------------------------------------------
+    function createFleetShips() {
+      // 1. 臺馬之星
+      ferryBoat = new THREE.Group();
+      const hullMat = new THREE.MeshStandardMaterial({ color: 0x1e3a8a, roughness: 0.7 });
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.14, 0.65), hullMat);
+      hull.position.y = 0.07;
+      const cabin = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.14, 0.38), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.8 }));
+      cabin.position.set(0, 0.19, -0.06);
+      const funnel = new THREE.Mesh(new THREE.CylinderGeometry(0.035, 0.035, 0.12, 8), new THREE.MeshStandardMaterial({ color: 0xd34e36 }));
+      funnel.position.set(0, 0.31, -0.1);
+      ferryBoat.add(hull, cabin, funnel);
+      scene.add(ferryBoat);
+
+      // 2. 馬祖傳統雙帆木造漁船
+      fishingBoat = new THREE.Group();
+      const fHull = new THREE.Mesh(new THREE.BoxGeometry(0.18, 0.1, 0.42), new THREE.MeshStandardMaterial({ color: 0x854d0e, roughness: 0.9 }));
+      fHull.position.y = 0.05;
+      const mast1 = new THREE.Mesh(new THREE.CylinderGeometry(0.015, 0.015, 0.35), new THREE.MeshStandardMaterial({ color: 0x451a03 }));
+      mast1.position.set(0, 0.22, 0.05);
+      const sail1 = new THREE.Mesh(new THREE.PlaneGeometry(0.2, 0.28), new THREE.MeshStandardMaterial({ color: 0x991b1b, side: THREE.DoubleSide }));
+      sail1.position.set(0.08, 0.24, 0.05);
+      sail1.rotation.y = Math.PI / 4;
+      fishingBoat.add(fHull, mast1, sail1);
+      fishingBoat.position.set(4.5, WATER_Y, -2.5);
+      scene.add(fishingBoat);
+
+      // 3. 小型巡邏快艇
+      patrolBoat = new THREE.Group();
+      const pHull = new THREE.Mesh(new THREE.ConeGeometry(0.14, 0.45, 4), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.5 }));
+      pHull.rotation.x = -Math.PI / 2;
+      pHull.position.y = 0.05;
+      const pCabin = new THREE.Mesh(new THREE.BoxGeometry(0.12, 0.08, 0.16), new THREE.MeshStandardMaterial({ color: 0x0284c7 }));
+      pCabin.position.set(0, 0.12, -0.05);
+      patrolBoat.add(pHull, pCabin);
+      patrolBoat.position.set(-3.5, WATER_Y, 2.5);
+      scene.add(patrolBoat);
+    }
+
+    // -----------------------------------------------------------------
+    // 5. 點擊射線與相機平滑飛行
+    // -----------------------------------------------------------------
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+
+    function onPointerClick(e) {
+      if (e.target.closest('#brand-card, #detail-card, #resource-dock, #hud-bottom, .modal-overlay, .island-badge-label')) return;
+
+      mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects(islandMeshes, false);
+      if (intersects.length > 0) {
+        const hitTop = intersects[0].object;
+        const isleData = hitTop.parent.userData.isle;
+        flyToIsland(hitTop.parent.position, isleData);
+      }
+    }
+
+    let isFlying = false;
+    let flyStartPos = new THREE.Vector3();
+    let flyEndPos = new THREE.Vector3();
+    let flyStartLook = new THREE.Vector3();
+    let flyEndLook = new THREE.Vector3();
+    let flyProgress = 0;
+
+    function flyToIsland(targetPos, data) {
+      isFlying = true;
+      flyProgress = 0;
+      flyStartPos.copy(camera.position);
+      flyStartLook.copy(controls.target);
+
+      flyEndLook.set(targetPos.x, TOP, targetPos.z);
+      flyEndPos.set(targetPos.x + 3.6, TOP + 5.5, targetPos.z + 6.8);
+
+      showDetailCard(data);
+    }
 
     function showDetailCard(data) {
       const card = document.getElementById('detail-card');
