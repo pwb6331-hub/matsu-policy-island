@@ -22,18 +22,8 @@
     body, html {
       width: 100%; height: 100%; overflow: hidden;
       font-family: "Noto Sans TC", "Source Han Sans TW", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background-color: #bfe3ee;
+      background: radial-gradient(circle at center, #d8eef5 0%, #b0d8e6 60%, #8fc1d4 100%);
       color: var(--ink); user-select: none;
-    }
-    #bg-map-layer {
-      position: fixed;
-      inset: 0;
-      z-index: 0;
-      background: url('assets/matsu_map_bg.jpg') no-repeat center center;
-      background-size: contain; /* 底圖不切邊、不壓迫、完整呈現手繪全貌 */
-      opacity: 0.72; /* 加深底色與底圖濃度，線條清晰色彩飽滿 */
-      pointer-events: none;
-      transition: opacity 0.8s ease, filter 0.8s ease;
     }
     #canvas-container { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
     
@@ -277,8 +267,7 @@
   </script>
 </head>
 <body>
-  <div id="bg-map-layer"></div>
-
+  
   <!-- 載入動畫遮罩 -->
   <div id="loader">
     <div class="spinner"></div>
@@ -364,7 +353,7 @@
         {
           id: 'nangan',
           name: '南竿鄉',
-          axial: { q: 0, r: 0 }, worldPos: { x: -3.6, z: 1.2 },
+          axial: { q: 0, r: 0 }, worldPos: { x: -4.28, z: 1.47 },
           landmark: '媽祖巨神像・福澳港示範連棟公寓群',
           sub: '全縣政經行政樞紐・連棟老宅更新示範',
           desc: '以介壽村及福澳港腹地為核心，針對30年以上連棟公寓與透天集合住宅，全面推動立面花崗岩勾縫美化、耐震補強、外掛無障礙電梯與公共管線換新。',
@@ -379,7 +368,7 @@
         {
           id: 'beigan',
           name: '北竿鄉',
-          axial: { q: 1.15, r: -1.05 }, worldPos: { x: 1.8, z: -1.4 },
+          axial: { q: 1.15, r: -1.05 }, worldPos: { x: 2.12, z: -1.66 },
           landmark: '芹壁聚落石屋・馬鞍封火山牆',
           sub: '閩東傳統石構建築聚落延壽示範',
           desc: '以芹壁、坂里傳統花崗岩人字砌與丁字砌石屋為代表，注重屋頂壓瓦防風防漏、外牆防鹽害耐蝕處理，並專案輔導取得連江縣合法舊有房屋證明。',
@@ -394,7 +383,7 @@
         {
           id: 'dongyin',
           name: '東引鄉',
-          axial: { q: 2.3, r: 0.95 }, worldPos: { x: 8.2, z: -4.5 },
+          axial: { q: 2.3, r: 0.95 }, worldPos: { x: 9.78, z: -5.41 },
           landmark: '歐風東引島燈塔・國之北疆峭壁',
           sub: '國之北疆抗強風與外掛安全示範',
           desc: '針對南澳高陡坡聚落與海島強風鹽蝕，重點強化建築外掛式冷氣防墜金屬鐵架、防風管線固定包覆、立面防水隔熱及長輩在宅安全無障礙工程。',
@@ -409,7 +398,7 @@
         {
           id: 'chukuang',
           name: '莒光鄉 (東西莒)',
-          axial: { q: -1.1, r: 2.1 }, worldPos: { x: -8.8, z: 4.4 },
+          axial: { q: -1.1, r: 2.1 }, worldPos: { x: -10.37, z: 5.22 },
           landmark: '東莒花崗岩燈塔・大埔銀髮示範',
           sub: '離島雙心銀髮安心在宅安老重塑',
           desc: '涵蓋東莒與西莒雙島，針對長輩獨居比例較高之老宅，推動室內管線更新、防滑扶手、出入口高低差平順改善與樂齡居家無障礙空間重塑。',
@@ -447,7 +436,9 @@
     const container = document.getElementById('canvas-container');
 
     const SPACING = 2.45;
-    const R = 2.2;
+    const R = 1.95;
+    const MAP_W = 32.0;
+    const MAP_H = 19.25;
     const TOP = 0.72;
     const WATER_Y = -0.16;
 
@@ -530,17 +521,57 @@
       scene.add(sunLight);
     }
 
+    let mapBoardMesh, mapBaseMesh;
+
     function createDynamicOcean() {
-      seaGeometry = new THREE.PlaneGeometry(120, 120, 80, 80);
+      // 1. 載入馬祖手繪仙境地圖作為 3D 場景底圖材質 (與四個鄉 3D 方塊完全連在一起，轉圖時一起動！)
+      const texLoader = new THREE.TextureLoader();
+      const mapTex = texLoader.load('assets/matsu_map_bg.jpg', (t) => {
+        t.colorSpace = THREE.SRGBColorSpace;
+        renderer.render(scene, camera);
+      });
+
+      // 3D 地圖平面
+      const mapGeo = new THREE.PlaneGeometry(MAP_W, MAP_H, 64, 40);
+      mapGeo.rotateX(-Math.PI / 2);
+
+      const mapMat = new THREE.MeshStandardMaterial({
+        map: mapTex,
+        roughness: 0.35,
+        metalness: 0.08
+      });
+      mapBoardMesh = new THREE.Mesh(mapGeo, mapMat);
+      mapBoardMesh.position.y = 0.0;
+      mapBoardMesh.receiveShadow = true;
+      scene.add(mapBoardMesh);
+
+      // 精緻立體微縮展台底座 (增加實體模型沙盤厚度感)
+      const baseGeo = new THREE.BoxGeometry(MAP_W + 0.6, 0.45, MAP_H + 0.6);
+      const baseMat = new THREE.MeshStandardMaterial({
+        color: 0xd6e5eb,
+        roughness: 0.65,
+        metalness: 0.15
+      });
+      mapBaseMesh = new THREE.Mesh(baseGeo, baseMat);
+      mapBaseMesh.position.y = -0.23;
+      mapBaseMesh.receiveShadow = true;
+      scene.add(mapBaseMesh);
+
+      // 2. 在地圖上方疊加通透微動海浪波光
+      seaGeometry = new THREE.PlaneGeometry(MAP_W, MAP_H, 50, 32);
       seaGeometry.rotateX(-Math.PI / 2);
       originalSeaPositions = seaGeometry.attributes.position.clone();
 
       const seaMat = new THREE.MeshStandardMaterial({
-        color: 0x4fa8bd, roughness: 0.2, metalness: 0.15, flatShading: true,
-        transparent: true, opacity: 0.25
+        color: 0x56aec2,
+        roughness: 0.15,
+        metalness: 0.25,
+        flatShading: true,
+        transparent: true,
+        opacity: 0.22
       });
       seaMesh = new THREE.Mesh(seaGeometry, seaMat);
-      seaMesh.position.y = WATER_Y;
+      seaMesh.position.y = 0.02;
       seaMesh.receiveShadow = true;
       scene.add(seaMesh);
     }
