@@ -22,10 +22,18 @@
     body, html {
       width: 100%; height: 100%; overflow: hidden;
       font-family: "Noto Sans TC", "Source Han Sans TW", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: #73b8cb url('assets/matsu_map_bg.jpg') no-repeat center center fixed;
-      background-size: cover;
-      background-attachment: fixed;
-      color: var(--ink); user-select: none; transition: background 0.8s ease;
+      background-color: #cde5ed;
+      color: var(--ink); user-select: none;
+    }
+    #bg-map-layer {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      background: url('assets/matsu_map_bg.jpg') no-repeat center center;
+      background-size: contain; /* 底圖不切邊、不壓迫、完整呈現手繪全貌 */
+      opacity: 0.38; /* 顏色淡一點，優雅襯托前景 3D 微縮島 */
+      pointer-events: none;
+      transition: opacity 0.8s ease, filter 0.8s ease;
     }
     #canvas-container { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
     
@@ -269,6 +277,7 @@
   </script>
 </head>
 <body>
+  <div id="bg-map-layer"></div>
 
   <!-- 載入動畫遮罩 -->
   <div id="loader">
@@ -355,7 +364,7 @@
         {
           id: 'nangan',
           name: '南竿鄉',
-          axial: { q: 0, r: 0 },
+          axial: { q: 0, r: 0 }, worldPos: { x: -3.6, z: 1.2 },
           landmark: '媽祖巨神像・福澳港示範連棟公寓群',
           sub: '全縣政經行政樞紐・連棟老宅更新示範',
           desc: '以介壽村及福澳港腹地為核心，針對30年以上連棟公寓與透天集合住宅，全面推動立面花崗岩勾縫美化、耐震補強、外掛無障礙電梯與公共管線換新。',
@@ -370,7 +379,7 @@
         {
           id: 'beigan',
           name: '北竿鄉',
-          axial: { q: 1.15, r: -1.05 },
+          axial: { q: 1.15, r: -1.05 }, worldPos: { x: 1.8, z: -1.4 },
           landmark: '芹壁聚落石屋・馬鞍封火山牆',
           sub: '閩東傳統石構建築聚落延壽示範',
           desc: '以芹壁、坂里傳統花崗岩人字砌與丁字砌石屋為代表，注重屋頂壓瓦防風防漏、外牆防鹽害耐蝕處理，並專案輔導取得連江縣合法舊有房屋證明。',
@@ -385,7 +394,7 @@
         {
           id: 'dongyin',
           name: '東引鄉',
-          axial: { q: 2.3, r: 0.95 },
+          axial: { q: 2.3, r: 0.95 }, worldPos: { x: 8.2, z: -4.5 },
           landmark: '歐風東引島燈塔・國之北疆峭壁',
           sub: '國之北疆抗強風與外掛安全示範',
           desc: '針對南澳高陡坡聚落與海島強風鹽蝕，重點強化建築外掛式冷氣防墜金屬鐵架、防風管線固定包覆、立面防水隔熱及長輩在宅安全無障礙工程。',
@@ -400,7 +409,7 @@
         {
           id: 'chukuang',
           name: '莒光鄉 (東西莒)',
-          axial: { q: -1.1, r: 2.1 },
+          axial: { q: -1.1, r: 2.1 }, worldPos: { x: -8.8, z: 4.4 },
           landmark: '東莒花崗岩燈塔・大埔銀髮示範',
           sub: '離島雙心銀髮安心在宅安老重塑',
           desc: '涵蓋東莒與西莒雙島，針對長輩獨居比例較高之老宅，推動室內管線更新、防滑扶手、出入口高低差平順改善與樂齡居家無障礙空間重塑。',
@@ -449,7 +458,7 @@
         // scene.fog = new THREE.Fog(0xf4eee3, 26, 115);
 
         camera = new THREE.PerspectiveCamera(34, window.innerWidth / window.innerHeight, 0.3, 350);
-        camera.position.set(14, 20, 26);
+        camera.position.set(0, 24, 26);
 
         renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
         renderer.setSize(window.innerWidth, window.innerHeight);
@@ -475,7 +484,7 @@
         controls.maxDistance = 55;
         controls.minPolarAngle = THREE.MathUtils.degToRad(20);
         controls.maxPolarAngle = THREE.MathUtils.degToRad(72);
-        controls.target.set(1.2, 0.4, 1.2);
+        controls.target.set(0, 0.4, 0);
 
         setupLights();
         createDynamicOcean();
@@ -563,6 +572,12 @@
       return { x, z };
     }
 
+    function getIslandWorldPos(isleData) {
+      if (isleData && isleData.worldPos) return isleData.worldPos;
+      if (isleData && isleData.axial) return axialToWorld(isleData.axial.q, isleData.axial.r);
+      return { x: 0, z: 0 };
+    }
+
     function createClayStoneTexture() {
       const cvs = document.createElement('canvas');
       cvs.width = 256; cvs.height = 256;
@@ -585,7 +600,7 @@
       stoneTex.wrapT = THREE.RepeatWrapping;
 
       DATA.islands.forEach((isleData) => {
-        const { x, z } = axialToWorld(isleData.axial.q, isleData.axial.r);
+        const { x, z } = getIslandWorldPos(isleData);
         const isleGroup = new THREE.Group();
         isleGroup.position.set(x, 0, z);
         isleGroup.userData = { isle: isleData };
@@ -843,19 +858,28 @@
 
     function connectBridges() {
       const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xd9c9be, roughness: 0.9 });
-      for (let i = 0; i < DATA.islands.length - 1; i++) {
-        const p1 = axialToWorld(DATA.islands[i].axial.q, DATA.islands[i].axial.r);
-        const p2 = axialToWorld(DATA.islands[i+1].axial.q, DATA.islands[i+1].axial.r);
+      // 依馬祖實際地理走向與航線依序連接：莒光 -> 南竿 -> 北竿 -> 東引
+      const pairs = [
+        ['chukuang', 'nangan'],
+        ['nangan', 'beigan'],
+        ['beigan', 'dongyin']
+      ];
+      pairs.forEach(([id1, id2]) => {
+        const isle1 = DATA.islands.find(is => is.id === id1);
+        const isle2 = DATA.islands.find(is => is.id === id2);
+        if (!isle1 || !isle2) return;
+        const p1 = getIslandWorldPos(isle1);
+        const p2 = getIslandWorldPos(isle2);
 
         const midX = (p1.x + p2.x) / 2;
         const midZ = (p1.z + p2.z) / 2;
         const dist = Math.hypot(p2.x - p1.x, p2.z - p1.z);
 
-        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.28, 0.1, dist * 0.58), bridgeMat);
+        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.26, 0.08, dist * 0.72), bridgeMat);
         bridge.position.set(midX, TOP - 0.06, midZ);
         bridge.lookAt(p2.x, TOP - 0.06, p2.z);
         scene.add(bridge);
-      }
+      });
     }
 
     // -----------------------------------------------------------------
@@ -968,8 +992,8 @@
       flyProgress = 0;
       flyStartPos.copy(camera.position);
       flyStartLook.copy(controls.target);
-      flyEndLook.set(1.2, 0.4, 1.2);
-      flyEndPos.set(14, 20, 26);
+      flyEndLook.set(0, 0.4, 0);
+      flyEndPos.set(0, 24, 26);
     };
 
     window.setTopView = function() {
@@ -977,8 +1001,8 @@
       flyProgress = 0;
       flyStartPos.copy(camera.position);
       flyStartLook.copy(controls.target);
-      flyEndLook.set(1.2, 0.4, 1.2);
-      flyEndPos.set(1.21, 36, 1.21);
+      flyEndLook.set(0, 0.4, 0);
+      flyEndPos.set(0.01, 30, 0.01);
     };
 
     // -----------------------------------------------------------------
@@ -988,6 +1012,7 @@
       document.querySelectorAll('#hud-bottom .hud-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
 
+      const bgLayer = document.getElementById('bg-map-layer');
       if (mode === 'day') {
         sunLight.color.setHex(0xffeed9);
         sunLight.intensity = 2.7;
@@ -995,10 +1020,12 @@
         ambLight.intensity = 0.95;
         if (seaMesh) {
           seaMesh.material.color.setHex(0x4fa8bd);
-          seaMesh.material.opacity = 0.25;
+          seaMesh.material.opacity = 0.18;
         }
-        document.body.style.background = "#73b8cb url('assets/matsu_map_bg.jpg') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
+        if (bgLayer) {
+          bgLayer.style.opacity = '0.38';
+          bgLayer.style.filter = 'none';
+        }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 0.25);
         if (lighthouseBeam) lighthouseBeam.material.opacity = 0.15;
       } else if (mode === 'sunset') {
@@ -1008,10 +1035,12 @@
         ambLight.intensity = 0.7;
         if (seaMesh) {
           seaMesh.material.color.setHex(0xd67a58);
-          seaMesh.material.opacity = 0.45;
+          seaMesh.material.opacity = 0.38;
         }
-        document.body.style.background = "linear-gradient(rgba(245, 140, 82, 0.32), rgba(196, 153, 135, 0.42)), url('assets/matsu_map_bg.jpg') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
+        if (bgLayer) {
+          bgLayer.style.opacity = '0.45';
+          bgLayer.style.filter = 'sepia(0.35) saturate(1.2) hue-rotate(-15deg)';
+        }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 0.55);
         if (lighthouseBeam) lighthouseBeam.material.opacity = 0.45;
       } else if (mode === 'night') {
@@ -1021,10 +1050,12 @@
         ambLight.intensity = 0.35;
         if (seaMesh) {
           seaMesh.material.color.setHex(0x132238);
-          seaMesh.material.opacity = 0.70;
+          seaMesh.material.opacity = 0.65;
         }
-        document.body.style.background = "linear-gradient(rgba(10, 20, 38, 0.75), rgba(5, 10, 20, 0.85)), url('assets/matsu_map_bg.jpg') no-repeat center center fixed";
-        document.body.style.backgroundSize = "cover";
+        if (bgLayer) {
+          bgLayer.style.opacity = '0.22';
+          bgLayer.style.filter = 'brightness(0.6) contrast(1.2)';
+        }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 1.2);
         if (lighthouseBeam) lighthouseBeam.material.opacity = 0.85;
       }
@@ -1812,13 +1843,13 @@
         lighthouseBeam.rotation.z = elapsedTime * 0.75;
       }
 
-      // 3. 臺馬之星巡航 (橢圓航道)
+      // 3. 臺馬之星巡航 (在南竿與東引主要航道巡弋)
       if (ferryBoat) {
-        const boatAngle = elapsedTime * 0.18;
-        const bX = Math.cos(boatAngle) * 5.4 + 1.2;
-        const bZ = Math.sin(boatAngle) * 3.9 + 1.0;
+        const boatAngle = elapsedTime * 0.15;
+        const bX = Math.cos(boatAngle) * 5.5 + 2.0;
+        const bZ = Math.sin(boatAngle) * 2.8 - 1.5;
         ferryBoat.position.set(bX, WATER_Y + 0.04, bZ);
-        ferryBoat.rotation.y = -boatAngle + Math.PI / 2;
+        ferryBoat.rotation.y = -boatAngle + Math.PI / 3;
       }
 
       // 4. 傳統漁船隨波搖曳 (Pitch & Roll)
