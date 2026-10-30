@@ -22,7 +22,7 @@
     body, html {
       width: 100%; height: 100%; overflow: hidden;
       font-family: "Noto Sans TC", "Source Han Sans TW", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background-color: #cde5ed;
+      background-color: #bfe3ee;
       color: var(--ink); user-select: none;
     }
     #bg-map-layer {
@@ -31,7 +31,7 @@
       z-index: 0;
       background: url('assets/matsu_map_bg.jpg') no-repeat center center;
       background-size: contain; /* 底圖不切邊、不壓迫、完整呈現手繪全貌 */
-      opacity: 0.38; /* 顏色淡一點，優雅襯托前景 3D 微縮島 */
+      opacity: 0.72; /* 加深底色與底圖濃度，線條清晰色彩飽滿 */
       pointer-events: none;
       transition: opacity 0.8s ease, filter 0.8s ease;
     }
@@ -1023,7 +1023,7 @@
           seaMesh.material.opacity = 0.18;
         }
         if (bgLayer) {
-          bgLayer.style.opacity = '0.38';
+          bgLayer.style.opacity = '0.72';
           bgLayer.style.filter = 'none';
         }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 0.25);
@@ -1038,7 +1038,7 @@
           seaMesh.material.opacity = 0.38;
         }
         if (bgLayer) {
-          bgLayer.style.opacity = '0.45';
+          bgLayer.style.opacity = '0.78';
           bgLayer.style.filter = 'sepia(0.35) saturate(1.2) hue-rotate(-15deg)';
         }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 0.55);
@@ -1053,7 +1053,7 @@
           seaMesh.material.opacity = 0.65;
         }
         if (bgLayer) {
-          bgLayer.style.opacity = '0.22';
+          bgLayer.style.opacity = '0.45';
           bgLayer.style.filter = 'brightness(0.6) contrast(1.2)';
         }
         nightGlowMaterials.forEach(m => m.emissiveIntensity = 1.2);
