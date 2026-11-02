@@ -128,7 +128,6 @@
       box-shadow: 0 12px 28px rgba(200, 35, 51, 0.25);
       border-color: var(--primary);
     }
-    /* 特殊主打：1號參選影片按鈕 */
     .dock-tile-btn.hero-btn {
       background: linear-gradient(135deg, #c82333 0%, #990000 100%);
       color: #ffffff; border-color: #ffd700;
@@ -139,7 +138,6 @@
       transform: translateY(-3px) scale(1.04);
       box-shadow: 0 14px 34px rgba(200, 35, 51, 0.5);
     }
-    /* 競選小圖方塊徽章（使用 E:/115/LIFE/復興村/競選小圖） */
     .tile-badge-thumb {
       width: 28px; height: 28px; border-radius: 7px;
       object-fit: cover; border: 1.5px solid #d4af37;
@@ -177,6 +175,174 @@
       border: 1.5px solid #cbd5e1; border-radius: 12px;
       text-align: center; pointer-events: none; opacity: 0.75;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    /* ==============================================================
+       左下角：連上次數統計器 (Visit Counter) + 留言區展開鈕
+       ============================================================== */
+    #stats-counter-card {
+      position: absolute; bottom: 20px; left: 18px; z-index: 15;
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 2px solid var(--gold);
+      border-radius: 18px;
+      padding: 12px 16px;
+      box-shadow: var(--shadow-heavy);
+      display: flex; flex-direction: column; gap: 8px;
+      min-width: 240px;
+      transition: all 0.3s ease;
+    }
+    #stats-counter-card:hover {
+      box-shadow: 0 20px 48px rgba(15, 43, 72, 0.35);
+      border-color: #ffd700;
+    }
+    .stats-live-indicator {
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .live-dot-wrap {
+      display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 800; color: #047857;
+    }
+    .live-pulse-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: #10b981; box-shadow: 0 0 8px #10b981;
+      animation: pulseGlow 1.8s infinite;
+    }
+    @keyframes pulseGlow {
+      0% { transform: scale(0.9); opacity: 0.7; }
+      50% { transform: scale(1.25); opacity: 1; }
+      100% { transform: scale(0.9); opacity: 0.7; }
+    }
+    .stats-number-display {
+      display: flex; align-items: baseline; gap: 8px;
+    }
+    .stats-label { font-size: 13px; font-weight: 700; color: #64748b; }
+    .stats-count {
+      font-size: 26px; font-weight: 900; color: var(--primary);
+      font-family: 'Montserrat', sans-serif; letter-spacing: 0.5px;
+    }
+    .stats-unit { font-size: 13px; font-weight: 800; color: #334155; }
+    .stats-sub-row {
+      display: flex; align-items: center; justify-content: space-between; gap: 8px;
+    }
+    .stats-badge {
+      font-size: 11.5px; background: #f1f5f9; color: #475569;
+      padding: 3px 8px; border-radius: 6px; font-weight: 700;
+    }
+    .stats-cheer-btn {
+      background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
+      color: #fff; border: 1px solid #ffd700; border-radius: 8px;
+      padding: 4px 10px; font-size: 12px; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; gap: 4px;
+      transition: all 0.2s;
+    }
+    .stats-cheer-btn:hover {
+      transform: scale(1.05); background: #e03131;
+    }
+    .guestbook-toggle-btn {
+      margin-top: 4px;
+      background: #0f2b48; color: #ffffff;
+      border: 1.5px solid var(--gold); border-radius: 10px;
+      padding: 7px 12px; font-size: 13px; font-weight: 800;
+      cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .guestbook-toggle-btn:hover {
+      background: var(--primary);
+      box-shadow: 0 4px 14px rgba(200, 35, 51, 0.3);
+    }
+    .msg-count-pill {
+      background: #ffd700; color: #0f2b48; font-size: 11px; font-weight: 900;
+      padding: 1px 7px; border-radius: 999px;
+    }
+
+    /* ==============================================================
+       左下角互動留言牆面板 (Guestbook Wall)
+       ============================================================== */
+    #guestbook-panel {
+      position: absolute; bottom: 175px; left: 18px; z-index: 20;
+      width: 360px; max-height: 480px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+      border: 2.5px solid var(--gold);
+      border-radius: 20px;
+      box-shadow: 0 20px 50px rgba(15, 43, 72, 0.35);
+      display: none; flex-direction: column; overflow: hidden;
+      animation: popIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    #guestbook-panel.active { display: flex; }
+    .gb-head {
+      padding: 12px 16px;
+      background: linear-gradient(135deg, #0f2b48 0%, #1e3a5f 100%);
+      color: #ffffff; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 2px solid #d4af37;
+    }
+    .gb-title {
+      font-size: 15px; font-weight: 900; display: flex; align-items: center; gap: 6px;
+    }
+    .gb-close-btn {
+      background: rgba(255,255,255,0.15); border: none; color: #fff;
+      width: 28px; height: 28px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 14px;
+    }
+    .gb-close-btn:hover { background: #c82333; }
+    .gb-list {
+      padding: 12px 14px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 10px;
+      max-height: 260px;
+    }
+    .gb-item {
+      background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px;
+      padding: 10px 12px; display: flex; flex-direction: column; gap: 4px;
+    }
+    .gb-item-top {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .gb-author { font-size: 13px; font-weight: 800; color: #0f2b48; }
+    .gb-town-tag {
+      font-size: 11px; padding: 1px 6px; border-radius: 6px; font-weight: 800;
+    }
+    .tag-nangan { background: #fee2e2; color: #991b1b; }
+    .tag-beigan { background: #e0f2fe; color: #075985; }
+    .tag-dongyin { background: #fef3c7; color: #92400e; }
+    .tag-juguang { background: #dcfce7; color: #166534; }
+    .tag-other { background: #f1f5f9; color: #475569; }
+    .gb-content {
+      font-size: 12.5px; color: #334155; line-height: 1.5; font-weight: 500;
+    }
+    .gb-item-bot {
+      display: flex; justify-content: space-between; align-items: center; margin-top: 2px;
+      font-size: 11px; color: #94a3b8;
+    }
+    .gb-like-btn {
+      background: transparent; border: none; cursor: pointer; color: #c82333;
+      font-size: 12px; font-weight: 700; display: flex; align-items: center; gap: 3px;
+    }
+    .gb-form {
+      padding: 12px 14px; background: #f1f5f9; border-top: 1.5px solid #cbd5e1;
+      display: flex; flex-direction: column; gap: 8px;
+    }
+    .gb-input-row { display: flex; gap: 8px; }
+    #gb-name-input {
+      flex: 1; padding: 7px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+      font-size: 12.5px; font-weight: 600;
+    }
+    #gb-tag-select {
+      width: 95px; padding: 7px 8px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+      font-size: 12px; font-weight: 700;
+    }
+    .gb-textarea-row { display: flex; gap: 8px; }
+    #gb-content-input {
+      flex: 1; padding: 7px 10px; border-radius: 8px; border: 1.5px solid #cbd5e1;
+      font-size: 12.5px; font-family: inherit; resize: none;
+    }
+    .gb-submit-btn {
+      background: linear-gradient(135deg, #c82333 0%, #990000 100%);
+      color: #fff; border: 1px solid #ffd700; border-radius: 8px;
+      padding: 0 14px; font-size: 13px; font-weight: 800; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .gb-submit-btn:hover {
+      background: #e03131; transform: scale(1.02);
     }
 
     /* ==============================================================
@@ -317,7 +483,6 @@
       padding: 24px; overflow-y: auto; flex: 1;
     }
 
-    /* 影片切換標籤列 */
     .video-tabs {
       display: flex; gap: 8px; padding: 12px 18px; background: #1e293b;
     }
@@ -330,7 +495,6 @@
       background: #c82333; color: #ffffff; border-color: #ffd700;
     }
 
-    /* 表單卡片排版 */
     .forms-grid {
       display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 16px;
@@ -352,7 +516,6 @@
     }
     .download-btn:hover { background: #c82333; }
 
-    /* 試算器排版 */
     .calc-row {
       display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     }
@@ -360,6 +523,8 @@
       .calc-row { grid-template-columns: 1fr; }
       #brand-card { max-width: 90%; top: 10px; left: 10px; padding: 10px 14px; }
       #resource-dock { top: auto; bottom: 135px; right: 10px; left: 10px; justify-content: center; }
+      #stats-counter-card { bottom: 140px; left: 10px; min-width: 180px; padding: 8px 12px; }
+      #guestbook-panel { width: calc(100% - 20px); left: 10px; bottom: 210px; max-height: 420px; }
       #opponent-3-badge, #opponent-2-badge { display: none; }
     }
   </style>
@@ -434,7 +599,61 @@
     <div class="opp-text">傳統方案・維持現狀</div>
   </div>
 
-  <!-- (5) 地圖正中間動態宣傳浮動徽章 (點擊切換三大口號 + 金光粒子 + 變換 3D 看板) -->
+  <!-- (5) 左下角：連上次數統計器 (Connect / Visit Counter) -->
+  <div id="stats-counter-card">
+    <div class="stats-live-indicator">
+      <div class="live-dot-wrap">
+        <span class="live-pulse-dot"></span>
+        <span>即時連線挺玉媛</span>
+      </div>
+      <span style="font-size: 11px; color: #94a3b8; font-weight: 700;">LIVE</span>
+    </div>
+    <div class="stats-number-display">
+      <span class="stats-label">支持人次</span>
+      <span id="visit-count-number" class="stats-count">13,852</span>
+      <span class="stats-unit">人</span>
+    </div>
+    <div class="stats-sub-row">
+      <span class="stats-badge">今日造訪 +<span id="today-visit-count">186</span></span>
+      <button class="stats-cheer-btn" onclick="addSupporterCheer()">❤️ 挺玉媛 +1</button>
+    </div>
+    <button class="guestbook-toggle-btn" onclick="toggleGuestbook()">
+      <span>💬 鄉親留言加油區</span>
+      <span class="msg-count-pill" id="msg-count-pill">5則</span>
+    </button>
+  </div>
+
+  <!-- (6) 左下角：互動留言牆面板 (Guestbook Wall) -->
+  <div id="guestbook-panel">
+    <div class="gb-head">
+      <div class="gb-title">
+        <span>💬</span>
+        <span>鄉親留言挺 1號 陳玉媛</span>
+      </div>
+      <button class="gb-close-btn" onclick="toggleGuestbook()">✕</button>
+    </div>
+    <div class="gb-list" id="gb-list">
+      <!-- 動態載入鄉親留言清單 -->
+    </div>
+    <div class="gb-form">
+      <div class="gb-input-row">
+        <input type="text" id="gb-name-input" placeholder="您的稱呼/鄉村 (例: 復興村 曹大哥)" maxlength="16">
+        <select id="gb-tag-select">
+          <option value="南竿鄉">南竿鄉</option>
+          <option value="北竿鄉">北竿鄉</option>
+          <option value="東引鄉">東引鄉</option>
+          <option value="莒光鄉">莒光鄉</option>
+          <option value="旅台鄉親">旅台鄉親</option>
+        </select>
+      </div>
+      <div class="gb-textarea-row">
+        <textarea id="gb-content-input" placeholder="寫下對 1號 陳玉媛老宅延壽新願景的支持與期許..." rows="2" maxlength="120"></textarea>
+        <button class="gb-submit-btn" onclick="submitGuestbookMessage()">送出</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- (7) 地圖正中間動態宣傳浮動徽章 (點擊切換三大口號 + 金光粒子 + 變換 3D 看板) -->
   <div id="center-hero-badge" onclick="switchCampaignSlogan()">
     <div class="hero-num-circle">1</div>
     <div class="hero-info-text">
@@ -446,7 +665,7 @@
     </div>
   </div>
 
-  <!-- (6) 底部控制台（晨昏夜景切換 + 視角重設） -->
+  <!-- (8) 底部控制台（晨昏夜景切換 + 視角重設） -->
   <div id="bottom-controls">
     <button class="ctrl-btn active" onclick="setLighting('day')">☀️ 晨曦暖陽</button>
     <button class="ctrl-btn" onclick="setLighting('sunset')">🌇 閩江暮色</button>
@@ -1954,11 +2173,9 @@
     let dirLight, hemiLight, nightLight;
     let cruiseShip, fishingBoat;
 
-    // 沙盤比例設定 (依復興村底圖 1536 x 1024，寬高比 1.5:1)
     const MAP_W = 30.0;
     const MAP_H = 20.0;
 
-    // 候選人口號清單 (包含圖標切換)
     const CAMPAIGN_SLOGANS = [
       {
         title: "🌟 玉見美好・媛夢連江",
@@ -1978,7 +2195,6 @@
     ];
     let currentSloganIdx = 0;
 
-    // 四鄉五島微縮模型（坐落在沙盤周邊）
     const ISLAND_COORDS = [
       { key: 'nangan', name: '南竿鄉 (復興村基底)', pos: [-5.8, 0, 2.5], r: 2.1, h: 0.95, desc: '媽祖巨神像・福澳港・延壽拉皮住宅' },
       { key: 'beigan', name: '北竿鄉 (芹壁聚落)', pos: [4.2, 0, -2.8], r: 1.8, h: 0.9, desc: '芹壁聚落・封火山牆・北竿機場' },
@@ -1989,22 +2205,20 @@
     window.addEventListener('DOMContentLoaded', () => {
       init3D();
       initUI();
+      initVisitCounterAndGuestbook();
       animate();
     });
 
     function init3D() {
       const container = document.getElementById('canvas-container');
       
-      // Scene
       scene = new THREE.Scene();
       scene.background = new THREE.Color(0x2b4c68);
       scene.fog = new THREE.FogExp2(0x2b4c68, 0.018);
 
-      // Camera
       camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
       camera.position.set(0, 23, 24);
 
-      // Renderer
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
@@ -2014,7 +2228,6 @@
       renderer.toneMappingExposure = 1.12;
       container.appendChild(renderer.domElement);
 
-      // Controls
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
@@ -2023,16 +2236,9 @@
       controls.maxDistance = 55;
       controls.target.set(0, 0, 0);
 
-      // Lighting
       setupLighting();
-
-      // 沙盤本體 (復興村底圖 + 立體模型基座 + 中央 1號 展台 + 四島模型)
       buildFuxingCampaignSandbox();
-
-      // 動態船舶巡航
       setupVessels();
-
-      // 金色粒子特效系統
       setupGoldParticles();
 
       window.addEventListener('resize', onWindowResize);
@@ -2062,14 +2268,10 @@
       scene.add(nightLight);
     }
 
-    // ==============================================================
-    // 3D 競選微縮沙盤核心施工 (復興村底圖 + 1號陳玉媛中央放大 + 變動動態)
-    // ==============================================================
     function buildFuxingCampaignSandbox() {
       const worldGroup = new THREE.Group();
       scene.add(worldGroup);
 
-      // (1) 載入復興村實景背景圖貼覆於 3D 沙盤頂面
       const texLoader = new THREE.TextureLoader();
       const fuxingTex = texLoader.load('assets/fuxing_bg.png', (t) => {
         t.colorSpace = THREE.SRGBColorSpace;
@@ -2089,10 +2291,9 @@
       fuxingBoardMesh.receiveShadow = true;
       worldGroup.add(fuxingBoardMesh);
 
-      // (2) 奢華微縮沙盤底座 (胡桃木色與金箔包邊)
       const baseGeo = new THREE.BoxGeometry(MAP_W + 0.6, 0.55, MAP_H + 0.6);
       const baseMat = new THREE.MeshStandardMaterial({
-        color: 0xd4af37, // 榮耀金色飾邊
+        color: 0xd4af37,
         roughness: 0.35,
         metalness: 0.65
       });
@@ -2101,7 +2302,6 @@
       fuxingBaseMesh.receiveShadow = true;
       worldGroup.add(fuxingBaseMesh);
 
-      // (3) 通透動態微波浪 (浮於復興村底圖之上，水波搖曳)
       oceanGeometry = new THREE.PlaneGeometry(MAP_W, MAP_H, 48, 32);
       oceanGeometry.rotateX(-Math.PI / 2);
       const oceanMat = new THREE.MeshStandardMaterial({
@@ -2116,24 +2316,15 @@
       oceanMesh.position.y = 0.03;
       worldGroup.add(oceanMesh);
 
-      // (4) 【核心放大】：地圖正中間「1號 陳玉媛」微縮核心展台
       buildCenterHeroMonument(worldGroup, texLoader);
-
-      // (5) 四鄉五島微縮模型
       buildVisionIslands(worldGroup);
-
-      // (6) 跨海大橋連結
       buildSeaRoutes(worldGroup);
     }
 
-    // ==============================================================
-    // 【核心放大】：地圖正中間「1號 陳玉媛」英雄微縮展台 (動態變換)
-    // ==============================================================
     function buildCenterHeroMonument(parent, texLoader) {
       heroMonumentGroup = new THREE.Group();
-      heroMonumentGroup.position.set(0, 0, 0); // 居中核心放大
+      heroMonumentGroup.position.set(0, 0, 0);
 
-      // A. 三階金色同心勝利台
       const tier1 = new THREE.Mesh(
         new THREE.CylinderGeometry(2.5, 2.8, 0.45, 32),
         new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.85, roughness: 0.2 })
@@ -2156,7 +2347,6 @@
       tier3.position.y = 0.95;
       heroMonumentGroup.add(tier3);
 
-      // B. 立體「1」號純金雕塑徽章 (高聳於中央)
       const numOneGroup = new THREE.Group();
       numOneGroup.position.set(0, 2.4, 0);
 
@@ -2184,7 +2374,6 @@
 
       heroMonumentGroup.add(numOneGroup);
 
-      // C. 預載三組競選 LOGO 及口號看板紋理
       const texUrls = ['assets/logo_slogan_1.jpg', 'assets/logo_slogan_2.jpg', 'assets/logo_slogan_3.jpg'];
       texUrls.forEach((u, i) => {
         texLoader.load(u, (tex) => {
@@ -2197,7 +2386,6 @@
         });
       });
 
-      // 建立動態展示看板
       const boardGeo = new THREE.PlaneGeometry(2.0, 2.0);
       const boardMat = new THREE.MeshStandardMaterial({
         transparent: true,
@@ -2208,7 +2396,6 @@
       heroBillboardMesh.position.set(0, 4.1, 0);
       heroMonumentGroup.add(heroBillboardMesh);
 
-      // D. 動態旋轉金光環
       const ringGeo = new THREE.TorusGeometry(3.0, 0.09, 16, 64);
       const ringMat = new THREE.MeshStandardMaterial({
         color: 0xffd700,
@@ -2222,12 +2409,10 @@
       heroGoldRing.position.y = 1.35;
       heroMonumentGroup.add(heroGoldRing);
 
-      // E. 展台獨立金色聚光燈
       heroGlowLight = new THREE.PointLight(0xffd700, 2.8, 14);
       heroGlowLight.position.set(0, 4.5, 0);
       heroMonumentGroup.add(heroGlowLight);
 
-      // F. 展台兩側「1號 陳玉媛」競選錦旗
       const flagMat = new THREE.MeshStandardMaterial({ color: 0xc82333, roughness: 0.5, side: THREE.DoubleSide });
       [-1.6, 1.6].forEach(x => {
         const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.6, 8), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8 }));
@@ -2242,9 +2427,6 @@
       parent.add(heroMonumentGroup);
     }
 
-    // ==============================================================
-    // 四鄉五島微縮模型
-    // ==============================================================
     function buildVisionIslands(parent) {
       const markersOverlay = document.getElementById('island-markers-overlay');
 
@@ -2252,7 +2434,6 @@
         const g = new THREE.Group();
         g.position.set(isl.pos[0], 0, isl.pos[2]);
 
-        // 微縮基座
         const cliff = new THREE.Mesh(
           new THREE.CylinderGeometry(isl.r, isl.r + 0.3, isl.h, 7),
           new THREE.MeshStandardMaterial({ color: 0x6e665d, roughness: 0.9, flatShading: true })
@@ -2268,19 +2449,15 @@
         grass.position.y = isl.h + 0.07;
         g.add(grass);
 
-        // 各島代表建築
         if (isl.key === 'nangan') {
-          // 媽祖巨神像白色雕塑
           const statue = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.45, 2.2, 6), new THREE.MeshStandardMaterial({ color: 0xffffff }));
           statue.position.set(-0.6, isl.h + 1.1, -0.4);
           g.add(statue);
 
-          // 示範集合住宅拉皮
           const apt = new THREE.Mesh(new THREE.BoxGeometry(1.0, 1.4, 1.0), new THREE.MeshStandardMaterial({ color: 0xfdfcfb }));
           apt.position.set(0.6, isl.h + 0.7, 0.4);
           g.add(apt);
         } else if (isl.key === 'beigan') {
-          // 芹壁石屋 + 紅瓦封火山牆
           const stoneHouse = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.85, 0.95), new THREE.MeshStandardMaterial({ color: 0xd7ccc8 }));
           stoneHouse.position.set(0, isl.h + 0.42, 0);
           g.add(stoneHouse);
@@ -2290,7 +2467,6 @@
           roof.rotation.y = Math.PI / 4;
           g.add(roof);
         } else if (isl.key === 'dongyin') {
-          // 東引燈塔 + 旋轉實體夜間光錐
           const lightTower = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 2.4, 8), new THREE.MeshStandardMaterial({ color: 0xfafafa }));
           lightTower.position.set(0, isl.h + 1.2, 0);
           g.add(lightTower);
@@ -2308,7 +2484,6 @@
           lightTower.add(lightBeam);
           isl.lightBeam = lightBeam;
         } else if (isl.key === 'juguang') {
-          // 雙子島：西莒紅瓦聚落 + 東莒東犬燈塔
           const house = new THREE.Mesh(new THREE.BoxGeometry(0.85, 0.75, 0.75), new THREE.MeshStandardMaterial({ color: 0xef5350 }));
           house.position.set(-0.45, isl.h + 0.38, 0.2);
           g.add(house);
@@ -2321,7 +2496,6 @@
         parent.add(g);
         isl.group = g;
 
-        // 浮動 DOM 標籤
         const markerEl = document.createElement('div');
         markerEl.className = 'island-marker';
         markerEl.innerHTML = `
@@ -2337,7 +2511,6 @@
       });
     }
 
-    // 跨海大橋連結
     function buildSeaRoutes(parent) {
       const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.4 });
       const bridgeNtoB = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 6.5), bridgeMat);
@@ -2346,9 +2519,7 @@
       parent.add(bridgeNtoB);
     }
 
-    // 巡航船舶生態
     function setupVessels() {
-      // 臺馬之星
       cruiseShip = new THREE.Group();
       const hull = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.45, 0.6), new THREE.MeshStandardMaterial({ color: 0x1e3a8a }));
       hull.position.y = 0.22;
@@ -2364,7 +2535,6 @@
 
       scene.add(cruiseShip);
 
-      // 馬祖雙帆木造漁船
       fishingBoat = new THREE.Group();
       const boatHull = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.35), new THREE.MeshStandardMaterial({ color: 0x8d6e63 }));
       boatHull.position.y = 0.12;
@@ -2379,7 +2549,6 @@
       scene.add(fishingBoat);
     }
 
-    // 金色粒子噴泉
     function setupGoldParticles() {
       const count = 120;
       const geo = new THREE.BufferGeometry();
@@ -2410,20 +2579,17 @@
       goldParticlesGroup.userData.velocities = velocities;
     }
 
-    // 動態切換口號與中央 3D 看板
     window.switchCampaignSlogan = function() {
       currentSloganIdx = (currentSloganIdx + 1) % CAMPAIGN_SLOGANS.length;
       const item = CAMPAIGN_SLOGANS[currentSloganIdx];
       document.getElementById('hero-slogan-title').innerHTML = `${item.title} <span class="hero-switch-hint">點擊換口號 ↻</span>`;
       document.getElementById('hero-slogan-desc').textContent = item.desc;
 
-      // 切換 3D 看板圖片
       if (heroBillboardMesh && billboardTextures[item.texIdx]) {
         heroBillboardMesh.material.map = billboardTextures[item.texIdx];
         heroBillboardMesh.material.needsUpdate = true;
       }
 
-      // 觸發金光粒子爆發
       if (goldParticlesGroup) {
         const pos = goldParticlesGroup.geometry.attributes.position.array;
         const vel = goldParticlesGroup.userData.velocities;
@@ -2481,7 +2647,6 @@
       requestAnimationFrame(animate);
       const t = time * 0.001;
 
-      // 1. 海面多重正弦微波
       if (oceanGeometry) {
         const pos = oceanGeometry.attributes.position;
         for (let i = 0; i < pos.count; i++) {
@@ -2493,12 +2658,10 @@
         pos.needsUpdate = true;
       }
 
-      // 2. 中央 1號 展台旋轉金光環
       if (heroGoldRing) {
         heroGoldRing.rotation.z = t * 0.6;
       }
 
-      // 3. 臺馬之星環狀巡弋
       if (cruiseShip) {
         const radiusX = 11.5;
         const radiusZ = 7.0;
@@ -2509,14 +2672,12 @@
         cruiseShip.rotation.y = -(t * speed) - Math.PI / 2;
       }
 
-      // 4. 馬祖木造雙帆漁船物理搖曳
       if (fishingBoat) {
         fishingBoat.rotation.z = Math.sin(t * 2.0) * 0.06;
         fishingBoat.rotation.x = Math.cos(t * 1.6) * 0.05;
         fishingBoat.position.y = 0.06 + Math.sin(t * 1.8) * 0.03;
       }
 
-      // 5. 金色粒子噴泉
       if (goldParticlesGroup) {
         const pos = goldParticlesGroup.geometry.attributes.position.array;
         const vel = goldParticlesGroup.userData.velocities;
@@ -2534,7 +2695,6 @@
         goldParticlesGroup.geometry.attributes.position.needsUpdate = true;
       }
 
-      // 6. 更新島嶼浮動 DOM 標籤位置
       updateIslandMarkers();
 
       controls.update();
@@ -2569,9 +2729,209 @@
   </script>
 
   <!-- ==============================================================
-       UI 互動與彈窗邏輯
+       UI 互動、統計器與留言區邏輯
        ============================================================== -->
   <script>
+    let currentVisitCount = 13852;
+    let todayVisitCount = 186;
+
+    function initVisitCounterAndGuestbook() {
+      try {
+        let savedCount = localStorage.getItem('matsu_campaign_visit_count');
+        if (savedCount) {
+          currentVisitCount = parseInt(savedCount, 10) + 1;
+        } else {
+          currentVisitCount = 13852 + Math.floor(Math.random() * 45);
+        }
+        localStorage.setItem('matsu_campaign_visit_count', currentVisitCount);
+
+        let savedToday = localStorage.getItem('matsu_campaign_today_count');
+        if (savedToday) {
+          todayVisitCount = parseInt(savedToday, 10) + 1;
+        } else {
+          todayVisitCount = 186 + Math.floor(Math.random() * 12);
+        }
+        localStorage.setItem('matsu_campaign_today_count', todayVisitCount);
+      } catch (e) {
+        console.warn('localStorage not accessible:', e);
+      }
+
+      updateCounterDisplay();
+      initGuestbookMessages();
+    }
+
+    function updateCounterDisplay() {
+      const countEl = document.getElementById('visit-count-number');
+      const todayEl = document.getElementById('today-visit-count');
+      if (countEl) countEl.textContent = currentVisitCount.toLocaleString();
+      if (todayEl) todayEl.textContent = todayVisitCount.toLocaleString();
+    }
+
+    window.addSupporterCheer = function() {
+      currentVisitCount += 1;
+      todayVisitCount += 1;
+      try {
+        localStorage.setItem('matsu_campaign_visit_count', currentVisitCount);
+        localStorage.setItem('matsu_campaign_today_count', todayVisitCount);
+      } catch(e) {}
+      updateCounterDisplay();
+
+      const btn = event?.currentTarget;
+      if (btn) {
+        btn.textContent = '💖 已力挺 +1';
+        btn.style.transform = 'scale(1.15)';
+        setTimeout(() => {
+          btn.textContent = '❤️ 挺玉媛 +1';
+          btn.style.transform = 'scale(1)';
+        }, 600);
+      }
+
+      if (window.switchCampaignSlogan) {
+        window.switchCampaignSlogan();
+      }
+    };
+
+    const DEFAULT_MESSAGES = [
+      {
+        name: "南竿介壽 曹大哥",
+        tag: "南竿鄉",
+        content: "唯一支持 1號 陳玉媛！老宅漏水受潮多年，這次老宅延壽計畫真正看到希望，南竿鄉親全力相挺！",
+        likes: 42,
+        time: "10分鐘前"
+      },
+      {
+        name: "北竿芹壁 林大姐",
+        tag: "北竿鄉",
+        content: "全額補助初評太有誠意了！芹壁石屋需要好好維護，玉媛提出的計畫既保護傳統又顧及安全，投1號就對了！",
+        likes: 38,
+        time: "25分鐘前"
+      },
+      {
+        name: "東引中柳 馮先生",
+        tag: "東引鄉",
+        content: "國之北疆不能被忽略，玉媛提出的30萬長輩弱勢加碼真正照顧到離島老人，東引唯一支持！",
+        likes: 29,
+        time: "1小時前"
+      },
+      {
+        name: "莒光福正 鄭阿姨",
+        tag: "莒光鄉",
+        content: "東莒西莒老屋非常多，感謝玉媛把莒光放在心上，四鄉五島心連心，一起迎向新願景！",
+        likes: 31,
+        time: "2小時前"
+      },
+      {
+        name: "旅台馬祖同鄉會 陳理事",
+        tag: "旅台鄉親",
+        content: "老宅有救、產權清楚，下一代返鄉更有底氣！全家動員返鄉投票支持 1號 陳玉媛！",
+        likes: 56,
+        time: "3小時前"
+      }
+    ];
+
+    let guestbookMessages = [];
+
+    function initGuestbookMessages() {
+      try {
+        const saved = localStorage.getItem('matsu_campaign_guestbook');
+        if (saved) {
+          guestbookMessages = JSON.parse(saved);
+        } else {
+          guestbookMessages = [...DEFAULT_MESSAGES];
+          localStorage.setItem('matsu_campaign_guestbook', JSON.stringify(guestbookMessages));
+        }
+      } catch (e) {
+        guestbookMessages = [...DEFAULT_MESSAGES];
+      }
+      renderGuestbookList();
+    }
+
+    function getTagClass(tag) {
+      if (tag === '南竿鄉') return 'tag-nangan';
+      if (tag === '北竿鄉') return 'tag-beigan';
+      if (tag === '東引鄉') return 'tag-dongyin';
+      if (tag === '莒光鄉') return 'tag-juguang';
+      return 'tag-other';
+    }
+
+    function renderGuestbookList() {
+      const listEl = document.getElementById('gb-list');
+      const pillEl = document.getElementById('msg-count-pill');
+      if (pillEl) pillEl.textContent = `${guestbookMessages.length}則`;
+      if (!listEl) return;
+
+      listEl.innerHTML = guestbookMessages.map((msg, idx) => `
+        <div class="gb-item">
+          <div class="gb-item-top">
+            <span class="gb-author">${msg.name}</span>
+            <span class="gb-town-tag ${getTagClass(msg.tag)}">${msg.tag}</span>
+          </div>
+          <div class="gb-content">${msg.content}</div>
+          <div class="gb-item-bot">
+            <span>${msg.time || '剛剛'}</span>
+            <button class="gb-like-btn" onclick="likeGuestbookMsg(${idx})">
+              👍 <span>${msg.likes || 0}</span>
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    window.toggleGuestbook = function() {
+      const panel = document.getElementById('guestbook-panel');
+      if (panel) {
+        panel.classList.toggle('active');
+      }
+    };
+
+    window.likeGuestbookMsg = function(idx) {
+      if (guestbookMessages[idx]) {
+        guestbookMessages[idx].likes = (guestbookMessages[idx].likes || 0) + 1;
+        try {
+          localStorage.setItem('matsu_campaign_guestbook', JSON.stringify(guestbookMessages));
+        } catch(e) {}
+        renderGuestbookList();
+      }
+    };
+
+    window.submitGuestbookMessage = function() {
+      const nameInput = document.getElementById('gb-name-input');
+      const tagSelect = document.getElementById('gb-tag-select');
+      const contentInput = document.getElementById('gb-content-input');
+
+      const name = nameInput.value.trim() || '熱心鄉親';
+      const tag = tagSelect.value || '南竿鄉';
+      const content = contentInput.value.trim();
+
+      if (!content) {
+        alert('請填寫留言內容，一起為 1號 陳玉媛加油！');
+        contentInput.focus();
+        return;
+      }
+
+      const newMsg = {
+        name: name,
+        tag: tag,
+        content: content,
+        likes: 1,
+        time: '剛剛'
+      };
+
+      guestbookMessages.unshift(newMsg);
+      try {
+        localStorage.setItem('matsu_campaign_guestbook', JSON.stringify(guestbookMessages));
+      } catch(e) {}
+
+      contentInput.value = '';
+      renderGuestbookList();
+
+      currentVisitCount += 1;
+      updateCounterDisplay();
+      try {
+        localStorage.setItem('matsu_campaign_visit_count', currentVisitCount);
+      } catch(e) {}
+    };
+
     window.openModal = function(id) {
       const modal = document.getElementById('modal-' + id);
       if (modal) {
@@ -2594,7 +2954,6 @@
       }
     };
 
-    // 影片切換功能
     window.switchVideo = function(videoUrl, btn) {
       document.querySelectorAll('.video-tab-btn').forEach(b => b.classList.remove('active'));
       if (btn) btn.classList.add('active');
@@ -2607,7 +2966,6 @@
       }
     };
 
-    // 點擊彈窗外部關閉
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
         if (e.target === overlay) {
@@ -2618,14 +2976,12 @@
       });
     });
 
-    // 初始化 UI 資料
     function initUI() {
       initScenarios();
       renderAgencies(AGENCIES_DATA);
       renderQA(QA_DATA);
     }
 
-    // 試算器邏輯 (40組情境)
     let currentScenario = null;
     function initScenarios() {
       const selector = document.getElementById('scenario-selector');
