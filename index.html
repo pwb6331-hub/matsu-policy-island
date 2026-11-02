@@ -3,775 +3,2055 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>【1號 陳玉媛】連江新未來・老宅延壽 3D 政策微縮願景島</title>
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>1號 陳玉媛｜連江老宅延壽新願景 3D 政策微縮群島 (四鄉五島精準對齊版)</title>
+  
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+
   <style>
     :root {
-      --primary: #c82333;       /* 競選勝利紅 */
-      --primary-dark: #90111f;
-      --gold: #d4af37;          /* 榮譽金 */
-      --gold-light: #fef9e7;
-      --navy: #102a43;          /* 沉穩深藍 */
-      --ink: #1e242c;
-      --ink-soft: #485460;
+      --primary: #c82333;       /* 1號 熱情活力競選紅 */
+      --primary-dark: #8b0000;
+      --gold: #d4af37;          /* 尊榮勝利純金色 */
+      --gold-light: #fff3c4;
+      --navy: #0f2b48;          /* 閩江深海藍 */
+      --ocean-bg: #8bc3db;      /* 與四鄉五島插畫地圖邊緣完美融合的海天青色 */
       --glass-bg: rgba(255, 255, 255, 0.92);
-      --glass-border: rgba(255, 255, 255, 0.85);
-      --shadow: 0 16px 36px rgba(16, 42, 67, 0.18);
+      --glass-border: rgba(212, 175, 55, 0.45);
+      --shadow-heavy: 0 16px 36px rgba(15, 43, 72, 0.22);
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     body, html {
       width: 100%; height: 100%; overflow: hidden;
-      font-family: "Noto Sans TC", "Source Han Sans TW", "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background: radial-gradient(circle at center, #f0f7fa 0%, #cce2ec 60%, #9cbccc 100%);
-      color: var(--ink); user-select: none;
-    }
-    #canvas-container { width: 100%; height: 100%; position: absolute; inset: 0; z-index: 1; }
-
-    /* 毛玻璃通用面板 */
-    .glass-panel {
-      background: var(--glass-bg);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-      border: 1.5px solid var(--glass-border);
-      box-shadow: var(--shadow);
-      border-radius: 20px;
-      z-index: 10;
-      position: absolute;
+      font-family: 'Noto Sans TC', sans-serif;
+      background-color: var(--ocean-bg);
+      user-select: none; -webkit-user-select: none;
     }
 
-    /* 左上角：1號 陳玉媛 競選品牌卡 */
+    #canvas-container {
+      width: 100%; height: 100%; position: absolute; top: 0; left: 0; z-index: 1;
+    }
+
+    /* ==============================================================
+       左上角品牌大方塊：1號 陳玉媛 競選品牌核心徽章
+       ============================================================== */
     #brand-card {
-      top: 18px; left: 18px; padding: 16px 24px;
-      display: flex; flex-direction: column; gap: 6px; cursor: pointer;
-      border-left: 6px solid var(--primary);
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: absolute; top: 18px; left: 18px; z-index: 10;
+      background: var(--glass-bg);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border: 2.5px solid var(--gold);
+      border-radius: 20px;
+      padding: 14px 20px;
+      box-shadow: var(--shadow-heavy);
+      display: flex; align-items: center; gap: 16px;
+      max-width: 480px;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+      cursor: pointer;
     }
-    #brand-card:hover { transform: translateY(-2px); box-shadow: 0 20px 40px rgba(200, 35, 51, 0.22); }
+    #brand-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 45px rgba(200, 35, 51, 0.25);
+    }
+    .brand-candidate-avatar {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 3px solid #c82333;
+      object-fit: cover; object-position: top center;
+      box-shadow: 0 4px 14px rgba(200, 35, 51, 0.35);
+      background: #fdfdfd;
+      flex-shrink: 0;
+    }
     .brand-header-badge {
-      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 900;
-      color: #fff; background: linear-gradient(135deg, #c82333 0%, #e03131 100%);
-      padding: 4px 14px; border-radius: 999px; width: fit-content; letter-spacing: 0.5px;
-      box-shadow: 0 4px 12px rgba(200, 35, 51, 0.3);
+      display: flex; align-items: center; gap: 6px; margin-bottom: 4px;
     }
-    .brand-header-badge .num-one {
-      width: 22px; height: 22px; border-radius: 50%; background: #fff; color: var(--primary);
-      display: inline-flex; align-items: center; justify-content: center; font-weight: 900;
-      font-size: 14px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    .num-one-badge {
+      background: linear-gradient(135deg, #c82333 0%, #990000 100%);
+      color: #ffd700;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 16px; font-weight: 900;
+      padding: 2px 10px; border-radius: 999px;
+      border: 2px solid #ffd700;
+      box-shadow: 0 3px 8px rgba(200, 35, 51, 0.4);
+    }
+    .party-title {
+      font-size: 12px; font-weight: 700; color: #555;
+      background: #f1f5f9; padding: 2px 8px; border-radius: 6px;
     }
     #brand-card h1 {
-      font-size: 26px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 10px;
+      font-size: 21px; font-weight: 900; color: var(--navy); line-height: 1.2;
+      display: flex; align-items: baseline; gap: 8px;
     }
-    #brand-card h1 span { color: var(--primary); }
-    .slogan-banner {
-      font-size: 13.5px; font-weight: 800; color: var(--navy);
-      background: var(--gold-light); border: 1.5px solid #f6e05e;
-      padding: 6px 14px; border-radius: 10px; margin-top: 4px;
-      display: flex; align-items: center; gap: 6px;
+    #brand-card h1 .name {
+      color: var(--primary); font-size: 24px; letter-spacing: 1px;
+    }
+    #brand-card .slogan-sub {
+      font-size: 12.5px; color: #475569; font-weight: 600; margin-top: 3px;
     }
 
-    /* 右上功能方塊導覽列 (全部用競選方塊小圖模組) */
+    /* ==============================================================
+       右上角「競選方塊徽章模組」按鈕群 (Campaign Badge Tiles)
+       ============================================================== */
     #resource-dock {
-      top: 18px; right: 18px; display: flex; gap: 10px; z-index: 10; position: absolute; flex-wrap: wrap; justify-content: flex-end;
-      max-width: 760px;
+      position: absolute; top: 18px; right: 18px; z-index: 10;
+      display: flex; gap: 10px; flex-wrap: wrap; justify-content: flex-end;
+      max-width: 800px;
     }
     .dock-tile-btn {
-      background: var(--glass-bg); border: 2px solid #e2e8f0;
-      padding: 10px 16px; border-radius: 14px; cursor: pointer; font-size: 14px;
-      font-weight: 800; display: inline-flex; align-items: center; gap: 8px;
-      color: var(--navy); box-shadow: 0 6px 18px rgba(16, 42, 67, 0.08);
+      background: var(--glass-bg);
+      backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+      border: 2px solid rgba(212, 175, 55, 0.5);
+      padding: 9px 14px;
+      border-radius: 14px;
+      cursor: pointer;
+      font-size: 13.5px; font-weight: 800;
+      display: inline-flex; align-items: center; gap: 9px;
+      color: var(--navy);
+      box-shadow: 0 6px 16px rgba(15, 43, 72, 0.08);
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .dock-tile-btn:hover {
-      background: #ffffff; color: var(--primary); transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 12px 28px rgba(200, 35, 51, 0.2); border-color: var(--primary);
+      background: #ffffff;
+      color: var(--primary);
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 12px 28px rgba(200, 35, 51, 0.22);
+      border-color: var(--primary);
     }
+    /* 特殊加強：1號參選影片按鈕 */
     .dock-tile-btn.hero-btn {
-      background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
-      color: #fff; border-color: #ffd700; box-shadow: 0 8px 24px rgba(200, 35, 51, 0.35);
+      background: linear-gradient(135deg, #c82333 0%, #990000 100%);
+      color: #ffffff; border-color: #ffd700;
+      box-shadow: 0 8px 24px rgba(200, 35, 51, 0.35);
     }
     .dock-tile-btn.hero-btn:hover {
-      background: linear-gradient(135deg, #e03131 0%, #c82333 100%);
+      background: linear-gradient(135deg, #e03131 0%, #b01a24 100%);
       transform: translateY(-3px) scale(1.04);
+      box-shadow: 0 14px 32px rgba(200, 35, 51, 0.45);
     }
-    .tile-badge-num {
-      background: #ffd700; color: #721c24; font-size: 11.5px; font-weight: 900;
-      padding: 2px 7px; border-radius: 6px;
+    .tile-badge-icon {
+      width: 28px; height: 28px; border-radius: 8px;
+      background: linear-gradient(135deg, #fff3c4 0%, #fed7aa 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; border: 1.5px solid #d4af37;
+      flex-shrink: 0;
+    }
+    .dock-tile-btn.hero-btn .tile-badge-icon {
+      background: #ffd700; color: #990000; border-color: #ffffff;
+    }
+    .tile-sub-tag {
+      background: #e2e8f0; color: #475569; font-size: 11px; font-weight: 800;
+      padding: 2px 6px; border-radius: 6px; margin-left: 2px;
+    }
+    .dock-tile-btn.hero-btn .tile-sub-tag {
+      background: #ffd700; color: #990000;
     }
 
-    /* 對手 3號：右上角微型弱化方塊 */
+    /* ==============================================================
+       弱化對手 3號：右上角邊界微型小方塊 (無名字、數字3、文宣小)
+       ============================================================== */
     #opponent-3-badge {
-      top: 130px; right: 18px; width: 140px; padding: 10px 14px;
-      background: rgba(241, 245, 249, 0.88); border: 1.5px solid #cbd5e1;
-      border-radius: 14px; z-index: 9; position: absolute; text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06); pointer-events: none; opacity: 0.75;
+      position: absolute; top: 135px; right: 18px; z-index: 9;
+      width: 145px; padding: 8px 12px;
+      background: rgba(248, 250, 252, 0.85);
+      border: 1.5px solid #cbd5e1; border-radius: 12px;
+      text-align: center; pointer-events: none; opacity: 0.75;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
-    .opp-num { font-size: 20px; font-weight: 900; color: #64748b; font-family: Impact, sans-serif; }
-    .opp-text { font-size: 11px; color: #94a3b8; font-weight: 700; margin-top: 2px; }
+    .opp-num { font-size: 22px; font-weight: 900; color: #64748b; font-family: 'Montserrat', sans-serif; }
+    .opp-text { font-size: 11px; color: #94a3b8; font-weight: 700; margin-top: 1px; }
 
-    /* 對手 2號：右下角微型弱化方塊 */
+    /* ==============================================================
+       弱化對手 2號：右下角邊界微型小方塊 (無名字、數字2、文宣小)
+       ============================================================== */
     #opponent-2-badge {
-      bottom: 85px; right: 18px; width: 140px; padding: 10px 14px;
-      background: rgba(241, 245, 249, 0.88); border: 1.5px solid #cbd5e1;
-      border-radius: 14px; z-index: 9; position: absolute; text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06); pointer-events: none; opacity: 0.75;
+      position: absolute; bottom: 85px; right: 18px; z-index: 9;
+      width: 145px; padding: 8px 12px;
+      background: rgba(248, 250, 252, 0.85);
+      border: 1.5px solid #cbd5e1; border-radius: 12px;
+      text-align: center; pointer-events: none; opacity: 0.75;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.05);
     }
 
-    /* 地圖正中間動態宣傳浮動徽章 (動態可切換口號) */
+    /* ==============================================================
+       中央動態切換口號浮動徽章 (點擊切換三大口號 + 金光粒子)
+       ============================================================== */
     #center-hero-badge {
-      position: absolute; bottom: 85px; left: 50%; transform: translateX(-50%);
-      background: rgba(255, 255, 255, 0.94); border: 3px solid #d4af37;
-      box-shadow: 0 16px 48px rgba(200, 35, 51, 0.35); border-radius: 24px;
-      padding: 14px 28px; z-index: 12; display: flex; align-items: center; gap: 16px;
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: absolute; bottom: 82px; left: 50%; transform: translateX(-50%);
+      background: rgba(255, 255, 255, 0.95);
+      border: 3px solid #d4af37;
+      box-shadow: 0 16px 48px rgba(200, 35, 51, 0.32);
+      border-radius: 22px;
+      padding: 10px 24px;
+      z-index: 10;
+      display: flex; align-items: center; gap: 16px;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     }
     #center-hero-badge:hover {
-      transform: translateX(-50%) translateY(-4px) scale(1.03);
-      box-shadow: 0 20px 56px rgba(200, 35, 51, 0.45);
+      transform: translateX(-50%) translateY(-4px) scale(1.02);
+      box-shadow: 0 20px 56px rgba(200, 35, 51, 0.42);
+      background: #ffffff;
     }
     .hero-num-circle {
       width: 48px; height: 48px; border-radius: 50%;
-      background: linear-gradient(135deg, #c82333 0%, #a71d2a 100%);
-      color: #fff; font-size: 26px; font-weight: 900;
+      background: linear-gradient(135deg, #c82333 0%, #990000 100%);
+      color: #ffd700;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 28px; font-weight: 900;
       display: flex; align-items: center; justify-content: center;
-      border: 3px solid #ffd700; box-shadow: 0 4px 14px rgba(200, 35, 51, 0.4);
-      flex-shrink: 0; animation: pulseGold 2s infinite ease-in-out;
+      border: 3px solid #ffd700;
+      box-shadow: 0 4px 16px rgba(200, 35, 51, 0.4);
+      flex-shrink: 0;
     }
-    @keyframes pulseGold {
-      0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.7); }
-      50% { transform: scale(1.08); box-shadow: 0 0 0 10px rgba(212, 175, 55, 0); }
-    }
+    .hero-info-text { display: flex; flex-direction: column; text-align: left; }
     .hero-info-text h3 {
-      font-size: 20px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 8px;
+      font-size: 17px; font-weight: 900; color: var(--navy);
+      display: flex; align-items: center; gap: 8px;
     }
     .hero-info-text p {
-      font-size: 13.5px; font-weight: 700; color: var(--primary); margin-top: 2px;
-      transition: all 0.3s;
+      font-size: 13px; color: #c82333; font-weight: 700; margin-top: 2px;
     }
     .hero-switch-hint {
-      font-size: 11px; font-weight: 800; background: #fef3c7; color: #92400e;
-      padding: 4px 10px; border-radius: 999px; margin-left: 8px;
+      font-size: 11px; background: #fff3c4; color: #854d0e;
+      padding: 3px 8px; border-radius: 6px; font-weight: 800; border: 1px solid #fde047;
+      margin-left: 6px;
     }
 
-    /* 左側詳細抽屜卡片 (候選人理念與該島政見) */
-    #detail-card {
-      top: 180px; left: 18px; width: 380px; max-height: calc(100vh - 270px);
-      overflow-y: auto; padding: 24px; display: flex; flex-direction: column; gap: 16px;
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s;
+    /* ==============================================================
+       底部控制台（晨昏夜景切換 + 視角重設）
+       ============================================================== */
+    #bottom-controls {
+      position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+      z-index: 10; display: flex; gap: 8px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1.5px solid #cbd5e1; border-radius: 999px;
+      padding: 6px 12px; box-shadow: 0 8px 24px rgba(0,0,0,0.12);
     }
-    #detail-card.hidden { transform: translateX(-420px); opacity: 0; pointer-events: none; }
-    .badge {
-      display: inline-block; padding: 6px 14px; border-radius: 999px;
-      font-size: 13px; font-weight: 800; background: var(--primary); color: #fff;
+    .ctrl-btn {
+      background: transparent; border: none; padding: 6px 14px;
+      border-radius: 999px; cursor: pointer; font-size: 13px; font-weight: 700;
+      color: #475569; display: flex; align-items: center; gap: 5px;
+      transition: all 0.2s ease;
     }
-    .card-title { font-size: 22px; font-weight: 900; color: var(--navy); margin-top: 2px; }
-    .card-desc { font-size: 15px; color: var(--ink-soft); line-height: 1.6; font-weight: 500; }
-    .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 4px 0; }
-    .stat-box {
-      background: rgba(255,255,255,0.85); padding: 12px 14px; border-radius: 14px;
-      border: 1.5px solid #fed7d7;
-    }
-    .stat-box .val { font-size: 20px; font-weight: 900; color: var(--primary); font-family: Georgia, serif; }
-    .stat-box .lbl { font-size: 13px; color: #777; font-weight: 700; margin-top: 2px; }
-
-    /* 底部 HUD 導覽列 */
-    #hud-bottom {
-      bottom: 20px; left: 50%; transform: translateX(-50%);
-      padding: 8px 24px; display: flex; gap: 10px; align-items: center;
-      border-radius: 999px; z-index: 10;
-    }
-    .hud-btn {
-      background: transparent; border: none; font-size: 14px; font-weight: 800;
-      padding: 9px 16px; border-radius: 999px; cursor: pointer; transition: 0.2s;
-      color: var(--ink-soft); display: flex; align-items: center; gap: 6px;
-    }
-    .hud-btn:hover, .hud-btn.active {
-      background: #ffffff; color: var(--primary); box-shadow: 0 4px 14px rgba(200, 35, 51, 0.15);
+    .ctrl-btn:hover, .ctrl-btn.active {
+      background: var(--navy); color: #ffffff;
     }
 
-    /* 彈出式 Modal */
+    /* ==============================================================
+       各島 3D 浮動標籤（與底圖島嶼模型緊密連接）
+       ============================================================== */
+    .island-marker {
+      position: absolute; z-index: 5;
+      transform: translate(-50%, -100%);
+      pointer-events: auto; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .marker-box {
+      background: rgba(15, 43, 72, 0.92);
+      border: 2px solid #ffd700;
+      color: #ffffff;
+      padding: 5px 12px; border-radius: 12px;
+      font-size: 13px; font-weight: 800;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      display: flex; align-items: center; gap: 6px;
+      white-space: nowrap;
+    }
+    .marker-box:hover {
+      background: #c82333; transform: scale(1.08);
+      border-color: #ffffff;
+    }
+    .marker-pin {
+      width: 0; height: 0;
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-top: 7px solid #ffd700;
+    }
+
+    /* ==============================================================
+       彈窗系統（影片、試算、32家機構、QA、表單、流程圖）
+       ============================================================== */
     .modal-overlay {
-      position: fixed; inset: 0; background: rgba(16, 42, 67, 0.68);
-      backdrop-filter: blur(8px); z-index: 100; display: none;
-      align-items: center; justify-content: center;
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(15, 43, 72, 0.65);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      z-index: 100; display: none; align-items: center; justify-content: center;
+      padding: 20px;
     }
     .modal-overlay.active { display: flex; }
-    .modal-content {
-      background: #ffffff; border-radius: 24px; width: 92%; max-width: 900px;
-      max-height: 88vh; overflow-y: auto; padding: 32px; box-shadow: 0 24px 60px rgba(0,0,0,0.3);
-      position: relative; border: 2.5px solid #fed7d7;
+    .modal-card {
+      background: #ffffff; border-radius: 24px;
+      border: 3px solid var(--gold);
+      box-shadow: 0 25px 60px rgba(0,0,0,0.35);
+      width: 100%; max-width: 960px; max-height: 88vh;
+      display: flex; flex-direction: column; overflow: hidden;
+      animation: popIn 0.28s cubic-bezier(0.16, 1, 0.3, 1);
     }
-    .modal-header {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-bottom: 16px; margin-bottom: 20px; border-bottom: 2.5px solid #f1f2f6;
+    @keyframes popIn {
+      from { transform: scale(0.92); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
     }
-    .modal-header h2 {
-      font-size: 24px; font-weight: 900; color: var(--navy); display: flex; align-items: center; gap: 10px;
+    .modal-head {
+      padding: 16px 24px; background: linear-gradient(135deg, #0f2b48 0%, #1a365d 100%);
+      color: #ffffff; display: flex; justify-content: space-between; align-items: center;
+      border-bottom: 3px solid #d4af37;
     }
-    .modal-close {
-      width: 38px; height: 38px; border-radius: 50%; border: none; background: #f1f2f6;
-      cursor: pointer; font-size: 20px; font-weight: 800; color: #555; transition: 0.2s;
+    .modal-head h2 {
+      font-size: 19px; font-weight: 900; display: flex; align-items: center; gap: 10px;
     }
-    .modal-close:hover { background: var(--primary); color: #fff; }
+    .close-btn {
+      background: rgba(255,255,255,0.15); border: none; color: #fff;
+      width: 36px; height: 36px; border-radius: 50%; font-size: 18px;
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: background 0.2s;
+    }
+    .close-btn:hover { background: #c82333; }
+    .modal-body {
+      padding: 24px; overflow-y: auto; flex: 1;
+    }
 
-    /* 試算表樣式 */
-    .calc-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 24px; }
-    @media (max-width: 800px) { .calc-grid { grid-template-columns: 1fr; } }
-    .form-row { margin-bottom: 16px; }
-    .form-row label { display: block; font-size: 15px; font-weight: 800; margin-bottom: 6px; color: var(--ink); }
-    .form-row input, .form-row select {
-      width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #ced6e0;
-      font-size: 16px; font-weight: 700; background: #fff; color: var(--ink);
+    /* 表單卡片排版 */
+    .forms-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
     }
-    .calc-btn-calc {
-      width: 100%; padding: 14px; border-radius: 12px; background: var(--primary);
-      color: #fff; font-size: 17px; font-weight: 900; border: none; cursor: pointer; transition: 0.2s;
+    .form-item-card {
+      background: #f8fafc; border: 2px solid #e2e8f0; border-radius: 16px;
+      padding: 18px; display: flex; flex-direction: column; justify-content: space-between;
+      transition: all 0.2s;
     }
-    .calc-btn-calc:hover { background: var(--primary-dark); transform: translateY(-2px); }
-    .calc-res-panel {
-      background: #fffaf0; border: 2px dashed #dd6b20; border-radius: 18px; padding: 22px;
+    .form-item-card:hover {
+      border-color: #c82333; background: #fff;
+      box-shadow: 0 8px 20px rgba(200, 35, 51, 0.1);
     }
-    .res-metric { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 12px; }
-    .res-metric .lbl { font-size: 16px; font-weight: 700; color: var(--ink-soft); }
-    .res-metric .val { font-size: 28px; font-weight: 900; color: var(--primary); }
-    .res-metric .val.green { color: #27ae60; }
+    .download-btn {
+      margin-top: 12px; background: #0f2b48; color: #fff; text-decoration: none;
+      padding: 10px 16px; border-radius: 10px; font-size: 13.5px; font-weight: 700;
+      text-align: center; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+      transition: background 0.2s;
+    }
+    .download-btn:hover { background: #c82333; }
 
-    /* 40 組情境快速選單 */
-    .scenario-pill-list {
-      display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 16px;
+    /* 試算器排版 */
+    .calc-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
     }
-    .s-pill {
-      padding: 8px 16px; border-radius: 999px; background: #f1f2f6; font-size: 14px; font-weight: 800;
-      white-space: nowrap; cursor: pointer; border: 1.5px solid #dfe4ea; transition: 0.2s;
+    @media (max-width: 768px) {
+      .calc-row { grid-template-columns: 1fr; }
+      #brand-card { max-width: 90%; top: 10px; left: 10px; padding: 10px 14px; }
+      #resource-dock { top: auto; bottom: 135px; right: 10px; left: 10px; justify-content: center; }
+      #opponent-3-badge, #opponent-2-badge { display: none; }
     }
-    .s-pill:hover, .s-pill.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
-    /* 表格與 QA 手風琴 */
-    .custom-table {
-      width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 14px;
-      font-size: 15px; border: 1.5px solid #dfe4ea; border-radius: 14px; overflow: hidden;
-    }
-    .custom-table th {
-      background: #f8f9fa; padding: 12px 14px; font-weight: 800; color: var(--navy);
-      border-bottom: 2px solid #dfe4ea; text-align: left;
-    }
-    .custom-table td { padding: 12px 14px; border-bottom: 1px solid #dfe4ea; color: var(--ink-soft); font-weight: 600; }
-    .custom-table tr:hover td { background: #fff5f5; }
-
-    .qa-box { border: 2px solid #e1e8ed; border-radius: 14px; margin-bottom: 12px; overflow: hidden; }
-    .qa-q {
-      padding: 16px 20px; background: #fdfdfd; font-size: 16.5px; font-weight: 800;
-      color: var(--navy); cursor: pointer; display: flex; justify-content: space-between; align-items: center;
-    }
-    .qa-q:hover { background: #fff5f5; color: var(--primary); }
-    .qa-a { padding: 18px 20px; font-size: 15.5px; line-height: 1.7; color: var(--ink-soft); background: #fafbfc; border-top: 1.5px solid #edf2f7; display: none; }
-    .qa-box.open .qa-a { display: block; }
-
-    /* 載入畫面 */
-    #loader {
-      position: fixed; inset: 0; background: #102a43; z-index: 999;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      font-weight: 900; color: #ffd700; gap: 18px; font-size: 18px;
-    }
-    .spinner {
-      width: 54px; height: 54px; border: 5px solid rgba(255, 215, 0, 0.2);
-      border-top-color: #ffd700; border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
   </style>
-
-  <!-- ES Modules 與 Three.js 0.160.0 映射表 -->
-  <script type="importmap">
-  {
-    "imports": {
-      "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
-      "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
-    }
-  }
-  </script>
 </head>
 <body>
 
-  <div id="loader">
-    <div class="spinner"></div>
-    <div>【1號 陳玉媛】復興連江・老宅延壽 3D 願景島組裝中…</div>
-  </div>
-
+  <!-- 3D WebGL Canvas -->
   <div id="canvas-container"></div>
 
-  <!-- 左上標題品牌卡 (1號 陳玉媛 競選品牌主軸) -->
-  <div id="brand-card" class="glass-panel" onclick="switchView('overview')">
-    <div class="brand-header-badge">
-      <span class="num-one">1</span>
-      <span>連江縣長候選人・陳玉媛</span>
-    </div>
-    <h1>玉見美好 <span>媛夢連江</span></h1>
-    <div class="slogan-banner">
-      <span>🚩</span>
-      <span id="brand-slogan">老宅延壽新願景・幸福馬祖好生活</span>
+  <!-- 3D 浮動島嶼標籤容器 -->
+  <div id="island-markers-overlay"></div>
+
+  <!-- (1) 左上角：1號 陳玉媛 競選品牌大方塊 -->
+  <div id="brand-card" onclick="openModal('candidate')">
+    <img src="assets/candidate_avatar.png" alt="1號 陳玉媛" class="brand-candidate-avatar" onerror="this.src='assets/candidate_logo.png'">
+    <div>
+      <div class="brand-header-badge">
+        <span class="num-one-badge">1 號</span>
+        <span class="party-title">連江縣長候選人</span>
+      </div>
+      <h1>
+        <span class="name">陳玉媛</span>
+        <span style="font-size: 15px; font-weight: 700; color: #64748b;">老宅延壽新願景</span>
+      </h1>
+      <div class="slogan-sub">玉見美好・媛夢連江｜115-116年全額初評．老宅換新顏</div>
     </div>
   </div>
 
-  <!-- 右上功能方塊導覽列 (全部採用競選小圖為方塊模組) -->
+  <!-- (2) 右上角：「競選小圖方塊模組」按鈕群 -->
   <div id="resource-dock">
     <button class="dock-tile-btn hero-btn" onclick="openModal('video')">
-      <span>🎬</span>
+      <div class="tile-badge-icon">🎬</div>
       <span>1號 參選宣傳片</span>
-      <span class="tile-badge-num">1</span>
+      <span class="tile-sub-tag">點看</span>
     </button>
     <button class="dock-tile-btn" onclick="openModal('calc')">
-      <span>🧮</span>
+      <div class="tile-badge-icon">🧮</div>
       <span>老宅補助即時試算</span>
-      <span class="tile-badge-num">40組</span>
+      <span class="tile-sub-tag">40組</span>
     </button>
     <button class="dock-tile-btn" onclick="openModal('agencies')">
-      <span>🏢</span>
+      <div class="tile-badge-icon">🏢</div>
       <span>32家初評機構</span>
+      <span class="tile-sub-tag">國土署</span>
     </button>
     <button class="dock-tile-btn" onclick="openModal('qa')">
-      <span>📖</span>
+      <div class="tile-badge-icon">📖</div>
       <span>政見QA 50題</span>
+      <span class="tile-sub-tag">全文庫</span>
     </button>
     <button class="dock-tile-btn" onclick="openModal('forms')">
-      <span>📑</span>
-      <span>6大表單下載</span>
+      <div class="tile-badge-icon">📑</div>
+      <span>6大申請表單</span>
+      <span class="tile-sub-tag">Word下載</span>
     </button>
     <button class="dock-tile-btn" onclick="openModal('flow')">
-      <span>📜</span>
-      <span>地政登記流程</span>
-    </button>
-    <button class="dock-tile-btn" onclick="openModal('qrcode')">
-      <span>📱</span>
-      <span>手機線上版</span>
+      <div class="tile-badge-icon">📜</div>
+      <span>舊屋證明流程</span>
+      <span class="tile-sub-tag">地政圖</span>
     </button>
   </div>
 
-  <!-- 3號：右上角落微型對手方塊 (無姓名，僅數字與文宣，圖案較小) -->
+  <!-- (3) 弱化對手 3號：右上角邊界微型小方塊 (無名字、數字3、文宣小) -->
   <div id="opponent-3-badge">
     <div class="opp-num">3</div>
-    <div class="opp-text">既有政見・漸進方案</div>
+    <div class="opp-text">漸進評估・保守構想</div>
   </div>
 
-  <!-- 2號：右下角落微型對手方塊 (無姓名，僅數字與文宣，圖案較小) -->
+  <!-- (4) 弱化對手 2號：右下角邊界微型小方塊 (無名字、數字2、文宣小) -->
   <div id="opponent-2-badge">
     <div class="opp-num">2</div>
-    <div class="opp-text">傳統管理・常態宣導</div>
+    <div class="opp-text">傳統方案・維持現狀</div>
   </div>
 
-  <!-- 地圖正中間動態宣傳浮動徽章 (1號 陳玉媛，中央放大、動態光環、可點擊切換口號) -->
-  <div id="center-hero-badge" onclick="cycleHeroSlogan()">
+  <!-- (5) 地圖正中間動態切換口號浮動徽章 (點擊切換三大口號 + 金光粒子) -->
+  <div id="center-hero-badge" onclick="switchCampaignSlogan()">
     <div class="hero-num-circle">1</div>
     <div class="hero-info-text">
-      <h3>
-        <span>陳玉媛</span>
-        <span style="font-size:14px; color:var(--primary); font-weight:800;">願景核心</span>
+      <h3 id="hero-slogan-title">
+        🌟 玉見美好・媛夢連江
+        <span class="hero-switch-hint">點擊換口號 ↻</span>
       </h3>
-      <p id="hero-slogan-text">「老宅延壽機能復新・最高補助加碼至 30 萬元！」</p>
+      <p id="hero-slogan-desc">1號 陳玉媛 主張：115-116年全額初評、最高30萬補助、四鄉五島全面普惠！</p>
     </div>
-    <span class="hero-switch-hint">點擊切換政見 ↻</span>
   </div>
 
-  <!-- 左側詳細抽屜卡片 (南竿、北竿、東引、莒光專屬政見願景) -->
-  <div id="detail-card" class="glass-panel hidden">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <span class="badge" id="card-badge">南竿鄉示範島</span>
-      <button onclick="closeDetailCard()" style="background:none; border:none; font-size:22px; cursor:pointer; color:#777;">✕</button>
-    </div>
-    <div class="card-title" id="card-title">媽祖巨神像・復興村核心政見</div>
-    <div class="card-desc" id="card-desc">以復興村及福澳港為核心示範區，落實老宅立面拉皮、電梯外掛與智慧公共管線防蝕工程。</div>
-    <div class="stat-grid">
-      <div class="stat-box">
-        <div class="val" id="stat-1">30 年+</div>
-        <div class="lbl">合規基準屋齡</div>
-      </div>
-      <div class="stat-box">
-        <div class="val" id="stat-2">最高 30 萬</div>
-        <div class="lbl">長輩弱勢專有加碼</div>
-      </div>
-      <div class="stat-box">
-        <div class="val" id="stat-3">65 %</div>
-        <div class="lbl">法定工程款核算</div>
-      </div>
-      <div class="stat-box">
-        <div class="val" id="stat-4">3,500 元</div>
-        <div class="lbl">單方施作面積上限</div>
-      </div>
-    </div>
-    <button class="calc-btn-calc" onclick="openModal('calc')" style="padding:12px; font-size:15px; margin-top:6px;">
-      🧮 立即試算本島補助額
-    </button>
+  <!-- (6) 底部控制台（晨昏夜景切換 + 視角重設） -->
+  <div id="bottom-controls">
+    <button class="ctrl-btn active" onclick="setLighting('day')">☀️ 晨曦暖陽</button>
+    <button class="ctrl-btn" onclick="setLighting('sunset')">🌇 閩江暮色</button>
+    <button class="ctrl-btn" onclick="setLighting('night')">🌙 壁頭璀璨夜</button>
+    <button class="ctrl-btn" onclick="resetCamera()">🎯 正視沙盤</button>
   </div>
 
-  <!-- 底部 HUD 導覽列 -->
-  <div id="hud-bottom" class="glass-panel">
-    <button class="hud-btn active" onclick="switchView('overview')">🌐 復興願景全景</button>
-    <button class="hud-btn" onclick="switchView('center')">👑 1號陳玉媛核心</button>
-    <button class="hud-btn" onclick="switchView('nangan')">🏝️ 南竿復興</button>
-    <button class="hud-btn" onclick="switchView('beigan')">🏛️ 北竿芹壁</button>
-    <button class="hud-btn" onclick="switchView('dongyin')">💡 東引燈塔</button>
-    <button class="hud-btn" onclick="switchView('juguang')">🦽 莒光安老</button>
-    <div style="width:2px; height:20px; background:#dcdde1; margin:0 4px;"></div>
-    <button class="hud-btn" onclick="cycleLighting()">☀️ 競選晨昏光影</button>
+  <!-- ==============================================================
+       彈窗：1號 候選人政見海報與介紹
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-candidate">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2><span>🏆</span> 1號 連江縣長候選人 陳玉媛｜老宅延壽新願景</h2>
+        <button class="close-btn" onclick="closeModal('candidate')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <img src="assets/candidate_main_poster.jpg" alt="陳玉媛 競選海報" style="max-width: 100%; max-height: 55vh; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" onerror="this.src='assets/candidate_avatar.png'">
+        <div style="margin-top: 20px; text-align: left; background: #fff8f8; padding: 20px; border-radius: 16px; border: 2px solid #ffd700;">
+          <h3 style="color: #c82333; font-size: 19px; margin-bottom: 8px;">🌟 玉見美好・媛夢連江 —— 打造宜居幸福的馬祖新家園</h3>
+          <p style="font-size: 14.5px; line-height: 1.7; color: #334155;">
+            連江縣長候選人 <strong>1號 陳玉媛</strong> 堅持以專業、熱忱與行動力守護鄉親。
+            針對馬祖四鄉五島多數鄉親面臨老屋漏水、結構風化、無所有權登記等多年沉痾，
+            陳玉媛全力推動「<strong>115-116年度連江縣老宅延壽機能復新計畫</strong>」：
+            國土署 32 家專業初評機構全額補助、修繕補助最高 30 萬元（弱勢及高齡家庭加碼）、
+            舊有房屋證明與地政測量一條龍輔導，讓每一位連江鄉親住得安心、傳承百年！
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <!-- 彈出視窗 1：1號 參選宣傳影音 (陳玉媛競選主題影片) -->
-  <div id="modal-video" class="modal-overlay">
-    <div class="modal-content" style="max-width:760px;">
-      <div class="modal-header">
-        <h2>🎬 【1號 陳玉媛】參選願景宣傳影片</h2>
-        <button class="modal-close" onclick="closeModal('video')">✕</button>
+  <!-- ==============================================================
+       彈窗：1號 參選宣傳片
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-video">
+    <div class="modal-card" style="max-width: 880px;">
+      <div class="modal-head">
+        <h2><span>🎬</span> 1號 陳玉媛 參選宣傳影音｜老宅延壽計畫</h2>
+        <button class="close-btn" onclick="closeModal('video')">✕</button>
       </div>
-      <div style="margin-bottom:18px;">
-        <video controls style="width:100%; max-height:400px; border-radius:14px; background:#000; box-shadow:0 8px 24px rgba(0,0,0,0.2);">
+      <div class="modal-body" style="padding: 0; background: #000; display: flex; justify-content: center;">
+        <video id="campaign-video-player" controls style="width: 100%; max-height: 70vh;">
           <source src="assets/老宅延壽計畫.mp4" type="video/mp4">
-          您的瀏覽器不支援影片播放。
+          您的瀏覽器不支援 HTML5 影片播放。
         </video>
       </div>
-      <div style="padding:16px; background:#fff5f5; border-radius:14px; border:1.5px solid #fed7d7; display:flex; justify-content:space-between; align-items:center;">
-        <div>
-          <div style="font-size:16px; font-weight:900; color:var(--primary);">連江老宅延壽機能復新・陳玉媛政策白皮書簡報 (PPTX)</div>
-          <div style="font-size:13px; color:#555; margin-top:2px;">全面解析四鄉五島老舊房屋安全補強與修繕加碼政策</div>
-        </div>
-        <a href="assets/115年度連江老宅簡報_公版(1151013修正定稿版).pptx" download class="dock-tile-btn hero-btn" style="text-decoration:none; white-space:nowrap;">
-          📥 下載政策簡報
-        </a>
-      </div>
     </div>
   </div>
 
-  <!-- 彈出視窗 2：40 組老宅補助即時試算 -->
-  <div id="modal-calc" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>🧮 1號 陳玉媛政見牛肉：老宅延壽 40 組情境補助即時試算</h2>
-        <button class="modal-close" onclick="closeModal('calc')">✕</button>
+  <!-- ==============================================================
+       彈窗：40 組老宅補助即時試算
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-calc">
+    <div class="modal-card" style="max-width: 1050px;">
+      <div class="modal-head">
+        <h2><span>🧮</span> 115年度 40 組情境即時試算（公-01～20、透-01～20）</h2>
+        <button class="close-btn" onclick="closeModal('calc')">✕</button>
       </div>
-      <div style="margin-bottom:14px;">
-        <div style="font-size:15px; font-weight:800; margin-bottom:8px; color:var(--navy);">
-          ⚡ 點選 40 組情境真實案例快速帶入：
+      <div class="modal-body">
+        <div style="background: #eff6ff; border: 1.5px solid #bfdbfe; border-radius: 14px; padding: 14px; margin-bottom: 20px; font-size: 13.5px; color: #1e3a8a;">
+          ⚖️ <strong>法定核定補助裁定公式：</strong><br>
+          <code>核定補助款 = min( 工程報價 × 65%, 施作面積 × 3,500元, 法定單項/總額上限 )</code><br>
+          一般戶上限 20 萬元；長者戶（65歲以上）或弱勢家庭加碼上限至 <strong>30 萬元</strong>。
         </div>
-        <div class="scenario-pill-list" id="scenario-pill-container"></div>
-      </div>
-
-      <div class="calc-grid">
-        <!-- 試算表單 -->
-        <div>
-          <div class="form-row">
-            <label>建物型態</label>
-            <select id="calc-bldg-type" onchange="onBldgTypeChange()">
-              <option value="apartment">4～6層集合公寓（公-01～公-20）</option>
-              <option value="house">6層以下透天住宅（透-01～透-20）</option>
+        <div class="calc-row">
+          <div>
+            <label style="font-weight: 800; color: #0f2b48; display: block; margin-bottom: 8px;">選擇官方 40 組標準情境：</label>
+            <select id="scenario-selector" onchange="applyScenario()" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #cbd5e1; font-size: 14px; font-weight: 700;">
+              <!-- JS 動態填入 40 組 -->
             </select>
           </div>
-          <div class="form-row">
-            <label>改善修繕工程項目</label>
-            <select id="calc-item" onchange="onItemChange()">
-              <option value="roof">屋頂防水防漏工程（法定上限20萬）</option>
-              <option value="facade">外牆防水拉皮工程（法定上限20萬）</option>
-              <option value="pipe">公共水電弱電管線更新（法定上限10萬）</option>
-              <option value="ramp">室外無障礙斜坡與扶手（法定上限5萬）</option>
-              <option value="interior">私人室內整體修繕（一般20萬／弱勢長輩加碼30萬）</option>
+          <div>
+            <label style="font-weight: 800; color: #0f2b48; display: block; margin-bottom: 8px;">申請戶類型資格加碼：</label>
+            <select id="calc-household-type" onchange="recalculateSubsidy()" style="width: 100%; padding: 10px; border-radius: 10px; border: 2px solid #cbd5e1; font-size: 14px; font-weight: 700;">
+              <option value="normal">一般申請戶（補助上限 20 萬元）</option>
+              <option value="senior">長者/弱勢加碼戶（補助上限加碼至 30 萬元）</option>
             </select>
           </div>
-          <div class="form-row">
-            <label>廠商總報價金額（萬元）</label>
-            <input type="number" id="calc-cost" value="40" step="0.5" min="1" max="500">
-          </div>
-          <div class="form-row" id="row-area">
-            <label>施作面積（平方公尺 ㎡，若非面積計價填 0）</label>
-            <input type="number" id="calc-area" value="60" step="1" min="0" max="1000">
-          </div>
-          <div class="form-row" style="display:flex; align-items:center; gap:10px; margin-top:10px;">
-            <input type="checkbox" id="calc-vulnerable" style="width:20px; height:20px;">
-            <label for="calc-vulnerable" style="margin-bottom:0; cursor:pointer; color:var(--primary); font-weight:800;">
-              【陳玉媛承諾加碼】戶內含65歲長輩或弱勢族群（補助加碼至30萬元！）
-            </label>
-          </div>
-          <button class="calc-btn-calc" onclick="calculateSubsidy()" style="margin-top:16px;">
-            開始精算核定補助額與自籌款
-          </button>
         </div>
 
-        <!-- 試算結果裁定板 -->
-        <div class="calc-res-panel">
-          <div style="font-size:18px; font-weight:900; color:var(--navy); margin-bottom:16px; border-bottom:2px solid #ecdacf; padding-bottom:10px;">
-            ⚖️ 官方裁決計算檢核表
-          </div>
-          <div class="res-metric">
-            <span class="lbl">核定政府補助款</span>
-            <span class="val green" id="res-grant">20.0 萬元</span>
-          </div>
-          <div class="res-metric">
-            <span class="lbl">民眾自籌負擔款</span>
-            <span class="val" id="res-selfpay" style="color:var(--primary);">20.0 萬元</span>
-          </div>
-          <div class="res-metric">
-            <span class="lbl">法定 65% 計算值</span>
-            <span class="val" id="res-calc65" style="font-size:20px; color:#555;">26.0 萬元</span>
-          </div>
-          <div class="res-metric" id="metric-unit-area">
-            <span class="lbl">面積單價管制值 (3,500元/㎡)</span>
-            <span class="val" id="res-unitlimit" style="font-size:20px; color:#555;">21.0 萬元</span>
-          </div>
-          <div style="background:#fff; border-radius:12px; padding:14px; margin-top:14px; border:1px solid #fed7d7;">
-            <div style="font-size:14px; font-weight:800; color:var(--primary); margin-bottom:4px;">
-              📌 最終核定法規依據說明：
+        <div style="margin-top: 20px; background: #f8fafc; border-radius: 16px; border: 2px solid #e2e8f0; padding: 20px;">
+          <h4 id="calc-result-title" style="font-size: 17px; color: #0f2b48; margin-bottom: 12px; font-weight: 900;">情境資訊載入中...</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px;">
+            <div style="background: #fff; padding: 12px; border-radius: 10px; border: 1.5px solid #e2e8f0;">
+              <div style="font-size: 12px; color: #64748b;">工程總報價</div>
+              <div id="res-quote" style="font-size: 20px; font-weight: 900; color: #0f2b48;">-</div>
             </div>
-            <div id="res-reason" style="font-size:14.5px; color:#444; line-height:1.5;">
-              工程報價 65% 為 26 萬元，超過本項法定上限 20 萬元，故依「法定天花板 20 萬元」核定補助。
+            <div style="background: #fff; padding: 12px; border-radius: 10px; border: 1.5px solid #e2e8f0;">
+              <div style="font-size: 12px; color: #64748b;">施作登記面積</div>
+              <div id="res-area" style="font-size: 20px; font-weight: 900; color: #0f2b48;">-</div>
+            </div>
+            <div style="background: #ecfdf5; padding: 12px; border-radius: 10px; border: 1.5px solid #a7f3d0;">
+              <div style="font-size: 12px; color: #065f46;">法定核定補助款 (縣府撥款)</div>
+              <div id="res-subsidy" style="font-size: 22px; font-weight: 900; color: #059669;">-</div>
+            </div>
+            <div style="background: #fff1f2; padding: 12px; border-radius: 10px; border: 1.5px solid #fecdd3;">
+              <div style="font-size: 12px; color: #9f1239;">民眾自籌配合款</div>
+              <div id="res-self" style="font-size: 22px; font-weight: 900; color: #e11d48;">-</div>
             </div>
           </div>
+          <div id="res-reason" style="margin-top: 14px; font-size: 13.5px; font-weight: 700; color: #334155; line-height: 1.6; background: #fff; padding: 12px; border-radius: 10px; border-left: 4px solid #d4af37;"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 彈出視窗 3：32 家初評機構 -->
-  <div id="modal-agencies" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>🏢 國土管理署 32 家專業初評機構名冊</h2>
-        <button class="modal-close" onclick="closeModal('agencies')">✕</button>
+  <!-- ==============================================================
+       彈窗：32 家初評機構
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-agencies">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2><span>🏢</span> 國土署共同供應契約 32 家初評機構清單</h2>
+        <button class="close-btn" onclick="closeModal('agencies')">✕</button>
       </div>
-      <div style="margin-bottom:14px;">
-        <input type="text" id="agency-search" placeholder="🔍 輸入關鍵字搜尋機構名稱、負責人、地址或電話…" 
-               style="width:100%; padding:14px 18px; border-radius:12px; border:2px solid #ced6e0; font-size:16px; font-weight:700;"
-               oninput="filterAgencies()">
-      </div>
-      <div style="max-height:55vh; overflow-y:auto;">
-        <table class="custom-table" id="agencies-table">
-          <thead>
-            <tr>
-              <th style="width:70px;">編號</th>
-              <th>機構名稱</th>
-              <th style="width:100px;">負責人</th>
-              <th>機構地址</th>
-              <th style="width:160px;">連絡電話</th>
-            </tr>
-          </thead>
-          <tbody id="agencies-tbody"></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-
-  <!-- 彈出視窗 4：50 題 QA 全手風琴全文檢索 -->
-  <div id="modal-qa" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>📖 陳玉媛政見白皮書：老宅延壽 50 題完整問答庫</h2>
-        <button class="modal-close" onclick="closeModal('qa')">✕</button>
-      </div>
-      <div style="margin-bottom:16px;">
-        <input type="text" id="qa-search" placeholder="🔍 輸入題目關鍵字（如：違建、屋齡、補助上限、初評、透天、公寓）…" 
-               style="width:100%; padding:14px 18px; border-radius:12px; border:2px solid #ced6e0; font-size:16px; font-weight:700;"
-               oninput="filterQA()">
-      </div>
-      <div style="display:flex; gap:8px; margin-bottom:16px; overflow-x:auto;">
-        <button class="s-pill active" onclick="setQACategory('all')">全部 50 題</button>
-        <button class="s-pill" onclick="setQACategory('A')">A. 計畫概要篇 (15題)</button>
-        <button class="s-pill" onclick="setQACategory('B')">B. 建築法令篇 (15題)</button>
-        <button class="s-pill" onclick="setQACategory('C')">C. 經費補助篇 (15題)</button>
-        <button class="s-pill" onclick="setQACategory('D')">D. 申辦流程篇 (5題)</button>
-      </div>
-      <div id="qa-container" style="max-height:52vh; overflow-y:auto;"></div>
-    </div>
-  </div>
-
-  <!-- 彈出視窗 5：6 大申請表單下載 -->
-  <div id="modal-forms" class="modal-overlay">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>📑 便民服務：官方 6 大申請書表直接下載</h2>
-        <button class="modal-close" onclick="closeModal('forms')">✕</button>
-      </div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
-        <div style="background:#f8f9fa; border:2px solid #fed7d7; border-radius:16px; padding:18px;">
-          <h4 style="font-size:17px; font-weight:900; color:var(--navy); margin-bottom:10px;">🏠 透天住宅類（全棟專屬）</h4>
-          <a href="assets/forms/修繕需求申請表_透天住宅類.docx" download class="dock-tile-btn hero-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
-            📥 修繕需求申請表 (.docx)
-          </a>
-          <a href="assets/forms/申請補助計畫書_透天住宅類.docx" download class="dock-tile-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
-            📥 申請補助計畫書 (.docx)
-          </a>
-          <a href="assets/forms/申請補助自我評估表_透天住宅類.docx" download class="dock-tile-btn" style="display:block; text-align:center; text-decoration:none;">
-            📥 申請補助自我評估表 (.docx)
-          </a>
+      <div class="modal-body">
+        <input type="text" id="agency-search-input" oninput="filterAgencies()" placeholder="🔍 輸入機構名稱、地址、電話或負責人快速篩選..." style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #cbd5e1; font-size: 14px; font-weight: 700; margin-bottom: 16px;">
+        <div style="background: #fdf2e9; border: 1.5px solid #fcd34d; border-radius: 12px; padding: 12px 16px; margin-bottom: 16px; font-size: 13.5px; color: #92400e;">
+          📞 <strong>連江現地諮詢服務台：</strong>社團法人福建金門馬祖地區建築師公會（連江縣工務處便民櫃台：0836-25330 #6338）
         </div>
-        <div style="background:#f8f9fa; border:2px solid #fed7d7; border-radius:16px; padding:18px;">
-          <h4 style="font-size:17px; font-weight:900; color:var(--navy); margin-bottom:10px;">🏢 集合公寓類（共益設施）</h4>
-          <a href="assets/forms/修繕需求申請表_公寓類.docx" download class="dock-tile-btn hero-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
-            📥 修繕需求申請表 (.docx)
-          </a>
-          <a href="assets/forms/申請補助計畫書_公寓類.docx" download class="dock-tile-btn" style="display:block; text-align:center; margin-bottom:8px; text-decoration:none;">
-            📥 申請補助計畫書 (.docx)
-          </a>
-          <a href="assets/forms/申請補助自我評估表_公寓類.docx" download class="dock-tile-btn" style="display:block; text-align:center; text-decoration:none;">
-            📥 申請補助自我評估表 (.docx)
-          </a>
+        <div id="agencies-list-container" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
+          <!-- 動態載入 32 家 -->
         </div>
       </div>
     </div>
   </div>
 
-  <!-- 彈出視窗 6：舊有房屋證明與登記流程大圖 -->
-  <div id="modal-flow" class="modal-overlay">
-    <div class="modal-content" style="max-width:1050px;">
-      <div class="modal-header">
-        <h2>📜 連江縣舊有房屋證明 ＋ 地政測量及登記流程圖</h2>
-        <button class="modal-close" onclick="closeModal('flow')">✕</button>
+  <!-- ==============================================================
+       彈窗：政見 QA 50 題
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-qa">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2><span>📖</span> 老宅延壽手冊 QA 50 題全文檢索</h2>
+        <button class="close-btn" onclick="closeModal('qa')">✕</button>
       </div>
-      <div style="text-align:center; margin-bottom:18px;">
-        <a href="assets/old_house_flow.jpg" target="_blank" title="點擊檢視高解析大圖">
-          <img src="assets/old_house_flow.jpg" alt="舊有房屋證明與地政登記流程" 
-               style="max-width:100%; max-height:450px; object-fit:contain; border-radius:14px; box-shadow:0 8px 24px rgba(0,0,0,0.12);">
-        </a>
+      <div class="modal-body">
+        <input type="text" id="qa-search-input" oninput="filterQA()" placeholder="🔍 輸入關鍵字（如：違建、屋齡、經費、天花板、切結書）..." style="width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #cbd5e1; font-size: 14px; font-weight: 700; margin-bottom: 16px;">
+        <div id="qa-list-container" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- 動態載入 50 題 -->
+        </div>
       </div>
     </div>
   </div>
 
-  <!-- 彈出視窗 7：手機/平板線上版 QR-Code -->
-  <div id="modal-qrcode" class="modal-overlay">
-    <div class="modal-content" style="max-width:520px; text-align:center;">
-      <div class="modal-header">
-        <h2>📱 手機／平板線上版直連</h2>
-        <button class="modal-close" onclick="closeModal('qrcode')">✕</button>
+  <!-- ==============================================================
+       彈窗：6 大申請表單下載
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-forms">
+    <div class="modal-card">
+      <div class="modal-head">
+        <h2><span>📑</span> 官方標準 6 大申請表單（繁體中文 Word 下載）</h2>
+        <button class="close-btn" onclick="closeModal('forms')">✕</button>
       </div>
-      <p style="font-size:15px; color:var(--ink-soft); margin-bottom:16px;">
-        手機相機直接對準下方 QR-Code，立即在行動裝置上體驗 1號陳玉媛 3D 競選願景島！
-      </p>
-      <div style="width:220px; height:220px; margin:0 auto 16px; padding:12px; background:#fff; border-radius:20px; border:3px dashed var(--primary); display:flex; align-items:center; justify-content:center;">
-        <img src="data:image/jpeg;base64,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" alt="QR Code" style="width:100%; height:100%; object-fit:contain;">
+      <div class="modal-body">
+        <p style="font-size: 14px; color: #475569; margin-bottom: 20px;">
+          陳玉媛競選團隊為鄉親備妥完整標準範本，點擊即可直接下載並填寫送件：
+        </p>
+        <div class="forms-grid">
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #c82333;">【透天住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">修繕需求申請表</h3>
+              <p style="font-size: 13px; color: #64748b;">透天厝申請必備第一步，勾選結構、外牆及防水修繕工項。</p>
+            </div>
+            <a href="assets/forms/修繕需求申請表_透天住宅類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #0284c7;">【公寓集合住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">修繕需求申請表</h3>
+              <p style="font-size: 13px; color: #64748b;">公寓大樓共用部分修繕申請，附管委會或住戶同意證明。</p>
+            </div>
+            <a href="assets/forms/修繕需求申請表_公寓類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #c82333;">【透天住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">申請補助計畫書</h3>
+              <p style="font-size: 13px; color: #64748b;">詳細工程報價、施工廠商資格及期程進度規劃書。</p>
+            </div>
+            <a href="assets/forms/申請補助計畫書_透天住宅類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #0284c7;">【公寓集合住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">申請補助計畫書</h3>
+              <p style="font-size: 13px; color: #64748b;">包含公共管線更換、外牆磁磚拉皮之全棟計畫規格書。</p>
+            </div>
+            <a href="assets/forms/申請補助計畫書_公寓類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #c82333;">【透天住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">自我評估確認表</h3>
+              <p style="font-size: 13px; color: #64748b;">初評送件前自我檢查清單（符合老宅認定、無產權糾紛等）。</p>
+            </div>
+            <a href="assets/forms/申請補助自我評估表_透天住宅類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+
+          <div class="form-item-card">
+            <div>
+              <div style="font-size: 12px; font-weight: 800; color: #0284c7;">【公寓集合住宅類】</div>
+              <h3 style="font-size: 16px; color: #0f2b48; margin: 4px 0 8px;">自我評估確認表</h3>
+              <p style="font-size: 13px; color: #64748b;">全體區分所有權人過半數決議及工程自籌款到位確認。</p>
+            </div>
+            <a href="assets/forms/申請補助自我評估表_公寓類.docx" class="download-btn" download>📥 下載 Word 範本 (.docx)</a>
+          </div>
+        </div>
       </div>
-      <a href="https://pwb6331-hub.github.io/matsu-policy-island/" target="_blank" style="color:var(--primary); font-size:15px; font-weight:800; word-break:break-all;">
-        https://pwb6331-hub.github.io/matsu-policy-island/
-      </a>
     </div>
   </div>
 
-  <!-- 資料全域物件 -->
+  <!-- ==============================================================
+       彈窗：舊有房屋證明與地政登記流程
+       ============================================================== -->
+  <div class="modal-overlay" id="modal-flow">
+    <div class="modal-card" style="max-width: 1050px;">
+      <div class="modal-head">
+        <h2><span>📜</span> 舊有房屋證明 ＋ 地政測量第一次登記 5 大步驟全解析</h2>
+        <button class="close-btn" onclick="closeModal('flow')">✕</button>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <div style="background: #fdfdfd; padding: 12px; border-radius: 16px; border: 2px solid #e2e8f0; margin-bottom: 20px;">
+          <img src="assets/old_house_flow.jpg" alt="舊有房屋證明地政流程" style="max-width: 100%; border-radius: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.1);">
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; text-align: left;">
+          <div style="background: #f1f5f9; padding: 14px; border-radius: 12px; border-left: 4px solid #c82333;">
+            <div style="font-weight: 900; color: #c82333; font-size: 14px;">步驟 1：鄉公所申請</div>
+            <p style="font-size: 12.5px; color: #475569; margin-top: 4px;">備齊航照圖或戶籍水電歷史證明，向所在地鄉公所申辦「舊有合法房屋證明」。</p>
+          </div>
+          <div style="background: #f1f5f9; padding: 14px; border-radius: 12px; border-left: 4px solid #0284c7;">
+            <div style="font-weight: 900; color: #0284c7; font-size: 14px;">步驟 2：地政局現勘測量</div>
+            <p style="font-size: 12.5px; color: #475569; margin-top: 4px;">連江縣地政局排定現地測量，核發「建物測量成果圖」，釐清法定施作面積。</p>
+          </div>
+          <div style="background: #f1f5f9; padding: 14px; border-radius: 12px; border-left: 4px solid #10b981;">
+            <div style="font-weight: 900; color: #10b981; font-size: 14px;">步驟 3：產權第一次登記</div>
+            <p style="font-size: 12.5px; color: #475569; margin-top: 4px;">依法公告 30 天無人異議後，正式核發中華民國「建物所有權狀」，產權名正言順。</p>
+          </div>
+          <div style="background: #f1f5f9; padding: 14px; border-radius: 12px; border-left: 4px solid #f59e0b;">
+            <div style="font-weight: 900; color: #f59e0b; font-size: 14px;">步驟 4：初評機構現場評估</div>
+            <p style="font-size: 12.5px; color: #475569; margin-top: 4px;">委託國土署 32 家初評專業團隊（全額補助）現地安檢，出具安全性初評報告。</p>
+          </div>
+          <div style="background: #f1f5f9; padding: 14px; border-radius: 12px; border-left: 4px solid #8b5cf6;">
+            <div style="font-weight: 900; color: #8b5cf6; font-size: 14px;">步驟 5：工務處核定撥款</div>
+            <p style="font-size: 12.5px; color: #475569; margin-top: 4px;">送件工務處審查核定，施工驗收後直接匯入民眾帳戶（最高 30 萬元補助）。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==============================================================
+       核心資料庫 (40組試算 + 32家機構 + 50題QA)
+       ============================================================== -->
   <script>
-    window.DATA = {
-      agencies: [{"id": 1, "name": "台北市結構工程工業技師公會", "rep": "徐茂卿", "address": "臺北市信義區東興路37號7樓", "tel": "02-8768-1118"}, {"id": 2, "name": "台北市土木技師公會", "rep": "賴建宏", "address": "臺北市松山區東興路28號9樓", "tel": "02-2745-5168"}, {"id": 3, "name": "社團法人臺灣省土木技師公會", "rep": "莊均緯", "address": "新北市板橋區三民路二段37號12樓A3", "tel": "02-8961-3968"}, {"id": 4, "name": "社團法人新北市結構工程技師公會", "rep": "陳伯炤", "address": "新北市板橋區四川路2段241號11樓", "tel": "02-2362-1056"}, {"id": 5, "name": "高雄市結構工程工業技師公會", "rep": "侯政成", "address": "高雄市前鎮區二聖一路288號5樓之1", "tel": "07-713-8518"}, {"id": 6, "name": "臺中市結構工程技師公會", "rep": "許庭偉", "address": "臺中市西屯區臺灣大道四段925號5樓之2", "tel": "04-2358-8249"}, {"id": 7, "name": "台灣省結構工程技師公會", "rep": "王炤烈", "address": "新北市板橋區文化路1段266號21樓之2", "tel": "02-2254-7419"}, {"id": 8, "name": "社團法人中華民國建築技術學會", "rep": "莊輝和", "address": "臺北市信義區基隆路二段189號8樓", "tel": "02-2377-5899"}, {"id": 9, "name": "社團法人桃園市土木技師公會", "rep": "林世杰", "address": "桃園市桃園區三民路三段288號4樓之1", "tel": "03-337-7377"}, {"id": 10, "name": "社團法人新北市土木技師公會", "rep": "丘達昌", "address": "新北市板橋區民生路一段33號21樓之3", "tel": "02-2957-2300"}, {"id": 11, "name": "社團法人臺中市土木技師公會", "rep": "林育信", "address": "臺中市北區崇德路一段629號B棟5樓之1", "tel": "04-2237-8968"}, {"id": 12, "name": "高雄市土木技師公會", "rep": "黃國忠", "address": "高雄市鼓山區中華一路203號3樓", "tel": "07-552-0279"}, {"id": 13, "name": "台南市結構工程技師公會", "rep": "施忠賢", "address": "臺南市安平區永華路二段248號18樓之2", "tel": "06-299-4493"}, {"id": 14, "name": "臺北市建築師公會", "rep": "林志崧", "address": "臺北市信義區基隆路2段51號13樓", "tel": "02-2377-3011"}, {"id": 15, "name": "社團法人新北市建築師公會", "rep": "汪俊男", "address": "新北市板橋區中山路一段293-1號6樓", "tel": "02-8953-4420"}, {"id": 16, "name": "社團法人南投縣建築師公會", "rep": "林宏任", "address": "南投縣南投市忠孝三街8號", "tel": "049-222-3262"}, {"id": 17, "name": "桃園市結構工程技師公會", "rep": "陳敬賢", "address": "桃園市桃園區三民路3段180號4樓之2", "tel": "03-332-0596"}, {"id": 18, "name": "社團法人高雄市建築師公會", "rep": "羅必達", "address": "高雄市三民區博愛一路366號23樓", "tel": "07-323-7248"}, {"id": 19, "name": "社團法人基隆市建築師公會", "rep": "戴雄賜", "address": "基隆市中正區中正路18號2樓之1", "tel": "02-2422-8980"}, {"id": 20, "name": "社團法人臺灣建築發展學會", "rep": "徐文志", "address": "臺中市西區臺灣大道二段536號6樓之2", "tel": "04-2316-0928"}, {"id": 21, "name": "社團法人苗栗縣建築師公會", "rep": "林儒聰", "address": "苗栗市縣府路122號3樓", "tel": "037-321-784"}, {"id": 22, "name": "社團法人臺中市建築師公會", "rep": "蘇懋彬", "address": "臺中市西區臺灣大道2段536號11樓", "tel": "04-2314-9988"}, {"id": 23, "name": "社團法人臺南市建築師公會", "rep": "竇國昌", "address": "臺南市安平區永華路二段248號10樓之六", "tel": "06-295-5770"}, {"id": 24, "name": "社團法人新竹縣建築師公會", "rep": "徐豪廷", "address": "新竹縣竹北市縣政五街32巷8號8樓之2", "tel": "03-656-7878"}, {"id": 25, "name": "社團法人彰化縣建築師公會", "rep": "黃啓芳", "address": "彰化縣彰化市南郭路1段63-9號6樓", "tel": "04-722-6014"}, {"id": 26, "name": "桃園市建築師公會", "rep": "詹健鴻", "address": "桃園市桃園區縣府路232號", "tel": "03-337-7127"}, {"id": 27, "name": "社團法人台南市土木技師公會", "rep": "許引絃", "address": "臺南市永康區中華路12號10樓之5", "tel": "06-311-5135"}, {"id": 28, "name": "花蓮縣建築師公會", "rep": "陳志豪", "address": "花蓮縣花蓮市府前路102之2號", "tel": "03-822-6054"}, {"id": 29, "name": "財團法人聯合營建發展基金會", "rep": "蕭新祿", "address": "臺中市南屯區黎明路一段395巷15之1號3樓", "tel": "04-2470-1218"}, {"id": 30, "name": "社團法人新竹市建築師公會", "rep": "陳文政", "address": "新竹市北區北大路307號15樓之4", "tel": "03-522-8805"}, {"id": 31, "name": "社團法人中華建築公共安全學會", "rep": "李訓良", "address": "臺北市中正區羅斯福路2段50號9樓之2", "tel": "02-2394-8138"}, {"id": 32, "name": "宜蘭縣建築師公會", "rep": "邱清榮", "address": "宜蘭縣宜蘭市縣政七街1號2樓", "tel": "03-925-6311"}],
-      qa: [{"code": "A-01", "category": "A", "categoryName": "概要基礎篇", "question": "為何要推動「老宅延壽」?", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-02", "category": "A", "categoryName": "概要基礎篇", "question": "「老宅延壽」的法令依據為何？什麼時候可以開始申請?有受理期限嗎？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-03", "category": "A", "categoryName": "概要基礎篇", "question": "「老宅延壽機能復新計畫」僅有3年，有可能變成長期推動計畫？", "answer": "(1)法令依據： \n本計畫是依據 114 年 8 月 1 日 總統公布之「因應國際情勢強化經濟社會及⺠⽣國安 \n韌性特別條例」第 3 條第8 款「加強照顧弱勢提供關懷服務」規定所訂定。 \n內政部已訂定「老宅延壽機能復新計畫」及「因應國際情勢強化老舊建築物修繕補助 \n辦法」，作為推動依據。 \n上述計畫與辦法均已於115 年發布實施。 \n(2)開始申請時間： \n有關受理時間將 由地方主管機關公告，請⺠眾屆時可留意各直轄市、縣（市）政府 \n發布之相關資訊 。 \n(3)受理期限： \n本計畫為短期示範補助計畫，計畫年期預計執行至  116年 12 月 31 日止 。"}, {"code": "A-04", "category": "A", "categoryName": "概要基礎篇", "question": "何種建築物可適用「老宅延壽」申請修繕？", "answer": "(1)老宅延壽計畫優先針對全國屋齡30年以上4至6樓公寓住宅及6樓以下透天住宅之 \n合法建築物，提供公寓共有與專有部分以及透天室內外之修繕補助。 \n(2)修繕是以「⼀棟」為申請單位；有關合法建築物之認定，要依據使用執照或經地 \n方政府認定之合法建築物證明文件為準。"}, {"code": "A-05", "category": "A", "categoryName": "概要基礎篇", "question": "合法建築物如何認定? 證明文件有哪些?", "answer": "有關合法建築物之認定是看使用執照或舊有房屋證明+建物登記謄本+建物測量成果 \n圖。"}, {"code": "A-06", "category": "A", "categoryName": "概要基礎篇", "question": "「老宅延壽」為何以4~6層樓公寓住宅及1~6層樓透天為補助對象？其他華廈及大樓也可以補助嗎?", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-07", "category": "A", "categoryName": "概要基礎篇", "question": "「老宅延壽」有何獎助措施？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-08", "category": "A", "categoryName": "概要基礎篇", "question": "申請修繕前，是否一定要先辦理「建築物結構安全性能評估」？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-09", "category": "A", "categoryName": "概要基礎篇", "question": "建築物結構安全性能（耐震能力）評估結果，會否影響「老宅延壽」申請？", "answer": "(1)要，申請⼈申請修繕補助，必須先依「都市危險及老舊建築物結構安全性能評估 \n辦法」規定辦理初步評估或詳細評估(⼆擇⼀)，讓建築物所有權⼈瞭解持有建築物結 \n構安全狀況，並視評估結果及所有權⼈整合意願情形決定建築物將進行修繕、補強措 \n施或重建。 \n(2)另本計畫也提供結構安全性能初步或詳細評估之費用補助，減輕申請⼈負擔。"}, {"code": "A-10", "category": "A", "categoryName": "概要基礎篇", "question": "「老宅延壽」與「都市更新整建維護」有何不同？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-11", "category": "A", "categoryName": "概要基礎篇", "question": "結構安全性能 (耐震能力)評估的申請程序為何？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-12", "category": "A", "categoryName": "概要基礎篇", "question": "結構安全性能評估機構有無限制？誰可以提供協助？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-13", "category": "A", "categoryName": "概要基礎篇", "question": "結構安全性能評估有補助嗎？如何申請？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-14", "category": "A", "categoryName": "概要基礎篇", "question": "辦理結構安全性能評估要多少錢 ?", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "A-15", "category": "A", "categoryName": "概要基礎篇", "question": "如果已經辦理過結構安全性能評估，是不是就不用再評估 ?", "answer": "是的，如⺠眾先前已持有結構安全性能評估報告書，原則上無須重新辦理，且無期限 \n之限制。 \n \n \n \n  \n \nB \n  \n \n法令適用篇 \n(14題)"}, {"code": "B-01", "category": "B", "categoryName": "法令適用篇", "question": "已向地方政府申請過整建維護補助，還可以再申請「老宅延壽」嗎 ?", "answer": "可以，但同⼀棟建築物已依其他法令或計畫申請相同補助項目並獲核准者，不得再申 \n請「老宅延壽」之同⼀補助項目；例如公寓專有部分修繕補助部分，如已依其他法令 \n或計畫申請補助建築物立面修繕，則不得再申請「老宅延壽」的建築物立面修繕補 \n助，但可以申請其他室外及室內修繕的補助。"}, {"code": "B-02", "category": "B", "categoryName": "法令適用篇", "question": "申請「老宅延壽」補助是否須配合拆除違章建築或違規物（突出外牆面之鐵窗、雨遮、頂樓加蓋等）", "answer": "原則不得重複申請相同補助項目；但如果曾申請補助之居家無障礙環境改善項目，已 \n超過使用年限或損壞不堪使用者，還是可以提出申請。"}, {"code": "B-03", "category": "B", "categoryName": "法令適用篇", "question": "公寓的定義？住宅比率怎麼算 ?屋齡如何認定？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "B-04", "category": "B", "categoryName": "法令適用篇", "question": "透天住宅的定義？非住宅使用的透天能否補助？如何認定？", "answer": "(1)透天住宅（⼜稱透天厝），⼀般指的是⼀種整棟上下樓都屬於同⼀戶使用的住 \n家。它通常是獨棟或連棟，透天的樓層可以從地下室⼀路連通到頂樓，是同⼀戶的完 \n整空間，不像公寓那樣分層給不同住戶使用。而且透天的土地和建物通常都是同⼀個 \n屋主持有，不像公寓那樣有很多分層所有權⼈。 \n(2)依補助辦法規定，補助6樓以下透天住宅建築物，全棟應作住宅使用，且所有權⼈ \n應為⾃然⼈。 \n住宅使用比率是以使用執照登載為準；無法出具使用執照者，就以地政機關核發之建 \n物登記謄本所載資料計算或申請⼈亦得⾃行舉證其他政府機關核發之證明文件，如房 \n屋稅籍資料等，並由地方主管機關審認。 \n如建築物有非住宅使用情形者，則不得申請本計畫補助。"}, {"code": "B-05", "category": "B", "categoryName": "法令適用篇", "question": "老宅延壽補助是否要經全體同意才能申請？", "answer": "老宅延壽機能復新計畫，補助項目包括: \n(1)補助結構安全性能評估，包含初步評估或詳細評估。  \n(2)4至6樓公寓住宅修繕補助: \n①公共空間「共用」部分修繕，包含增設昇降設備、樓 梯間修繕、公共管線修繕更 \n新、老舊招牌、違規物或違建 拆除、建物立面修繕、屋頂防水及隔熱、外掛式空調 \n及外 部管線之安全改善工程以及增設或改善無障礙設施等8項。 \n②4至6樓公寓住宅私⼈室內有「專有」部分修繕，包含居家無障礙環境修繕（如扶 \n手更新或加裝、高低差改善、門扇改善、地面防滑及防墜設施等）以及管線繕更新 \n（如給排水管線、電氣管線及燃氣管線等） \n其中，「屋頂防水及隔熱」補助項目，不包含以鐵⽪搭設之防水屋頂；建議⺠眾得併 \n同申請「經濟部家戶設置屋頂太陽光電加速計畫補助」，以整合屋頂改善及節能效 \n益。另，既有電梯設備之修繕，不在本計畫補助範疇內。 \n(3)6樓以下透天住宅之建築物修繕補助: \n①室外修繕，包含立面修繕、屋頂防水及隔熱、外掛式空調及外部管線之安全改善工 \n程、增設或改善室外無障礙設施等4項。 \n②室內修繕，包含居家安全無障礙設施設備改善、管線修繕更新等。 \n補助項目中「屋頂防水及隔熱」之補助，不包含以鐵⽪搭 設作為防水用途之屋頂； \n另，違章建築拆除所需費用，亦 不納入補助範圍。增設電梯設備，不再本計畫補助 \n範疇內。有關補助項目中之「室內修繕」，須係配合辦理防滑改善、無障礙扶手設置 \n或更新、管線更新等相關改善工程所衍⽣ 之裝修內容，始得納入補助範圍。 \n(4)同時透過成立中央及地方顧問團提供⺠眾相關協助機制，以儘快改善國⼈安全的 \n⽣活環境。"}, {"code": "B-06", "category": "B", "categoryName": "法令適用篇", "question": "未成立公寓大廈管理委員會，如何申請共用部分修繕申請？", "answer": "如無管委會或管理負責⼈者，則由全體區分所有權⼈同意並推派代表⼈申請共有部分 \n修繕補助；另如6樓以下透天住宅2⼈以上共有者，則需要取得全體所有權⼈同意並 \n推派代表⼈申請。"}, {"code": "B-07", "category": "B", "categoryName": "法令適用篇", "question": "如果「公寓」整棟建築物都是由單一所有權人持有，還可以申請修繕補助？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "B-08", "category": "B", "categoryName": "法令適用篇", "question": "如果社區已經進入都市更新或危老重建的程序，並且已經報核事業計畫或重建計畫，是否還可以申請修繕補助？", "answer": "不可以，依補助辦法規定，如已進行都市更新或危險及老舊建築物重建程序，且已報 \n核都市更新事業計畫或已申請重建計畫，均不得申請公寓或透天住宅建築物修繕補 \n助。"}, {"code": "B-09", "category": "B", "categoryName": "法令適用篇", "question": "如何成立公寓大廈管理委員會？", "answer": "依公寓大廈管理條例第30條規定成立管委會程序如下： \n(1)推舉有權利召集「區分所有權⼈會議」的召集⼈:由區分所有權⼈2⼈以上互推⼀⼈ \n作為召集⼈，來召開區分所有權⼈的會議。如果是首次召開，通常由建築物的起造⼈ \n來召開。 \n(2)召集合於法定程序的區分所有權⼈會議:會議需提前10天以書面形式通知，並明確 \n載明會議的內容。選舉管理委員的事宜必須在會議通知中公告，不能以臨時提案進行 \n選舉。開會時，需有全體區分所有權⼈及所有比率2／3以上。如果未達此數，則可 \n重新召開。第⼆次會議門檻降低為3⼈並1／5以上所有權⼈及所有權比例出席，決議 \n的通過則需要出席⼈數及所有權比率3／4以上同意。 \n(3)公告與通知住戶會議中決議的內容:開完會後15日內需將開 會中的會議紀錄（須載 \n明開會經過及決議事項並由主席簽名）送達每位區分所有權⼈並進行公告。倘若為流 \n會後重新召開 的會議（⼜稱假決議），也是⼀樣需在15日內將會議紀錄送 達各區分 \n所有權⼈且公告，若在7日內未有全體1／2以上書 面反對，則該決議視為成立，在成 \n立後10日內以書面送達各 區分所有權⼈並公告。 \n(4)向地方政府報備。"}, {"code": "B-10", "category": "B", "categoryName": "法令適用篇", "question": "如何推派管理負責人？", "answer": "按公寓大廈管理條例第3條第10款規定，管理負責⼈係指未成立管理委員會，由區分 \n所有權⼈推選住戶1⼈或依第28條第3項、第29條第6項規定為負責管理公寓大廈事務 \n者；⼀般為所有權⼈數較少、區分所有建築物規模較⼩或社區管理事務單純易管理者 \n（戶數少）。如區分所有權⼈無法互推召集⼈或申請指定臨時召集⼈時，區分所有權 \n⼈得申請直轄市、縣 (市)主管機關指定住戶1⼈為管理負責⼈，其任期至成立管理委 \n員會、推選管理負責⼈或互推召集⼈為止。"}, {"code": "B-11", "category": "B", "categoryName": "法令適用篇", "question": "「棟」的定義為何？「戶」如何的認定？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "B-12", "category": "B", "categoryName": "法令適用篇", "question": "我家在工業區 (商業區、農業區、保護區 …) ，可以申請補助嗎 ?", "answer": "(1)本計畫的目的是為了改善並優化老舊建築物機能與無障礙空間品質，增進高齡者 \n行動的便利性及居住舒適性，故補助辦法係規範以合法住宅為主，並以直轄市、縣 \n(市)主管 機關核發「使用執照」登載為準。如果無法出具使用執照 者，就以地政機 \n關核發之「建物登記謄本」所載資料為準。 \n(2)工業區、工業用地或⼀般所稱之工業住宅無法申請補助，但商業區、農業區及保 \n護區則需認定屬於住宅使用的合法建築物就可以申請。如果還有疑問可進⼀步洽詢所 \n在地之主管機關協助認定。 \n(3)另位於商業區之建築物，如整棟均屬住宅使用，仍得依規定申請本計畫補助。"}, {"code": "B-13", "category": "B", "categoryName": "法令適用篇", "question": "頂樓加蓋、前後陽台外推或搭建部分也可以申請補助嗎 ?", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "B-14", "category": "B", "categoryName": "法令適用篇", "question": "家中要有 65 歲以上長者才能申請嗎？", "answer": "有，各縣市政府公寓大廈業務諮詢單位及電話如下： \n縣(市)政府  單位名稱  連絡資訊  \n臺北市政府  建管處公寓大廈管理科  (02)27208889-8388  \n新北市政府  工務局公寓大廈管理科  (02)2960-3456-7760、7761  \n基隆市政府  都市發展局使用管理科  (02)2420-1122-1818-1821  \n桃園市政府  建築管理處公寓大廈科  (03)3322101-6708~6711  \n新竹市政府  都市發展處使用管理科  (03)5263808-312  \n新竹縣政府  工務處使用管理科  (03)5518101-6369、6370  \n台中市政府  住宅發展工程處公寓大廈管理科  (04)22289111-69517  \n苗栗縣政府  工商發展處使用管理科  037-559848/037-559861  \n彰化縣政府  建設處使用管理科  (04)7531217  \n南投縣政府  建設處使用管理科  (049)2227300  \n雲林縣政府  建設處使用管理及國宅科  (05)5522183  \n高雄市政府  工務局建築管理處第六課  (07)3368333-5341、2423、2424、2425、\n2426、2427  \n臺南市政府  工務局使用管理科  (06)299-1111-8666  \n嘉義市政府  工務處使用管理科  (05)225-4321-323、214  \n嘉義縣政府  經濟發展處使用管理科  (05)3620123-8094、8603、8602  \n屏東縣政府  城鄉發展處公安使用科  (08)7320415-3360~3369  \n澎湖縣政府  建設處建築管理科  (06)9274400-409  \n宜蘭縣政府  建設處使用管理科  (03)9251000-1333、1330  \n花蓮縣政府  建設處建築管理科  (03)8230510  \n臺東縣政府  建設處建築管理科  (089)340416、(089)326141-342  \n金門縣政府  城鄉發展處建築管理科  (082)312876、(082)322512  \n連江縣政府  工務處都計建管科  (0836)25330-6338  \n \n \n \n  \n \nC \n  \n \n補助項目篇 \n(12題)"}, {"code": "B-15", "category": "B", "categoryName": "法令適用篇", "question": "我想成立公寓大廈管理委員會，各地方政府有諮詢窗口可以詢問嗎 ?", "answer": "有，各縣市政府公寓大廈業務諮詢單位及電話如下： \n縣(市)政府  單位名稱  連絡資訊  \n臺北市政府  建管處公寓大廈管理科  (02)27208889-8388  \n新北市政府  工務局公寓大廈管理科  (02)2960-3456-7760、7761  \n基隆市政府  都市發展局使用管理科  (02)2420-1122-1818-1821  \n桃園市政府  建築管理處公寓大廈科  (03)3322101-6708~6711  \n新竹市政府  都市發展處使用管理科  (03)5263808-312  \n新竹縣政府  工務處使用管理科  (03)5518101-6369、6370  \n台中市政府  住宅發展工程處公寓大廈管理科  (04)22289111-69517  \n苗栗縣政府  工商發展處使用管理科  037-559848/037-559861  \n彰化縣政府  建設處使用管理科  (04)7531217  \n南投縣政府  建設處使用管理科  (049)2227300  \n雲林縣政府  建設處使用管理及國宅科  (05)5522183  \n高雄市政府  工務局建築管理處第六課  (07)3368333-5341、2423、2424、2425、\n2426、2427  \n臺南市政府  工務局使用管理科  (06)299-1111-8666  \n嘉義市政府  工務處使用管理科  (05)225-4321-323、214  \n嘉義縣政府  經濟發展處使用管理科  (05)3620123-8094、8603、8602  \n屏東縣政府  城鄉發展處公安使用科  (08)7320415-3360~3369  \n澎湖縣政府  建設處建築管理科  (06)9274400-409  \n宜蘭縣政府  建設處使用管理科  (03)9251000-1333、1330  \n花蓮縣政府  建設處建築管理科  (03)8230510  \n臺東縣政府  建設處建築管理科  (089)340416、(089)326141-342  \n金門縣政府  城鄉發展處建築管理科  (082)312876、(082)322512  \n連江縣政府  工務處都計建管科  (0836)25330-6338  \n \n \n \n  \n \nC \n  \n \n補助項目篇 \n(12題)"}, {"code": "C-01", "category": "C", "categoryName": "補助項目篇", "question": "辦理結構安全性能 (耐震能力)評估，每棟最高可以補助多少費用？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "C-02", "category": "C", "categoryName": "補助項目篇", "question": "公寓申請共用及室內專有部分修繕補助項目為何？最高可以獲得多少補助比例？", "answer": "(1)公寓申請共用部分修繕補助項目有8項包含:增設昇降設備、 樓梯間修繕、 公\n共管線修繕更新工程、 老舊招牌、違規物或違建拆除工程、 建築物立面修繕、 \n屋頂防水及隔熱工程、 外掛式空調及外部管線之安全改善工程、 增設或改善無障 \n礙設施。 \n其中，「屋頂防水及隔熱工程」補助項目，不包含以鐵⽪搭設作為防水用途之屋頂。 \n另，「無障礙設施」補助項目，不包含爬梯機、樓梯升降椅等設備。 \n(2)公寓申請室內專有部分修繕補助項目有2項包含:居家安全及無障礙設施設備修繕 \n管線修繕更新。 \n其中，「無障礙設施」補助項目，不包含爬梯機、樓梯升降椅等設備。 \n另，室內專有部分修繕之補助內容，須係配合辦理「居家安全及無障礙設施設備修 \n繕」或「管線修繕更新」所衍⽣之相關裝修工程，始得納入補助範圍。 \n(3)公寓申請建築物共有及室內專有部分修繕之補助額度，係以實際修繕金額核算， \n各工程項目補助額度均有其上限，且不得超過該項工程經費之65%。"}, {"code": "C-03", "category": "C", "categoryName": "補助項目篇", "question": "公寓「增設」昇降設備（電梯），最高可以獲得多少補助額度？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "C-04", "category": "C", "categoryName": "補助項目篇", "question": "公寓進行建築物立面（外牆）修繕，最高可以獲得多少補助？有無單價上限之限制？門窗或鐵門等之更換是否也有補助 ?", "answer": "建築物立面（外牆）修繕補助上限為每棟300萬元。其補助額度，係以實際施作工程 \n面積核算(且應扣除開口面積)，補助單價以3,500/m2為上限。門窗或鐵門等之更換 \n不屬於補助範圍。"}, {"code": "C-05", "category": "C", "categoryName": "補助項目篇", "question": "除了立面修繕，補助項目有包括老舊招牌、違規物或違建的拆除工程？最高補助額度是多少？", "answer": "有的，老舊招牌、違規物或違建拆除工程補助上限為每棟40萬(註：透天住宅拆除違 \n建不補助)。"}, {"code": "C-06", "category": "C", "categoryName": "補助項目篇", "question": "公寓申請公共管線修繕更新工程（如給排水、電氣管線），每棟最高可以補助多少？", "answer": "公共管線修繕更新工程補助上限為每棟50萬。"}, {"code": "C-07", "category": "C", "categoryName": "補助項目篇", "question": "我是 4 樓的透天住宅，申請建築物立面修繕，最高補助額度是多少？", "answer": "透天住宅之建築物立面修繕費用，是以樓層數、分級距計算， 3至4層樓補助上限為 \n每棟200萬。"}, {"code": "C-08", "category": "C", "categoryName": "補助項目篇", "question": "透天住宅除了立面和屋頂外，還可以申請哪些修繕補助項目？", "answer": "為強化對高齡族群居住安全之保障，透天住宅得申請增設或改善室外無障礙設施以及 \n室內修繕補助項目如下: \n(1)居家安全及無障礙設施設備修繕：包括扶手更新或加裝、高低差改善、門扇改 \n善、地面防滑及防墜設施。  \n(2)管線修繕更新：給排水、電氣及燃氣管線。  \n(3)配合前⼆款所需之必要室內裝修。 \n(4)其中之「無障礙設施」不包括爬梯機、樓梯升降椅等。但廁 所內的扶手、止滑設 \n施、順平等無障礙設施可以補助；另建 築線至出入口之無障礙設施或至電梯之無障 \n礙設施可以補助。"}, {"code": "C-09", "category": "C", "categoryName": "補助項目篇", "question": "申請「專有部分」（室內）修繕補助的項目有哪些？", "answer": "是的，按補助辦法規定，申請⼈應先申請公寓共有部分修繕補助項目3項以上，才可 \n以申請專有部分修繕補助。"}, {"code": "C-10", "category": "C", "categoryName": "補助項目篇", "question": "申請專有部分修繕時，是否一定要同時申請共用部分修繕？", "answer": "是的，按補助辦法規定，申請⼈應先申請公寓共有部分修繕補助項目3項以上，才可 \n以申請專有部分修繕補助。"}, {"code": "C-11", "category": "C", "categoryName": "補助項目篇", "question": "高齡弱勢如何加碼 ?身分如何認定 ?", "answer": "為強化對高齡及弱勢族群居住安全之保障，申請室內修繕補助，其補助範圍內戶籍成 \n員有符合下列條件之⼀，可以提高補助，最高以新臺幣30萬元為限，包括: \n(1)年滿65歲以上⻑者。 \n(2)具低收入戶或中低收入戶資格。 \n(3)依⻑期照顧服務申請及給付辦法規定，屬⻑照需要等級第 2級以上，且符合居家無 \n障礙環境改善補助對象者。 \n(4)是否有高齡⼈口居住，以申請當時之資料為準。"}, {"code": "C-12", "category": "C", "categoryName": "補助項目篇", "question": "如果我已經因為長照需求申請過衛福部的居家無障礙環境改善補助，是否還可以申請老宅延壽的室內無障礙環境改善補助 ?", "answer": "原則不得重複申請相同補助項目；但如果曾申請補助之居家無障礙環境改善項目，已 \n超過使用年限或損壞不堪使用者，還是可以提出申請。"}, {"code": "C-13", "category": "C", "categoryName": "補助項目篇", "question": "透天住宅申請室外及室內部分修繕補助項目為何？最高可以獲得多少補助比例？", "answer": "(1)透天住宅申請室外部分修繕補助項目有4項包含: 建築物立面修繕、 屋頂防水及 \n隔熱工程、 外掛式空調及外部管線之安全改善工程、 增設或改善室外無障礙設 \n施。 \n補助項目中「屋頂防水及隔熱」之補助不包括防水用鐵⽪屋頂之補助。 \n其中之「增設或改善室外無障礙設施」係指建築線至出入口之無障礙設施或至電梯之 \n無障礙設施可以補助。 \n(2)透天住宅申請室內部分修繕補助項目有2項包含:居家安全及無障礙設施設備修繕 \n管線修繕更新。 \n其中「無障礙設施設備修繕」不包括爬梯機、樓梯升降椅等，但廁所內的扶手、止滑 \n設施、順平等無障礙設施可以補助。 \n(3)透天住宅申請建築物室外及室內部分修繕之補助額度，係以實際修繕金額核算， \n各工程項目補助額度均有其上限，且不得超過該項工程經費之65%。"}, {"code": "C-14", "category": "C", "categoryName": "補助項目篇", "question": "由建築師或相關專業團體協助整合、規劃、設計、執照申請及監造等費用是否可以納入作業補助作業費？", "answer": "可以。公寓共用部分修繕補助，除工程補助外，另提供「共用部分作業費用」補助， \n每棟最高補助新臺幣1萬元，補助內容包括委託專業者辦理整合協調、專業評估及協 \n助提案等相關作業；經地方政府審查核准後撥付。另針對部分額外補助項目，包含 \n「增設昇降設備」及「建築物立面修繕」，每棟各最高得補助新臺幣5萬元，且得累 \n計申請；相關補助款項於工程施工完成，並經地方政府辦理成果備查後撥付。"}, {"code": "C-15", "category": "C", "categoryName": "補助項目篇", "question": "施工中或已完工的申請案件，可以申請補助嗎。", "answer": "不行。施工中或已完工的申請案件，不得溯及既往申請補助。 本補助辦法規定，申 \n請⼈申請老宅修繕補助，應檢具相關文  件向直轄市、縣（市）政府申請、經審查及 \n核准後始能施工  及核發補助，故施工中或已完工的申請案件不可以申請補助。 \n \n \n \n  \n \nD \n  \n \n申請流程 \n(5題)"}, {"code": "D-01", "category": "D", "categoryName": "申請流程篇", "question": "我申請的補助案件，是由中央還是由地方政府來受理及審查？", "answer": "老宅延壽補助案件之「受理」及「審查」主要係由各直轄市、縣（市）政府辦理。流 \n程包括： \n1.由直轄市、縣（市）政府公告受理補助申請。 \n2.申請⼈向直轄市、縣（市）政府提出補助申請。 \n3.由直轄市、縣（市）政府受理案件並進行審查。 \n4.如資料不足，由地方政府通知限期補正；補正不完全者得駁回申請。 \n5.審查通過後，由地方政府核准補助及後續撥款。 \n至於中央政府（內政部國土管理署）主要係負責政策推動、補助制度建立、評估機構 \n評定及中央輔導機制，實際案件之行政受理與審查作業，仍以地方政府為執行窗口。"}, {"code": "D-02", "category": "D", "categoryName": "申請流程篇", "question": "申請修繕補助獲得核准後，申請人需要在多久內完成施工？如果無法如期完成，可以展延嗎？", "answer": "(1)原則上不影響申請，建築物結構安全性能（耐震能力）評估結果，是讓建築物所 \n有權⼈瞭解持有建築物結構安全狀況。 \n(2)如有提高建築物耐震能力之需求，也可以另外向國土署 (住宅組)申請弱層補強工 \n程補助。"}, {"code": "D-03", "category": "D", "categoryName": "申請流程篇", "question": "增設昇降設備的補助案，是否有特別的施工期限要求？", "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"}, {"code": "D-04", "category": "D", "categoryName": "申請流程篇", "question": "申請建築物修繕補助時，需要準備哪些主要的證明文件？", "answer": "(1)申請書、切結書 \n(2)申請⼈身分證明文件:公寓大廈管理組織報備證明文件、管理負責⼈或全體共同代 \n表⼈名冊(含姓名、聯絡地址及身分證明文件影本)、建物所有權⼈或共同代表⼈身分 \n證明文件 (含姓名、聯絡地址及身分證明文件影本)。 \n(2)同意書或區權會議決議證明:區分所有權⼈會議紀錄或區分所有權⼈全體同意修繕 \n同意書。 \n(3)近3個月內建築物登記第1類或第3類謄本。 \n(4)使用執照或舊有房屋證明+建物登記謄本+建物測量成果圖。 \n(5)高齡弱勢證明文件:符合補助辦法第12條第2項各款身份之1證明文件(年滿65歲以 \n上者之戶口名簿影本或戶籍謄本、中低收入戶證明文件、⻑照需要等級2級以上證明 \n文件)。 \n(6)結構安全性能評估報告書影本。 \n(7)施工廠商簽約證明影本(契約書影本或報價單)。 (8)其他證明文件。 \n \n \n答： ⺠眾申請老宅延壽補助步驟可分為3個階段，申請說明及流程圖如下： \n(1)第⼀階段:修繕需求申請，申請⼈填寫基本資料（含聯絡方式、申請範圍）及補助項 \n目，並授權地方服務團隊調閱建物謄本、合法房屋證明、使用執照、竣工圖及測量成 \n果圖等文件由地方政府或服務團隊協助檢核身分是否符合補助規定，並主動接洽社區 \n提供諮詢輔導。 \n(2)第⼆階段：修繕補助計畫申請，申請⼈或申請⼈委託專業者於公告受理期間，向地 \n方政府提出修繕補助計畫申請。 \n(3)第三階段：施工及請款，經地方政府核定補助後，申請案件進入施工階段，原則須 \n於1年內完工，並得視情形申請展延6個月，最多2次為限。"}, {"code": "D-05", "category": "D", "categoryName": "申請流程篇", "question": "老宅延壽補助申請步驟為何？", "answer": "民眾申請老宅延壽補助步驟可分為3個階段：\n(1) 第一階段：修繕需求申請，申請人填寫基本資料及補助項目，授權地方服務團隊調閱謄本、舊有房屋證明、使照竣工圖等協助檢核。\n(2) 第二階段：修繕補助計畫申請，由申請人或專業者於公告受理期間向縣府提出計畫書。\n(3) 第三階段：施工及請款，核定後原則1年內完工，得申請展延6個月最多2次。"}],
-      scenarios: [{"id": "公-01", "type": "apt", "item": "增設電梯", "title": "增設電梯 (大額工程) 受單項上限箝制", "desc": "廠商報價 700 萬元", "cost": 700, "area": 0, "calc65": 455, "unitLimit": 0, "ceiling": 400, "grant": 400, "selfPay": 300, "binding": "法定上限400萬箝制", "note": "455萬元 ＞ 單項上限 400 萬元，依上限核給"}, {"id": "公-02", "type": "apt", "item": "增設電梯", "title": "增設電梯 (標準規模) 受 65% 實支管制", "desc": "廠商報價 550 萬元", "cost": 550, "area": 0, "calc65": 357.5, "unitLimit": 0, "ceiling": 400, "grant": 357.5, "selfPay": 192.5, "binding": "65%實支管制", "note": "357.5萬元 ＜ 單項上限 400 萬元，依 65% 核發"}, {"id": "公-03", "type": "apt", "item": "增設電梯", "title": "增設電梯 (簡易升降梯) 受 65% 實支管制", "desc": "廠商報價 480 萬元", "cost": 480, "area": 0, "calc65": 312, "unitLimit": 0, "ceiling": 400, "grant": 312, "selfPay": 168, "binding": "65%實支管制", "note": "312萬元 ＜ 單項上限 400 萬元，依實支 65% 核發"}, {"id": "公-04", "type": "apt", "item": "立面修繕", "title": "立面修繕 (高單價大面積) 受 300 萬上限箝制", "desc": "經費 500 萬 (1,000 ㎡)", "cost": 500, "area": 1000, "calc65": 325, "unitLimit": 350, "ceiling": 300, "grant": 300, "selfPay": 200, "binding": "法定上限300萬箝制", "note": "單價 5,000 元超限，三者取最低值 300 萬元"}, {"id": "公-05", "type": "apt", "item": "立面修繕", "title": "立面修繕 (平價工法) 受 65% 實支管制", "desc": "經費 340 萬 (1,000 ㎡)", "cost": 340, "area": 1000, "calc65": 221, "unitLimit": 340, "ceiling": 300, "grant": 221, "selfPay": 119, "binding": "65%實支管制", "note": "實際單價 3,400 元未超限，三者取最低 221 萬元"}, {"id": "公-06", "type": "apt", "item": "立面修繕", "title": "立面修繕 (小面積高造價) 受單價面積箝制", "desc": "經費 360 萬 (600 ㎡)", "cost": 360, "area": 600, "calc65": 234, "unitLimit": 210, "ceiling": 300, "grant": 210, "selfPay": 150, "binding": "單價3,500元/㎡面積箝制", "note": "單價 6,000 元，3,500×600=210 萬為三者最低"}, {"id": "公-07", "type": "apt", "item": "立面修繕", "title": "立面修繕 (大面積低單價) 受 65% 實支管制", "desc": "經費 260 萬 (1,100 ㎡)", "cost": 260, "area": 1100, "calc65": 169, "unitLimit": 260, "ceiling": 300, "grant": 169, "selfPay": 91, "binding": "65%實支管制", "note": "單價 2,364 元未逾限，三者取最低 169 萬元"}, {"id": "公-08", "type": "apt", "item": "公共管線更新", "title": "公共管線更新 (全面換新) 受單項上限箝制", "desc": "廠商報價 85 萬元", "cost": 85, "area": 0, "calc65": 55.25, "unitLimit": 0, "ceiling": 50, "grant": 50, "selfPay": 35, "binding": "法定上限50萬箝制", "note": "55.25萬元 ＞ 單項上限 50 萬元，依上限核發"}, {"id": "公-09", "type": "apt", "item": "公共管線更新", "title": "公共管線更新 (部分更新) 受 65% 實支管制", "desc": "廠商報價 60 萬元", "cost": 60, "area": 0, "calc65": 39, "unitLimit": 0, "ceiling": 50, "grant": 39, "selfPay": 21, "binding": "65%實支管制", "note": "39 萬元 ＜ 單項上限 50 萬元，依 65% 核發"}, {"id": "公-10", "type": "apt", "item": "公共管線更新", "title": "公共管線更新 (局部抽換) 受 65% 實支管制", "desc": "廠商報價 40 萬元", "cost": 40, "area": 0, "calc65": 26, "unitLimit": 0, "ceiling": 50, "grant": 26, "selfPay": 14, "binding": "65%實支管制", "note": "26 萬元 ＜ 單項上限 50 萬元，依實支 65% 核定"}, {"id": "公-11", "type": "apt", "item": "屋頂防水隔熱", "title": "屋頂防水隔熱 (全面施作) 受單項上限箝制", "desc": "廠商報價 80 萬元", "cost": 80, "area": 0, "calc65": 52, "unitLimit": 0, "ceiling": 50, "grant": 50, "selfPay": 30, "binding": "法定上限50萬箝制", "note": "52 萬元 ＞ 單項上限 50 萬元，依上限 50 萬核定"}, {"id": "公-12", "type": "apt", "item": "屋頂防水隔熱", "title": "屋頂防水隔熱 (標準規模) 受 65% 實支管制", "desc": "廠商報價 65 萬元", "cost": 65, "area": 0, "calc65": 42.25, "unitLimit": 0, "ceiling": 50, "grant": 42.25, "selfPay": 22.75, "binding": "65%實支管制", "note": "42.25 萬元 ＜ 上限 50 萬元，依 65% 核定"}, {"id": "公-13", "type": "apt", "item": "屋頂防水隔熱", "title": "屋頂防水隔熱 (局部修繕) 受 65% 實支管制", "desc": "廠商報價 45 萬元", "cost": 45, "area": 0, "calc65": 29.25, "unitLimit": 0, "ceiling": 50, "grant": 29.25, "selfPay": 15.75, "binding": "65%實支管制", "note": "29.25 萬元 ＜ 上限 50 萬元，依 65% 核定"}, {"id": "公-14", "type": "apt", "item": "樓梯間修繕", "title": "樓梯間修繕 (全面翻新) 受單項上限箝制", "desc": "廠商報價 68 萬元", "cost": 68, "area": 0, "calc65": 44.2, "unitLimit": 0, "ceiling": 40, "grant": 40, "selfPay": 28, "binding": "法定上限40萬箝制", "note": "梯間全面磁磚扶手換新，44.2 萬 ＞ 40 萬依上限核發"}, {"id": "公-15", "type": "apt", "item": "樓梯間修繕", "title": "樓梯間修繕 (標準工項) 受 65% 實支管制", "desc": "廠商報價 50 萬元", "cost": 50, "area": 0, "calc65": 32.5, "unitLimit": 0, "ceiling": 40, "grant": 32.5, "selfPay": 17.5, "binding": "65%實支管制", "note": "32.5 萬元 ＜ 上限 40 萬元，依實支 65% 核定"}, {"id": "公-16", "type": "apt", "item": "違章或老舊招牌拆除", "title": "違章或老舊招牌拆除 (大量拆除) 受單項上限箝制", "desc": "廠商報價 65 萬元", "cost": 65, "area": 0, "calc65": 42.25, "unitLimit": 0, "ceiling": 40, "grant": 40, "selfPay": 25, "binding": "法定上限40萬箝制", "note": "全棟生鏽招牌與雨遮違建拆除，42.25 萬 ＞ 40 萬"}, {"id": "公-17", "type": "apt", "item": "違章或老舊招牌拆除", "title": "違章或老舊招牌拆除 (局部拆除) 受 65% 實支管制", "desc": "廠商報價 35 萬元", "cost": 35, "area": 0, "calc65": 22.75, "unitLimit": 0, "ceiling": 40, "grant": 22.75, "selfPay": 12.25, "binding": "65%實支管制", "note": "22.75 萬元 ＜ 上限 40 萬元，依 65% 核定"}, {"id": "公-18", "type": "apt", "item": "私人室內專有修繕", "title": "私人室內 (一般戶大修) 受一般戶上限箝制", "desc": "廠商報價 38 萬元", "cost": 38, "area": 0, "calc65": 24.7, "unitLimit": 0, "ceiling": 20, "grant": 20, "selfPay": 18, "binding": "一般戶上限20萬箝制", "note": "一般住戶 24.7 萬元 ＞ 一般戶上限 20 萬元，核給 20 萬"}, {"id": "公-19", "type": "apt", "item": "私人室內專有修繕", "title": "私人室內 (一般戶局部) 受 65% 實支管制", "desc": "廠商報價 25 萬元", "cost": 25, "area": 0, "calc65": 16.25, "unitLimit": 0, "ceiling": 20, "grant": 16.25, "selfPay": 8.75, "binding": "65%實支管制", "note": "16.25 萬元 ＜ 一般戶上限 20 萬元，依 65% 核定"}, {"id": "公-20", "type": "apt", "item": "私人室內專有修繕", "title": "私人室內 (高齡弱勢大修) 受弱勢加碼上限箝制", "desc": "廠商報價 52 萬元", "cost": 52, "area": 0, "calc65": 33.8, "unitLimit": 0, "ceiling": 30, "grant": 30, "selfPay": 22, "binding": "弱勢加碼上限30萬箝制", "note": "含65歲長者或弱勢，33.8 萬 ＞ 30 萬加碼上限，核給 30 萬"}, {"id": "透-01", "type": "house", "item": "1~2樓透天立面", "title": "1～2 樓立面 (大工程超額) 受 100 萬樓層上限", "desc": "經費 200 萬 (400 ㎡)", "cost": 200, "area": 400, "calc65": 130, "unitLimit": 140, "ceiling": 100, "grant": 100, "selfPay": 100, "binding": "1-2樓上限100萬箝制", "note": "1-2 樓法定上限 100 萬，三者取最低核定 100 萬"}, {"id": "透-02", "type": "house", "item": "1~2樓透天立面", "title": "1～2 樓立面 (小規模施工) 受 65% 實支管制", "desc": "經費 90 萬 (250 ㎡)", "cost": 90, "area": 250, "calc65": 58.5, "unitLimit": 87.5, "ceiling": 100, "grant": 58.5, "selfPay": 31.5, "binding": "65%實支管制", "note": "造價較小，三者取最低為工程費 65% 之 58.5 萬"}, {"id": "透-03", "type": "house", "item": "1~2樓透天立面", "title": "1～2 樓立面 (平價塗料) 受 65% 實支管制", "desc": "經費 120 萬 (500 ㎡)", "cost": 120, "area": 500, "calc65": 78, "unitLimit": 120, "ceiling": 100, "grant": 78, "selfPay": 42, "binding": "65%實支管制", "note": "單價 2,400 元未逾限，取 65% 金額 78 萬最低值"}, {"id": "透-04", "type": "house", "item": "3~4樓透天立面", "title": "3～4 樓立面 (全面拉皮) 受 200 萬樓層上限", "desc": "經費 320 萬 (700 ㎡)", "cost": 320, "area": 700, "calc65": 208, "unitLimit": 245, "ceiling": 200, "grant": 200, "selfPay": 120, "binding": "3-4樓上限200萬箝制", "note": "3-4 樓上限 200 萬，208 萬超限取 200 萬"}, {"id": "透-05", "type": "house", "item": "3~4樓透天立面", "title": "3～4 樓立面 (平價工法) 受 65% 實支管制", "desc": "經費 280 萬 (900 ㎡)", "cost": 280, "area": 900, "calc65": 182, "unitLimit": 280, "ceiling": 200, "grant": 182, "selfPay": 98, "binding": "65%實支管制", "note": "單價 3,111 元未逾限，三者取最低 182 萬元"}, {"id": "透-06", "type": "house", "item": "3~4樓透天立面", "title": "3～4 樓立面 (小面積高造價) 受單價面積箝制", "desc": "經費 250 萬 (340 ㎡)", "cost": 250, "area": 340, "calc65": 162.5, "unitLimit": 119, "ceiling": 200, "grant": 119, "selfPay": 131, "binding": "單價3,500元/㎡面積箝制", "note": "單價 7,353 元超限，依 3,500×340=119 萬為最低值"}, {"id": "透-07", "type": "house", "item": "5~6樓透天立面", "title": "5～6 樓立面 (全面大修) 受 300 萬樓層上限", "desc": "經費 520 萬 (1,100 ㎡)", "cost": 520, "area": 1100, "calc65": 338, "unitLimit": 385, "ceiling": 300, "grant": 300, "selfPay": 220, "binding": "5-6樓上限300萬箝制", "note": "5-6 樓法定上限 300 萬，338 萬超限取 300 萬"}, {"id": "透-08", "type": "house", "item": "5~6樓透天立面", "title": "5～6 樓立面 (標準工法) 受 65% 實支管制", "desc": "經費 420 萬 (1,200 ㎡)", "cost": 420, "area": 1200, "calc65": 273, "unitLimit": 420, "ceiling": 300, "grant": 273, "selfPay": 147, "binding": "65%實支管制", "note": "實際單價 3,500 元，三者取最低為 65% 之 273 萬"}, {"id": "透-09", "type": "house", "item": "透天屋頂防水", "title": "透天屋頂防水 (全面重鋪) 受透天上限箝制", "desc": "廠商報價 38 萬元", "cost": 38, "area": 0, "calc65": 24.7, "unitLimit": 0, "ceiling": 20, "grant": 20, "selfPay": 18, "binding": "透天屋頂上限20萬箝制", "note": "透天屋頂上限僅 20 萬，24.7 萬超限取 20 萬"}, {"id": "透-10", "type": "house", "item": "透天屋頂防水", "title": "透天屋頂防水 (局部修繕) 受 65% 實支管制", "desc": "廠商報價 25 萬元", "cost": 25, "area": 0, "calc65": 16.25, "unitLimit": 0, "ceiling": 20, "grant": 16.25, "selfPay": 8.75, "binding": "65%實支管制", "note": "16.25 萬元 ＜ 透天上限 20 萬元，依 65% 核發"}, {"id": "透-11", "type": "house", "item": "透天屋頂隔熱", "title": "透天屋頂隔熱 (簡易工法) 受 65% 實支管制", "desc": "廠商報價 18 萬元", "cost": 18, "area": 0, "calc65": 11.7, "unitLimit": 0, "ceiling": 20, "grant": 11.7, "selfPay": 6.3, "binding": "65%實支管制", "note": "11.7 萬元 ＜ 上限 20 萬元，依實支 65% 核定"}, {"id": "透-12", "type": "house", "item": "外掛冷氣安全/管線", "title": "外掛冷氣安全/管線改善 受單項上限箝制", "desc": "廠商報價 9 萬元", "cost": 9, "area": 0, "calc65": 5.85, "unitLimit": 0, "ceiling": 5, "grant": 5, "selfPay": 4, "binding": "單項上限5萬箝制", "note": "冷氣防墜鐵架更新，5.85 萬 ＞ 上限 5 萬元"}, {"id": "透-13", "type": "house", "item": "外掛冷氣安全/管線", "title": "外掛冷氣安全/管線改善 受 65% 實支管制", "desc": "廠商報價 6 萬元", "cost": 6, "area": 0, "calc65": 3.9, "unitLimit": 0, "ceiling": 5, "grant": 3.9, "selfPay": 2.1, "binding": "65%實支管制", "note": "室外冷氣管槽修整，3.9 萬 ＜ 上限 5 萬元"}, {"id": "透-14", "type": "house", "item": "室外無障礙坡道", "title": "室外無障礙 (門前坡道) 受單項上限箝制", "desc": "廠商報價 8.5 萬元", "cost": 8.5, "area": 0, "calc65": 5.525, "unitLimit": 0, "ceiling": 5, "grant": 5, "selfPay": 3.5, "binding": "單項上限5萬箝制", "note": "階梯改無障礙斜坡道，5.525 萬 ＞ 上限 5 萬元"}, {"id": "透-15", "type": "house", "item": "室外無障礙設施", "title": "室外無障礙 (防滑扶手) 受 65% 實支管制", "desc": "廠商報價 5 萬元", "cost": 5, "area": 0, "calc65": 3.25, "unitLimit": 0, "ceiling": 5, "grant": 3.25, "selfPay": 1.75, "binding": "65%實支管制", "note": "門前防滑與扶手安裝，3.25 萬 ＜ 上限 5 萬元"}, {"id": "透-16", "type": "house", "item": "透天私人室內修繕", "title": "透天室內 (一般戶大修) 受一般戶上限箝制", "desc": "廠商報價 40 萬元", "cost": 40, "area": 0, "calc65": 26, "unitLimit": 0, "ceiling": 20, "grant": 20, "selfPay": 20, "binding": "一般戶上限20萬箝制", "note": "無弱勢身分，26 萬元 ＞ 一般戶上限 20 萬元"}, {"id": "透-17", "type": "house", "item": "透天私人室內修繕", "title": "透天室內 (一般戶局部) 受 65% 實支管制", "desc": "廠商報價 28 萬元", "cost": 28, "area": 0, "calc65": 18.2, "unitLimit": 0, "ceiling": 20, "grant": 18.2, "selfPay": 9.8, "binding": "65%實支管制", "note": "18.2 萬元 ＜ 一般上限 20 萬元，依 65% 核定"}, {"id": "透-18", "type": "house", "item": "透天私人室內修繕", "title": "透天室內 (高齡弱勢大修) 受弱勢加碼上限", "desc": "廠商報價 50 萬元", "cost": 50, "area": 0, "calc65": 32.5, "unitLimit": 0, "ceiling": 30, "grant": 30, "selfPay": 20, "binding": "弱勢加碼上限30萬箝制", "note": "全棟水電與長輩無障礙改善，32.5 萬 ＞ 30 萬"}, {"id": "透-19", "type": "house", "item": "透天私人室內修繕", "title": "透天室內 (高齡弱勢中修) 享弱勢加碼全額", "desc": "廠商報價 44 萬元", "cost": 44, "area": 0, "calc65": 28.6, "unitLimit": 0, "ceiling": 30, "grant": 28.6, "selfPay": 15.4, "binding": "65%實支管制 (弱勢加碼額度內)", "note": "含 65 歲長者，28.6 萬 ＜ 弱勢上限 30 萬"}, {"id": "透-20", "type": "house", "item": "透天私人室內修繕", "title": "透天室內 (高齡弱勢常態) 享弱勢加碼全額", "desc": "廠商報價 36 萬元", "cost": 36, "area": 0, "calc65": 23.4, "unitLimit": 0, "ceiling": 30, "grant": 23.4, "selfPay": 12.6, "binding": "65%實支管制 (弱勢加碼額度內)", "note": "浴廁改善與管線抽換，23.4 萬 ＜ 30 萬"}]
-    };
-
-    // 1號 陳玉媛 動態政見口號庫 (可點擊切換輪播)
-    const HERO_SLOGANS = [
-      "「老宅延壽機能復新・最高補助加碼至 30 萬元！」",
-      "「傾聽在地、踏實做事・為連江鄉親打造安全好家園！」",
-      "「全齡無障礙安心在宅・銀髮長輩生活無憂！」",
-      "「推動閩東特色聚落拉皮・維護芹壁與復興傳統建築美學！」",
-      "「四鄉五島均衡發展・爭取中央預算全力建設馬祖！」"
-    ];
-    let curSloganIdx = 0;
-
-    window.cycleHeroSlogan = function() {
-      curSloganIdx = (curSloganIdx + 1) % HERO_SLOGANS.length;
-      const el = document.getElementById('hero-slogan-text');
-      el.style.opacity = '0';
-      setTimeout(() => {
-        el.innerText = HERO_SLOGANS[curSloganIdx];
-        el.style.opacity = '1';
-      }, 200);
-
-      // 觸發 3D 金光粒子動態反饋
-      if (window.triggerHeroGlow) window.triggerHeroGlow();
-    };
+    const SCENARIOS_DATA = [
+  {
+    "id": "公-01",
+    "type": "apt",
+    "item": "增設電梯",
+    "title": "增設電梯 (大額工程) 受單項上限箝制",
+    "desc": "廠商報價 700 萬元",
+    "cost": 700,
+    "area": 0,
+    "calc65": 455,
+    "unitLimit": 0,
+    "ceiling": 400,
+    "grant": 400,
+    "selfPay": 300,
+    "binding": "法定上限400萬箝制",
+    "note": "455萬元 ＞ 單項上限 400 萬元，依上限核給"
+  },
+  {
+    "id": "公-02",
+    "type": "apt",
+    "item": "增設電梯",
+    "title": "增設電梯 (標準規模) 受 65% 實支管制",
+    "desc": "廠商報價 550 萬元",
+    "cost": 550,
+    "area": 0,
+    "calc65": 357.5,
+    "unitLimit": 0,
+    "ceiling": 400,
+    "grant": 357.5,
+    "selfPay": 192.5,
+    "binding": "65%實支管制",
+    "note": "357.5萬元 ＜ 單項上限 400 萬元，依 65% 核發"
+  },
+  {
+    "id": "公-03",
+    "type": "apt",
+    "item": "增設電梯",
+    "title": "增設電梯 (簡易升降梯) 受 65% 實支管制",
+    "desc": "廠商報價 480 萬元",
+    "cost": 480,
+    "area": 0,
+    "calc65": 312,
+    "unitLimit": 0,
+    "ceiling": 400,
+    "grant": 312,
+    "selfPay": 168,
+    "binding": "65%實支管制",
+    "note": "312萬元 ＜ 單項上限 400 萬元，依實支 65% 核發"
+  },
+  {
+    "id": "公-04",
+    "type": "apt",
+    "item": "立面修繕",
+    "title": "立面修繕 (高單價大面積) 受 300 萬上限箝制",
+    "desc": "經費 500 萬 (1,000 ㎡)",
+    "cost": 500,
+    "area": 1000,
+    "calc65": 325,
+    "unitLimit": 350,
+    "ceiling": 300,
+    "grant": 300,
+    "selfPay": 200,
+    "binding": "法定上限300萬箝制",
+    "note": "單價 5,000 元超限，三者取最低值 300 萬元"
+  },
+  {
+    "id": "公-05",
+    "type": "apt",
+    "item": "立面修繕",
+    "title": "立面修繕 (平價工法) 受 65% 實支管制",
+    "desc": "經費 340 萬 (1,000 ㎡)",
+    "cost": 340,
+    "area": 1000,
+    "calc65": 221,
+    "unitLimit": 340,
+    "ceiling": 300,
+    "grant": 221,
+    "selfPay": 119,
+    "binding": "65%實支管制",
+    "note": "實際單價 3,400 元未超限，三者取最低 221 萬元"
+  },
+  {
+    "id": "公-06",
+    "type": "apt",
+    "item": "立面修繕",
+    "title": "立面修繕 (小面積高造價) 受單價面積箝制",
+    "desc": "經費 360 萬 (600 ㎡)",
+    "cost": 360,
+    "area": 600,
+    "calc65": 234,
+    "unitLimit": 210,
+    "ceiling": 300,
+    "grant": 210,
+    "selfPay": 150,
+    "binding": "單價3,500元/㎡面積箝制",
+    "note": "單價 6,000 元，3,500×600=210 萬為三者最低"
+  },
+  {
+    "id": "公-07",
+    "type": "apt",
+    "item": "立面修繕",
+    "title": "立面修繕 (大面積低單價) 受 65% 實支管制",
+    "desc": "經費 260 萬 (1,100 ㎡)",
+    "cost": 260,
+    "area": 1100,
+    "calc65": 169,
+    "unitLimit": 260,
+    "ceiling": 300,
+    "grant": 169,
+    "selfPay": 91,
+    "binding": "65%實支管制",
+    "note": "單價 2,364 元未逾限，三者取最低 169 萬元"
+  },
+  {
+    "id": "公-08",
+    "type": "apt",
+    "item": "公共管線更新",
+    "title": "公共管線更新 (全面換新) 受單項上限箝制",
+    "desc": "廠商報價 85 萬元",
+    "cost": 85,
+    "area": 0,
+    "calc65": 55.25,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 50,
+    "selfPay": 35,
+    "binding": "法定上限50萬箝制",
+    "note": "55.25萬元 ＞ 單項上限 50 萬元，依上限核發"
+  },
+  {
+    "id": "公-09",
+    "type": "apt",
+    "item": "公共管線更新",
+    "title": "公共管線更新 (部分更新) 受 65% 實支管制",
+    "desc": "廠商報價 60 萬元",
+    "cost": 60,
+    "area": 0,
+    "calc65": 39,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 39,
+    "selfPay": 21,
+    "binding": "65%實支管制",
+    "note": "39 萬元 ＜ 單項上限 50 萬元，依 65% 核發"
+  },
+  {
+    "id": "公-10",
+    "type": "apt",
+    "item": "公共管線更新",
+    "title": "公共管線更新 (局部抽換) 受 65% 實支管制",
+    "desc": "廠商報價 40 萬元",
+    "cost": 40,
+    "area": 0,
+    "calc65": 26,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 26,
+    "selfPay": 14,
+    "binding": "65%實支管制",
+    "note": "26 萬元 ＜ 單項上限 50 萬元，依實支 65% 核定"
+  },
+  {
+    "id": "公-11",
+    "type": "apt",
+    "item": "屋頂防水隔熱",
+    "title": "屋頂防水隔熱 (全面施作) 受單項上限箝制",
+    "desc": "廠商報價 80 萬元",
+    "cost": 80,
+    "area": 0,
+    "calc65": 52,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 50,
+    "selfPay": 30,
+    "binding": "法定上限50萬箝制",
+    "note": "52 萬元 ＞ 單項上限 50 萬元，依上限 50 萬核定"
+  },
+  {
+    "id": "公-12",
+    "type": "apt",
+    "item": "屋頂防水隔熱",
+    "title": "屋頂防水隔熱 (標準規模) 受 65% 實支管制",
+    "desc": "廠商報價 65 萬元",
+    "cost": 65,
+    "area": 0,
+    "calc65": 42.25,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 42.25,
+    "selfPay": 22.75,
+    "binding": "65%實支管制",
+    "note": "42.25 萬元 ＜ 上限 50 萬元，依 65% 核定"
+  },
+  {
+    "id": "公-13",
+    "type": "apt",
+    "item": "屋頂防水隔熱",
+    "title": "屋頂防水隔熱 (局部修繕) 受 65% 實支管制",
+    "desc": "廠商報價 45 萬元",
+    "cost": 45,
+    "area": 0,
+    "calc65": 29.25,
+    "unitLimit": 0,
+    "ceiling": 50,
+    "grant": 29.25,
+    "selfPay": 15.75,
+    "binding": "65%實支管制",
+    "note": "29.25 萬元 ＜ 上限 50 萬元，依 65% 核定"
+  },
+  {
+    "id": "公-14",
+    "type": "apt",
+    "item": "樓梯間修繕",
+    "title": "樓梯間修繕 (全面翻新) 受單項上限箝制",
+    "desc": "廠商報價 68 萬元",
+    "cost": 68,
+    "area": 0,
+    "calc65": 44.2,
+    "unitLimit": 0,
+    "ceiling": 40,
+    "grant": 40,
+    "selfPay": 28,
+    "binding": "法定上限40萬箝制",
+    "note": "梯間全面磁磚扶手換新，44.2 萬 ＞ 40 萬依上限核發"
+  },
+  {
+    "id": "公-15",
+    "type": "apt",
+    "item": "樓梯間修繕",
+    "title": "樓梯間修繕 (標準工項) 受 65% 實支管制",
+    "desc": "廠商報價 50 萬元",
+    "cost": 50,
+    "area": 0,
+    "calc65": 32.5,
+    "unitLimit": 0,
+    "ceiling": 40,
+    "grant": 32.5,
+    "selfPay": 17.5,
+    "binding": "65%實支管制",
+    "note": "32.5 萬元 ＜ 上限 40 萬元，依實支 65% 核定"
+  },
+  {
+    "id": "公-16",
+    "type": "apt",
+    "item": "違章或老舊招牌拆除",
+    "title": "違章或老舊招牌拆除 (大量拆除) 受單項上限箝制",
+    "desc": "廠商報價 65 萬元",
+    "cost": 65,
+    "area": 0,
+    "calc65": 42.25,
+    "unitLimit": 0,
+    "ceiling": 40,
+    "grant": 40,
+    "selfPay": 25,
+    "binding": "法定上限40萬箝制",
+    "note": "全棟生鏽招牌與雨遮違建拆除，42.25 萬 ＞ 40 萬"
+  },
+  {
+    "id": "公-17",
+    "type": "apt",
+    "item": "違章或老舊招牌拆除",
+    "title": "違章或老舊招牌拆除 (局部拆除) 受 65% 實支管制",
+    "desc": "廠商報價 35 萬元",
+    "cost": 35,
+    "area": 0,
+    "calc65": 22.75,
+    "unitLimit": 0,
+    "ceiling": 40,
+    "grant": 22.75,
+    "selfPay": 12.25,
+    "binding": "65%實支管制",
+    "note": "22.75 萬元 ＜ 上限 40 萬元，依 65% 核定"
+  },
+  {
+    "id": "公-18",
+    "type": "apt",
+    "item": "私人室內專有修繕",
+    "title": "私人室內 (一般戶大修) 受一般戶上限箝制",
+    "desc": "廠商報價 38 萬元",
+    "cost": 38,
+    "area": 0,
+    "calc65": 24.7,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 20,
+    "selfPay": 18,
+    "binding": "一般戶上限20萬箝制",
+    "note": "一般住戶 24.7 萬元 ＞ 一般戶上限 20 萬元，核給 20 萬"
+  },
+  {
+    "id": "公-19",
+    "type": "apt",
+    "item": "私人室內專有修繕",
+    "title": "私人室內 (一般戶局部) 受 65% 實支管制",
+    "desc": "廠商報價 25 萬元",
+    "cost": 25,
+    "area": 0,
+    "calc65": 16.25,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 16.25,
+    "selfPay": 8.75,
+    "binding": "65%實支管制",
+    "note": "16.25 萬元 ＜ 一般戶上限 20 萬元，依 65% 核定"
+  },
+  {
+    "id": "公-20",
+    "type": "apt",
+    "item": "私人室內專有修繕",
+    "title": "私人室內 (高齡弱勢大修) 受弱勢加碼上限箝制",
+    "desc": "廠商報價 52 萬元",
+    "cost": 52,
+    "area": 0,
+    "calc65": 33.8,
+    "unitLimit": 0,
+    "ceiling": 30,
+    "grant": 30,
+    "selfPay": 22,
+    "binding": "弱勢加碼上限30萬箝制",
+    "note": "含65歲長者或弱勢，33.8 萬 ＞ 30 萬加碼上限，核給 30 萬"
+  },
+  {
+    "id": "透-01",
+    "type": "house",
+    "item": "1~2樓透天立面",
+    "title": "1～2 樓立面 (大工程超額) 受 100 萬樓層上限",
+    "desc": "經費 200 萬 (400 ㎡)",
+    "cost": 200,
+    "area": 400,
+    "calc65": 130,
+    "unitLimit": 140,
+    "ceiling": 100,
+    "grant": 100,
+    "selfPay": 100,
+    "binding": "1-2樓上限100萬箝制",
+    "note": "1-2 樓法定上限 100 萬，三者取最低核定 100 萬"
+  },
+  {
+    "id": "透-02",
+    "type": "house",
+    "item": "1~2樓透天立面",
+    "title": "1～2 樓立面 (小規模施工) 受 65% 實支管制",
+    "desc": "經費 90 萬 (250 ㎡)",
+    "cost": 90,
+    "area": 250,
+    "calc65": 58.5,
+    "unitLimit": 87.5,
+    "ceiling": 100,
+    "grant": 58.5,
+    "selfPay": 31.5,
+    "binding": "65%實支管制",
+    "note": "造價較小，三者取最低為工程費 65% 之 58.5 萬"
+  },
+  {
+    "id": "透-03",
+    "type": "house",
+    "item": "1~2樓透天立面",
+    "title": "1～2 樓立面 (平價塗料) 受 65% 實支管制",
+    "desc": "經費 120 萬 (500 ㎡)",
+    "cost": 120,
+    "area": 500,
+    "calc65": 78,
+    "unitLimit": 120,
+    "ceiling": 100,
+    "grant": 78,
+    "selfPay": 42,
+    "binding": "65%實支管制",
+    "note": "單價 2,400 元未逾限，取 65% 金額 78 萬最低值"
+  },
+  {
+    "id": "透-04",
+    "type": "house",
+    "item": "3~4樓透天立面",
+    "title": "3～4 樓立面 (全面拉皮) 受 200 萬樓層上限",
+    "desc": "經費 320 萬 (700 ㎡)",
+    "cost": 320,
+    "area": 700,
+    "calc65": 208,
+    "unitLimit": 245,
+    "ceiling": 200,
+    "grant": 200,
+    "selfPay": 120,
+    "binding": "3-4樓上限200萬箝制",
+    "note": "3-4 樓上限 200 萬，208 萬超限取 200 萬"
+  },
+  {
+    "id": "透-05",
+    "type": "house",
+    "item": "3~4樓透天立面",
+    "title": "3～4 樓立面 (平價工法) 受 65% 實支管制",
+    "desc": "經費 280 萬 (900 ㎡)",
+    "cost": 280,
+    "area": 900,
+    "calc65": 182,
+    "unitLimit": 280,
+    "ceiling": 200,
+    "grant": 182,
+    "selfPay": 98,
+    "binding": "65%實支管制",
+    "note": "單價 3,111 元未逾限，三者取最低 182 萬元"
+  },
+  {
+    "id": "透-06",
+    "type": "house",
+    "item": "3~4樓透天立面",
+    "title": "3～4 樓立面 (小面積高造價) 受單價面積箝制",
+    "desc": "經費 250 萬 (340 ㎡)",
+    "cost": 250,
+    "area": 340,
+    "calc65": 162.5,
+    "unitLimit": 119,
+    "ceiling": 200,
+    "grant": 119,
+    "selfPay": 131,
+    "binding": "單價3,500元/㎡面積箝制",
+    "note": "單價 7,353 元超限，依 3,500×340=119 萬為最低值"
+  },
+  {
+    "id": "透-07",
+    "type": "house",
+    "item": "5~6樓透天立面",
+    "title": "5～6 樓立面 (全面大修) 受 300 萬樓層上限",
+    "desc": "經費 520 萬 (1,100 ㎡)",
+    "cost": 520,
+    "area": 1100,
+    "calc65": 338,
+    "unitLimit": 385,
+    "ceiling": 300,
+    "grant": 300,
+    "selfPay": 220,
+    "binding": "5-6樓上限300萬箝制",
+    "note": "5-6 樓法定上限 300 萬，338 萬超限取 300 萬"
+  },
+  {
+    "id": "透-08",
+    "type": "house",
+    "item": "5~6樓透天立面",
+    "title": "5～6 樓立面 (標準工法) 受 65% 實支管制",
+    "desc": "經費 420 萬 (1,200 ㎡)",
+    "cost": 420,
+    "area": 1200,
+    "calc65": 273,
+    "unitLimit": 420,
+    "ceiling": 300,
+    "grant": 273,
+    "selfPay": 147,
+    "binding": "65%實支管制",
+    "note": "實際單價 3,500 元，三者取最低為 65% 之 273 萬"
+  },
+  {
+    "id": "透-09",
+    "type": "house",
+    "item": "透天屋頂防水",
+    "title": "透天屋頂防水 (全面重鋪) 受透天上限箝制",
+    "desc": "廠商報價 38 萬元",
+    "cost": 38,
+    "area": 0,
+    "calc65": 24.7,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 20,
+    "selfPay": 18,
+    "binding": "透天屋頂上限20萬箝制",
+    "note": "透天屋頂上限僅 20 萬，24.7 萬超限取 20 萬"
+  },
+  {
+    "id": "透-10",
+    "type": "house",
+    "item": "透天屋頂防水",
+    "title": "透天屋頂防水 (局部修繕) 受 65% 實支管制",
+    "desc": "廠商報價 25 萬元",
+    "cost": 25,
+    "area": 0,
+    "calc65": 16.25,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 16.25,
+    "selfPay": 8.75,
+    "binding": "65%實支管制",
+    "note": "16.25 萬元 ＜ 透天上限 20 萬元，依 65% 核發"
+  },
+  {
+    "id": "透-11",
+    "type": "house",
+    "item": "透天屋頂隔熱",
+    "title": "透天屋頂隔熱 (簡易工法) 受 65% 實支管制",
+    "desc": "廠商報價 18 萬元",
+    "cost": 18,
+    "area": 0,
+    "calc65": 11.7,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 11.7,
+    "selfPay": 6.3,
+    "binding": "65%實支管制",
+    "note": "11.7 萬元 ＜ 上限 20 萬元，依實支 65% 核定"
+  },
+  {
+    "id": "透-12",
+    "type": "house",
+    "item": "外掛冷氣安全/管線",
+    "title": "外掛冷氣安全/管線改善 受單項上限箝制",
+    "desc": "廠商報價 9 萬元",
+    "cost": 9,
+    "area": 0,
+    "calc65": 5.85,
+    "unitLimit": 0,
+    "ceiling": 5,
+    "grant": 5,
+    "selfPay": 4,
+    "binding": "單項上限5萬箝制",
+    "note": "冷氣防墜鐵架更新，5.85 萬 ＞ 上限 5 萬元"
+  },
+  {
+    "id": "透-13",
+    "type": "house",
+    "item": "外掛冷氣安全/管線",
+    "title": "外掛冷氣安全/管線改善 受 65% 實支管制",
+    "desc": "廠商報價 6 萬元",
+    "cost": 6,
+    "area": 0,
+    "calc65": 3.9,
+    "unitLimit": 0,
+    "ceiling": 5,
+    "grant": 3.9,
+    "selfPay": 2.1,
+    "binding": "65%實支管制",
+    "note": "室外冷氣管槽修整，3.9 萬 ＜ 上限 5 萬元"
+  },
+  {
+    "id": "透-14",
+    "type": "house",
+    "item": "室外無障礙坡道",
+    "title": "室外無障礙 (門前坡道) 受單項上限箝制",
+    "desc": "廠商報價 8.5 萬元",
+    "cost": 8.5,
+    "area": 0,
+    "calc65": 5.525,
+    "unitLimit": 0,
+    "ceiling": 5,
+    "grant": 5,
+    "selfPay": 3.5,
+    "binding": "單項上限5萬箝制",
+    "note": "階梯改無障礙斜坡道，5.525 萬 ＞ 上限 5 萬元"
+  },
+  {
+    "id": "透-15",
+    "type": "house",
+    "item": "室外無障礙設施",
+    "title": "室外無障礙 (防滑扶手) 受 65% 實支管制",
+    "desc": "廠商報價 5 萬元",
+    "cost": 5,
+    "area": 0,
+    "calc65": 3.25,
+    "unitLimit": 0,
+    "ceiling": 5,
+    "grant": 3.25,
+    "selfPay": 1.75,
+    "binding": "65%實支管制",
+    "note": "門前防滑與扶手安裝，3.25 萬 ＜ 上限 5 萬元"
+  },
+  {
+    "id": "透-16",
+    "type": "house",
+    "item": "透天私人室內修繕",
+    "title": "透天室內 (一般戶大修) 受一般戶上限箝制",
+    "desc": "廠商報價 40 萬元",
+    "cost": 40,
+    "area": 0,
+    "calc65": 26,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 20,
+    "selfPay": 20,
+    "binding": "一般戶上限20萬箝制",
+    "note": "無弱勢身分，26 萬元 ＞ 一般戶上限 20 萬元"
+  },
+  {
+    "id": "透-17",
+    "type": "house",
+    "item": "透天私人室內修繕",
+    "title": "透天室內 (一般戶局部) 受 65% 實支管制",
+    "desc": "廠商報價 28 萬元",
+    "cost": 28,
+    "area": 0,
+    "calc65": 18.2,
+    "unitLimit": 0,
+    "ceiling": 20,
+    "grant": 18.2,
+    "selfPay": 9.8,
+    "binding": "65%實支管制",
+    "note": "18.2 萬元 ＜ 一般上限 20 萬元，依 65% 核定"
+  },
+  {
+    "id": "透-18",
+    "type": "house",
+    "item": "透天私人室內修繕",
+    "title": "透天室內 (高齡弱勢大修) 受弱勢加碼上限",
+    "desc": "廠商報價 50 萬元",
+    "cost": 50,
+    "area": 0,
+    "calc65": 32.5,
+    "unitLimit": 0,
+    "ceiling": 30,
+    "grant": 30,
+    "selfPay": 20,
+    "binding": "弱勢加碼上限30萬箝制",
+    "note": "全棟水電與長輩無障礙改善，32.5 萬 ＞ 30 萬"
+  },
+  {
+    "id": "透-19",
+    "type": "house",
+    "item": "透天私人室內修繕",
+    "title": "透天室內 (高齡弱勢中修) 享弱勢加碼全額",
+    "desc": "廠商報價 44 萬元",
+    "cost": 44,
+    "area": 0,
+    "calc65": 28.6,
+    "unitLimit": 0,
+    "ceiling": 30,
+    "grant": 28.6,
+    "selfPay": 15.4,
+    "binding": "65%實支管制 (弱勢加碼額度內)",
+    "note": "含 65 歲長者，28.6 萬 ＜ 弱勢上限 30 萬"
+  },
+  {
+    "id": "透-20",
+    "type": "house",
+    "item": "透天私人室內修繕",
+    "title": "透天室內 (高齡弱勢常態) 享弱勢加碼全額",
+    "desc": "廠商報價 36 萬元",
+    "cost": 36,
+    "area": 0,
+    "calc65": 23.4,
+    "unitLimit": 0,
+    "ceiling": 30,
+    "grant": 23.4,
+    "selfPay": 12.6,
+    "binding": "65%實支管制 (弱勢加碼額度內)",
+    "note": "浴廁改善與管線抽換，23.4 萬 ＜ 30 萬"
+  }
+];
+    const AGENCIES_DATA = [
+  {
+    "id": 1,
+    "name": "台北市結構工程工業技師公會",
+    "rep": "徐茂卿",
+    "address": "臺北市信義區東興路37號7樓",
+    "tel": "02-8768-1118"
+  },
+  {
+    "id": 2,
+    "name": "台北市土木技師公會",
+    "rep": "賴建宏",
+    "address": "臺北市松山區東興路28號9樓",
+    "tel": "02-2745-5168"
+  },
+  {
+    "id": 3,
+    "name": "社團法人臺灣省土木技師公會",
+    "rep": "莊均緯",
+    "address": "新北市板橋區三民路二段37號12樓A3",
+    "tel": "02-8961-3968"
+  },
+  {
+    "id": 4,
+    "name": "社團法人新北市結構工程技師公會",
+    "rep": "陳伯炤",
+    "address": "新北市板橋區四川路2段241號11樓",
+    "tel": "02-2362-1056"
+  },
+  {
+    "id": 5,
+    "name": "高雄市結構工程工業技師公會",
+    "rep": "侯政成",
+    "address": "高雄市前鎮區二聖一路288號5樓之1",
+    "tel": "07-713-8518"
+  },
+  {
+    "id": 6,
+    "name": "臺中市結構工程技師公會",
+    "rep": "許庭偉",
+    "address": "臺中市西屯區臺灣大道四段925號5樓之2",
+    "tel": "04-2358-8249"
+  },
+  {
+    "id": 7,
+    "name": "台灣省結構工程技師公會",
+    "rep": "王炤烈",
+    "address": "新北市板橋區文化路1段266號21樓之2",
+    "tel": "02-2254-7419"
+  },
+  {
+    "id": 8,
+    "name": "社團法人中華民國建築技術學會",
+    "rep": "莊輝和",
+    "address": "臺北市信義區基隆路二段189號8樓",
+    "tel": "02-2377-5899"
+  },
+  {
+    "id": 9,
+    "name": "社團法人桃園市土木技師公會",
+    "rep": "林世杰",
+    "address": "桃園市桃園區三民路三段288號4樓之1",
+    "tel": "03-337-7377"
+  },
+  {
+    "id": 10,
+    "name": "社團法人新北市土木技師公會",
+    "rep": "丘達昌",
+    "address": "新北市板橋區民生路一段33號21樓之3",
+    "tel": "02-2957-2300"
+  },
+  {
+    "id": 11,
+    "name": "社團法人臺中市土木技師公會",
+    "rep": "林育信",
+    "address": "臺中市北區崇德路一段629號B棟5樓之1",
+    "tel": "04-2237-8968"
+  },
+  {
+    "id": 12,
+    "name": "高雄市土木技師公會",
+    "rep": "黃國忠",
+    "address": "高雄市鼓山區中華一路203號3樓",
+    "tel": "07-552-0279"
+  },
+  {
+    "id": 13,
+    "name": "台南市結構工程技師公會",
+    "rep": "施忠賢",
+    "address": "臺南市安平區永華路二段248號18樓之2",
+    "tel": "06-299-4493"
+  },
+  {
+    "id": 14,
+    "name": "臺北市建築師公會",
+    "rep": "林志崧",
+    "address": "臺北市信義區基隆路2段51號13樓",
+    "tel": "02-2377-3011"
+  },
+  {
+    "id": 15,
+    "name": "社團法人新北市建築師公會",
+    "rep": "汪俊男",
+    "address": "新北市板橋區中山路一段293-1號6樓",
+    "tel": "02-8953-4420"
+  },
+  {
+    "id": 16,
+    "name": "社團法人南投縣建築師公會",
+    "rep": "林宏任",
+    "address": "南投縣南投市忠孝三街8號",
+    "tel": "049-222-3262"
+  },
+  {
+    "id": 17,
+    "name": "桃園市結構工程技師公會",
+    "rep": "陳敬賢",
+    "address": "桃園市桃園區三民路3段180號4樓之2",
+    "tel": "03-332-0596"
+  },
+  {
+    "id": 18,
+    "name": "社團法人高雄市建築師公會",
+    "rep": "羅必達",
+    "address": "高雄市三民區博愛一路366號23樓",
+    "tel": "07-323-7248"
+  },
+  {
+    "id": 19,
+    "name": "社團法人基隆市建築師公會",
+    "rep": "戴雄賜",
+    "address": "基隆市中正區中正路18號2樓之1",
+    "tel": "02-2422-8980"
+  },
+  {
+    "id": 20,
+    "name": "社團法人臺灣建築發展學會",
+    "rep": "徐文志",
+    "address": "臺中市西區臺灣大道二段536號6樓之2",
+    "tel": "04-2316-0928"
+  },
+  {
+    "id": 21,
+    "name": "社團法人苗栗縣建築師公會",
+    "rep": "林儒聰",
+    "address": "苗栗市縣府路122號3樓",
+    "tel": "037-321-784"
+  },
+  {
+    "id": 22,
+    "name": "社團法人臺中市建築師公會",
+    "rep": "蘇懋彬",
+    "address": "臺中市西區臺灣大道2段536號11樓",
+    "tel": "04-2314-9988"
+  },
+  {
+    "id": 23,
+    "name": "社團法人臺南市建築師公會",
+    "rep": "竇國昌",
+    "address": "臺南市安平區永華路二段248號10樓之六",
+    "tel": "06-295-5770"
+  },
+  {
+    "id": 24,
+    "name": "社團法人新竹縣建築師公會",
+    "rep": "徐豪廷",
+    "address": "新竹縣竹北市縣政五街32巷8號8樓之2",
+    "tel": "03-656-7878"
+  },
+  {
+    "id": 25,
+    "name": "社團法人彰化縣建築師公會",
+    "rep": "黃啓芳",
+    "address": "彰化縣彰化市南郭路1段63-9號6樓",
+    "tel": "04-722-6014"
+  },
+  {
+    "id": 26,
+    "name": "桃園市建築師公會",
+    "rep": "詹健鴻",
+    "address": "桃園市桃園區縣府路232號",
+    "tel": "03-337-7127"
+  },
+  {
+    "id": 27,
+    "name": "社團法人台南市土木技師公會",
+    "rep": "許引絃",
+    "address": "臺南市永康區中華路12號10樓之5",
+    "tel": "06-311-5135"
+  },
+  {
+    "id": 28,
+    "name": "花蓮縣建築師公會",
+    "rep": "陳志豪",
+    "address": "花蓮縣花蓮市府前路102之2號",
+    "tel": "03-822-6054"
+  },
+  {
+    "id": 29,
+    "name": "財團法人聯合營建發展基金會",
+    "rep": "蕭新祿",
+    "address": "臺中市南屯區黎明路一段395巷15之1號3樓",
+    "tel": "04-2470-1218"
+  },
+  {
+    "id": 30,
+    "name": "社團法人新竹市建築師公會",
+    "rep": "陳文政",
+    "address": "新竹市北區北大路307號15樓之4",
+    "tel": "03-522-8805"
+  },
+  {
+    "id": 31,
+    "name": "社團法人中華建築公共安全學會",
+    "rep": "李訓良",
+    "address": "臺北市中正區羅斯福路2段50號9樓之2",
+    "tel": "02-2394-8138"
+  },
+  {
+    "id": 32,
+    "name": "宜蘭縣建築師公會",
+    "rep": "邱清榮",
+    "address": "宜蘭縣宜蘭市縣政七街1號2樓",
+    "tel": "03-925-6311"
+  }
+];
+    const QA_DATA = [
+  {
+    "code": "A-01",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "為何要推動「老宅延壽」?",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-02",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "「老宅延壽」的法令依據為何？什麼時候可以開始申請?有受理期限嗎？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-03",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "「老宅延壽機能復新計畫」僅有3年，有可能變成長期推動計畫？",
+    "answer": "(1)法令依據： \n本計畫是依據 114 年 8 月 1 日 總統公布之「因應國際情勢強化經濟社會及⺠⽣國安 \n韌性特別條例」第 3 條第8 款「加強照顧弱勢提供關懷服務」規定所訂定。 \n內政部已訂定「老宅延壽機能復新計畫」及「因應國際情勢強化老舊建築物修繕補助 \n辦法」，作為推動依據。 \n上述計畫與辦法均已於115 年發布實施。 \n(2)開始申請時間： \n有關受理時間將 由地方主管機關公告，請⺠眾屆時可留意各直轄市、縣（市）政府 \n發布之相關資訊 。 \n(3)受理期限： \n本計畫為短期示範補助計畫，計畫年期預計執行至  116年 12 月 31 日止 。"
+  },
+  {
+    "code": "A-04",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "何種建築物可適用「老宅延壽」申請修繕？",
+    "answer": "(1)老宅延壽計畫優先針對全國屋齡30年以上4至6樓公寓住宅及6樓以下透天住宅之 \n合法建築物，提供公寓共有與專有部分以及透天室內外之修繕補助。 \n(2)修繕是以「⼀棟」為申請單位；有關合法建築物之認定，要依據使用執照或經地 \n方政府認定之合法建築物證明文件為準。"
+  },
+  {
+    "code": "A-05",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "合法建築物如何認定? 證明文件有哪些?",
+    "answer": "有關合法建築物之認定是看使用執照或舊有房屋證明+建物登記謄本+建物測量成果 \n圖。"
+  },
+  {
+    "code": "A-06",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "「老宅延壽」為何以4~6層樓公寓住宅及1~6層樓透天為補助對象？其他華廈及大樓也可以補助嗎?",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-07",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "「老宅延壽」有何獎助措施？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-08",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "申請修繕前，是否一定要先辦理「建築物結構安全性能評估」？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-09",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "建築物結構安全性能（耐震能力）評估結果，會否影響「老宅延壽」申請？",
+    "answer": "(1)要，申請⼈申請修繕補助，必須先依「都市危險及老舊建築物結構安全性能評估 \n辦法」規定辦理初步評估或詳細評估(⼆擇⼀)，讓建築物所有權⼈瞭解持有建築物結 \n構安全狀況，並視評估結果及所有權⼈整合意願情形決定建築物將進行修繕、補強措 \n施或重建。 \n(2)另本計畫也提供結構安全性能初步或詳細評估之費用補助，減輕申請⼈負擔。"
+  },
+  {
+    "code": "A-10",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "「老宅延壽」與「都市更新整建維護」有何不同？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-11",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "結構安全性能 (耐震能力)評估的申請程序為何？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-12",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "結構安全性能評估機構有無限制？誰可以提供協助？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-13",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "結構安全性能評估有補助嗎？如何申請？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-14",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "辦理結構安全性能評估要多少錢 ?",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "A-15",
+    "category": "A",
+    "categoryName": "概要基礎篇",
+    "question": "如果已經辦理過結構安全性能評估，是不是就不用再評估 ?",
+    "answer": "是的，如⺠眾先前已持有結構安全性能評估報告書，原則上無須重新辦理，且無期限 \n之限制。 \n \n \n \n  \n \nB \n  \n \n法令適用篇 \n(14題)"
+  },
+  {
+    "code": "B-01",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "已向地方政府申請過整建維護補助，還可以再申請「老宅延壽」嗎 ?",
+    "answer": "可以，但同⼀棟建築物已依其他法令或計畫申請相同補助項目並獲核准者，不得再申 \n請「老宅延壽」之同⼀補助項目；例如公寓專有部分修繕補助部分，如已依其他法令 \n或計畫申請補助建築物立面修繕，則不得再申請「老宅延壽」的建築物立面修繕補 \n助，但可以申請其他室外及室內修繕的補助。"
+  },
+  {
+    "code": "B-02",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "申請「老宅延壽」補助是否須配合拆除違章建築或違規物（突出外牆面之鐵窗、雨遮、頂樓加蓋等）",
+    "answer": "原則不得重複申請相同補助項目；但如果曾申請補助之居家無障礙環境改善項目，已 \n超過使用年限或損壞不堪使用者，還是可以提出申請。"
+  },
+  {
+    "code": "B-03",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "公寓的定義？住宅比率怎麼算 ?屋齡如何認定？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "B-04",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "透天住宅的定義？非住宅使用的透天能否補助？如何認定？",
+    "answer": "(1)透天住宅（⼜稱透天厝），⼀般指的是⼀種整棟上下樓都屬於同⼀戶使用的住 \n家。它通常是獨棟或連棟，透天的樓層可以從地下室⼀路連通到頂樓，是同⼀戶的完 \n整空間，不像公寓那樣分層給不同住戶使用。而且透天的土地和建物通常都是同⼀個 \n屋主持有，不像公寓那樣有很多分層所有權⼈。 \n(2)依補助辦法規定，補助6樓以下透天住宅建築物，全棟應作住宅使用，且所有權⼈ \n應為⾃然⼈。 \n住宅使用比率是以使用執照登載為準；無法出具使用執照者，就以地政機關核發之建 \n物登記謄本所載資料計算或申請⼈亦得⾃行舉證其他政府機關核發之證明文件，如房 \n屋稅籍資料等，並由地方主管機關審認。 \n如建築物有非住宅使用情形者，則不得申請本計畫補助。"
+  },
+  {
+    "code": "B-05",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "老宅延壽補助是否要經全體同意才能申請？",
+    "answer": "老宅延壽機能復新計畫，補助項目包括: \n(1)補助結構安全性能評估，包含初步評估或詳細評估。  \n(2)4至6樓公寓住宅修繕補助: \n①公共空間「共用」部分修繕，包含增設昇降設備、樓 梯間修繕、公共管線修繕更 \n新、老舊招牌、違規物或違建 拆除、建物立面修繕、屋頂防水及隔熱、外掛式空調 \n及外 部管線之安全改善工程以及增設或改善無障礙設施等8項。 \n②4至6樓公寓住宅私⼈室內有「專有」部分修繕，包含居家無障礙環境修繕（如扶 \n手更新或加裝、高低差改善、門扇改善、地面防滑及防墜設施等）以及管線繕更新 \n（如給排水管線、電氣管線及燃氣管線等） \n其中，「屋頂防水及隔熱」補助項目，不包含以鐵⽪搭設之防水屋頂；建議⺠眾得併 \n同申請「經濟部家戶設置屋頂太陽光電加速計畫補助」，以整合屋頂改善及節能效 \n益。另，既有電梯設備之修繕，不在本計畫補助範疇內。 \n(3)6樓以下透天住宅之建築物修繕補助: \n①室外修繕，包含立面修繕、屋頂防水及隔熱、外掛式空調及外部管線之安全改善工 \n程、增設或改善室外無障礙設施等4項。 \n②室內修繕，包含居家安全無障礙設施設備改善、管線修繕更新等。 \n補助項目中「屋頂防水及隔熱」之補助，不包含以鐵⽪搭 設作為防水用途之屋頂； \n另，違章建築拆除所需費用，亦 不納入補助範圍。增設電梯設備，不再本計畫補助 \n範疇內。有關補助項目中之「室內修繕」，須係配合辦理防滑改善、無障礙扶手設置 \n或更新、管線更新等相關改善工程所衍⽣ 之裝修內容，始得納入補助範圍。 \n(4)同時透過成立中央及地方顧問團提供⺠眾相關協助機制，以儘快改善國⼈安全的 \n⽣活環境。"
+  },
+  {
+    "code": "B-06",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "未成立公寓大廈管理委員會，如何申請共用部分修繕申請？",
+    "answer": "如無管委會或管理負責⼈者，則由全體區分所有權⼈同意並推派代表⼈申請共有部分 \n修繕補助；另如6樓以下透天住宅2⼈以上共有者，則需要取得全體所有權⼈同意並 \n推派代表⼈申請。"
+  },
+  {
+    "code": "B-07",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "如果「公寓」整棟建築物都是由單一所有權人持有，還可以申請修繕補助？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "B-08",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "如果社區已經進入都市更新或危老重建的程序，並且已經報核事業計畫或重建計畫，是否還可以申請修繕補助？",
+    "answer": "不可以，依補助辦法規定，如已進行都市更新或危險及老舊建築物重建程序，且已報 \n核都市更新事業計畫或已申請重建計畫，均不得申請公寓或透天住宅建築物修繕補 \n助。"
+  },
+  {
+    "code": "B-09",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "如何成立公寓大廈管理委員會？",
+    "answer": "依公寓大廈管理條例第30條規定成立管委會程序如下： \n(1)推舉有權利召集「區分所有權⼈會議」的召集⼈:由區分所有權⼈2⼈以上互推⼀⼈ \n作為召集⼈，來召開區分所有權⼈的會議。如果是首次召開，通常由建築物的起造⼈ \n來召開。 \n(2)召集合於法定程序的區分所有權⼈會議:會議需提前10天以書面形式通知，並明確 \n載明會議的內容。選舉管理委員的事宜必須在會議通知中公告，不能以臨時提案進行 \n選舉。開會時，需有全體區分所有權⼈及所有比率2／3以上。如果未達此數，則可 \n重新召開。第⼆次會議門檻降低為3⼈並1／5以上所有權⼈及所有權比例出席，決議 \n的通過則需要出席⼈數及所有權比率3／4以上同意。 \n(3)公告與通知住戶會議中決議的內容:開完會後15日內需將開 會中的會議紀錄（須載 \n明開會經過及決議事項並由主席簽名）送達每位區分所有權⼈並進行公告。倘若為流 \n會後重新召開 的會議（⼜稱假決議），也是⼀樣需在15日內將會議紀錄送 達各區分 \n所有權⼈且公告，若在7日內未有全體1／2以上書 面反對，則該決議視為成立，在成 \n立後10日內以書面送達各 區分所有權⼈並公告。 \n(4)向地方政府報備。"
+  },
+  {
+    "code": "B-10",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "如何推派管理負責人？",
+    "answer": "按公寓大廈管理條例第3條第10款規定，管理負責⼈係指未成立管理委員會，由區分 \n所有權⼈推選住戶1⼈或依第28條第3項、第29條第6項規定為負責管理公寓大廈事務 \n者；⼀般為所有權⼈數較少、區分所有建築物規模較⼩或社區管理事務單純易管理者 \n（戶數少）。如區分所有權⼈無法互推召集⼈或申請指定臨時召集⼈時，區分所有權 \n⼈得申請直轄市、縣 (市)主管機關指定住戶1⼈為管理負責⼈，其任期至成立管理委 \n員會、推選管理負責⼈或互推召集⼈為止。"
+  },
+  {
+    "code": "B-11",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "「棟」的定義為何？「戶」如何的認定？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "B-12",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "我家在工業區 (商業區、農業區、保護區 …) ，可以申請補助嗎 ?",
+    "answer": "(1)本計畫的目的是為了改善並優化老舊建築物機能與無障礙空間品質，增進高齡者 \n行動的便利性及居住舒適性，故補助辦法係規範以合法住宅為主，並以直轄市、縣 \n(市)主管 機關核發「使用執照」登載為準。如果無法出具使用執照 者，就以地政機 \n關核發之「建物登記謄本」所載資料為準。 \n(2)工業區、工業用地或⼀般所稱之工業住宅無法申請補助，但商業區、農業區及保 \n護區則需認定屬於住宅使用的合法建築物就可以申請。如果還有疑問可進⼀步洽詢所 \n在地之主管機關協助認定。 \n(3)另位於商業區之建築物，如整棟均屬住宅使用，仍得依規定申請本計畫補助。"
+  },
+  {
+    "code": "B-13",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "頂樓加蓋、前後陽台外推或搭建部分也可以申請補助嗎 ?",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "B-14",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "家中要有 65 歲以上長者才能申請嗎？",
+    "answer": "有，各縣市政府公寓大廈業務諮詢單位及電話如下： \n縣(市)政府  單位名稱  連絡資訊  \n臺北市政府  建管處公寓大廈管理科  (02)27208889-8388  \n新北市政府  工務局公寓大廈管理科  (02)2960-3456-7760、7761  \n基隆市政府  都市發展局使用管理科  (02)2420-1122-1818-1821  \n桃園市政府  建築管理處公寓大廈科  (03)3322101-6708~6711  \n新竹市政府  都市發展處使用管理科  (03)5263808-312  \n新竹縣政府  工務處使用管理科  (03)5518101-6369、6370  \n台中市政府  住宅發展工程處公寓大廈管理科  (04)22289111-69517  \n苗栗縣政府  工商發展處使用管理科  037-559848/037-559861  \n彰化縣政府  建設處使用管理科  (04)7531217  \n南投縣政府  建設處使用管理科  (049)2227300  \n雲林縣政府  建設處使用管理及國宅科  (05)5522183  \n高雄市政府  工務局建築管理處第六課  (07)3368333-5341、2423、2424、2425、\n2426、2427  \n臺南市政府  工務局使用管理科  (06)299-1111-8666  \n嘉義市政府  工務處使用管理科  (05)225-4321-323、214  \n嘉義縣政府  經濟發展處使用管理科  (05)3620123-8094、8603、8602  \n屏東縣政府  城鄉發展處公安使用科  (08)7320415-3360~3369  \n澎湖縣政府  建設處建築管理科  (06)9274400-409  \n宜蘭縣政府  建設處使用管理科  (03)9251000-1333、1330  \n花蓮縣政府  建設處建築管理科  (03)8230510  \n臺東縣政府  建設處建築管理科  (089)340416、(089)326141-342  \n金門縣政府  城鄉發展處建築管理科  (082)312876、(082)322512  \n連江縣政府  工務處都計建管科  (0836)25330-6338  \n \n \n \n  \n \nC \n  \n \n補助項目篇 \n(12題)"
+  },
+  {
+    "code": "B-15",
+    "category": "B",
+    "categoryName": "法令適用篇",
+    "question": "我想成立公寓大廈管理委員會，各地方政府有諮詢窗口可以詢問嗎 ?",
+    "answer": "有，各縣市政府公寓大廈業務諮詢單位及電話如下： \n縣(市)政府  單位名稱  連絡資訊  \n臺北市政府  建管處公寓大廈管理科  (02)27208889-8388  \n新北市政府  工務局公寓大廈管理科  (02)2960-3456-7760、7761  \n基隆市政府  都市發展局使用管理科  (02)2420-1122-1818-1821  \n桃園市政府  建築管理處公寓大廈科  (03)3322101-6708~6711  \n新竹市政府  都市發展處使用管理科  (03)5263808-312  \n新竹縣政府  工務處使用管理科  (03)5518101-6369、6370  \n台中市政府  住宅發展工程處公寓大廈管理科  (04)22289111-69517  \n苗栗縣政府  工商發展處使用管理科  037-559848/037-559861  \n彰化縣政府  建設處使用管理科  (04)7531217  \n南投縣政府  建設處使用管理科  (049)2227300  \n雲林縣政府  建設處使用管理及國宅科  (05)5522183  \n高雄市政府  工務局建築管理處第六課  (07)3368333-5341、2423、2424、2425、\n2426、2427  \n臺南市政府  工務局使用管理科  (06)299-1111-8666  \n嘉義市政府  工務處使用管理科  (05)225-4321-323、214  \n嘉義縣政府  經濟發展處使用管理科  (05)3620123-8094、8603、8602  \n屏東縣政府  城鄉發展處公安使用科  (08)7320415-3360~3369  \n澎湖縣政府  建設處建築管理科  (06)9274400-409  \n宜蘭縣政府  建設處使用管理科  (03)9251000-1333、1330  \n花蓮縣政府  建設處建築管理科  (03)8230510  \n臺東縣政府  建設處建築管理科  (089)340416、(089)326141-342  \n金門縣政府  城鄉發展處建築管理科  (082)312876、(082)322512  \n連江縣政府  工務處都計建管科  (0836)25330-6338  \n \n \n \n  \n \nC \n  \n \n補助項目篇 \n(12題)"
+  },
+  {
+    "code": "C-01",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "辦理結構安全性能 (耐震能力)評估，每棟最高可以補助多少費用？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "C-02",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "公寓申請共用及室內專有部分修繕補助項目為何？最高可以獲得多少補助比例？",
+    "answer": "(1)公寓申請共用部分修繕補助項目有8項包含:增設昇降設備、 樓梯間修繕、 公\n共管線修繕更新工程、 老舊招牌、違規物或違建拆除工程、 建築物立面修繕、 \n屋頂防水及隔熱工程、 外掛式空調及外部管線之安全改善工程、 增設或改善無障 \n礙設施。 \n其中，「屋頂防水及隔熱工程」補助項目，不包含以鐵⽪搭設作為防水用途之屋頂。 \n另，「無障礙設施」補助項目，不包含爬梯機、樓梯升降椅等設備。 \n(2)公寓申請室內專有部分修繕補助項目有2項包含:居家安全及無障礙設施設備修繕 \n管線修繕更新。 \n其中，「無障礙設施」補助項目，不包含爬梯機、樓梯升降椅等設備。 \n另，室內專有部分修繕之補助內容，須係配合辦理「居家安全及無障礙設施設備修 \n繕」或「管線修繕更新」所衍⽣之相關裝修工程，始得納入補助範圍。 \n(3)公寓申請建築物共有及室內專有部分修繕之補助額度，係以實際修繕金額核算， \n各工程項目補助額度均有其上限，且不得超過該項工程經費之65%。"
+  },
+  {
+    "code": "C-03",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "公寓「增設」昇降設備（電梯），最高可以獲得多少補助額度？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "C-04",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "公寓進行建築物立面（外牆）修繕，最高可以獲得多少補助？有無單價上限之限制？門窗或鐵門等之更換是否也有補助 ?",
+    "answer": "建築物立面（外牆）修繕補助上限為每棟300萬元。其補助額度，係以實際施作工程 \n面積核算(且應扣除開口面積)，補助單價以3,500/m2為上限。門窗或鐵門等之更換 \n不屬於補助範圍。"
+  },
+  {
+    "code": "C-05",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "除了立面修繕，補助項目有包括老舊招牌、違規物或違建的拆除工程？最高補助額度是多少？",
+    "answer": "有的，老舊招牌、違規物或違建拆除工程補助上限為每棟40萬(註：透天住宅拆除違 \n建不補助)。"
+  },
+  {
+    "code": "C-06",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "公寓申請公共管線修繕更新工程（如給排水、電氣管線），每棟最高可以補助多少？",
+    "answer": "公共管線修繕更新工程補助上限為每棟50萬。"
+  },
+  {
+    "code": "C-07",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "我是 4 樓的透天住宅，申請建築物立面修繕，最高補助額度是多少？",
+    "answer": "透天住宅之建築物立面修繕費用，是以樓層數、分級距計算， 3至4層樓補助上限為 \n每棟200萬。"
+  },
+  {
+    "code": "C-08",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "透天住宅除了立面和屋頂外，還可以申請哪些修繕補助項目？",
+    "answer": "為強化對高齡族群居住安全之保障，透天住宅得申請增設或改善室外無障礙設施以及 \n室內修繕補助項目如下: \n(1)居家安全及無障礙設施設備修繕：包括扶手更新或加裝、高低差改善、門扇改 \n善、地面防滑及防墜設施。  \n(2)管線修繕更新：給排水、電氣及燃氣管線。  \n(3)配合前⼆款所需之必要室內裝修。 \n(4)其中之「無障礙設施」不包括爬梯機、樓梯升降椅等。但廁 所內的扶手、止滑設 \n施、順平等無障礙設施可以補助；另建 築線至出入口之無障礙設施或至電梯之無障 \n礙設施可以補助。"
+  },
+  {
+    "code": "C-09",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "申請「專有部分」（室內）修繕補助的項目有哪些？",
+    "answer": "是的，按補助辦法規定，申請⼈應先申請公寓共有部分修繕補助項目3項以上，才可 \n以申請專有部分修繕補助。"
+  },
+  {
+    "code": "C-10",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "申請專有部分修繕時，是否一定要同時申請共用部分修繕？",
+    "answer": "是的，按補助辦法規定，申請⼈應先申請公寓共有部分修繕補助項目3項以上，才可 \n以申請專有部分修繕補助。"
+  },
+  {
+    "code": "C-11",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "高齡弱勢如何加碼 ?身分如何認定 ?",
+    "answer": "為強化對高齡及弱勢族群居住安全之保障，申請室內修繕補助，其補助範圍內戶籍成 \n員有符合下列條件之⼀，可以提高補助，最高以新臺幣30萬元為限，包括: \n(1)年滿65歲以上⻑者。 \n(2)具低收入戶或中低收入戶資格。 \n(3)依⻑期照顧服務申請及給付辦法規定，屬⻑照需要等級第 2級以上，且符合居家無 \n障礙環境改善補助對象者。 \n(4)是否有高齡⼈口居住，以申請當時之資料為準。"
+  },
+  {
+    "code": "C-12",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "如果我已經因為長照需求申請過衛福部的居家無障礙環境改善補助，是否還可以申請老宅延壽的室內無障礙環境改善補助 ?",
+    "answer": "原則不得重複申請相同補助項目；但如果曾申請補助之居家無障礙環境改善項目，已 \n超過使用年限或損壞不堪使用者，還是可以提出申請。"
+  },
+  {
+    "code": "C-13",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "透天住宅申請室外及室內部分修繕補助項目為何？最高可以獲得多少補助比例？",
+    "answer": "(1)透天住宅申請室外部分修繕補助項目有4項包含: 建築物立面修繕、 屋頂防水及 \n隔熱工程、 外掛式空調及外部管線之安全改善工程、 增設或改善室外無障礙設 \n施。 \n補助項目中「屋頂防水及隔熱」之補助不包括防水用鐵⽪屋頂之補助。 \n其中之「增設或改善室外無障礙設施」係指建築線至出入口之無障礙設施或至電梯之 \n無障礙設施可以補助。 \n(2)透天住宅申請室內部分修繕補助項目有2項包含:居家安全及無障礙設施設備修繕 \n管線修繕更新。 \n其中「無障礙設施設備修繕」不包括爬梯機、樓梯升降椅等，但廁所內的扶手、止滑 \n設施、順平等無障礙設施可以補助。 \n(3)透天住宅申請建築物室外及室內部分修繕之補助額度，係以實際修繕金額核算， \n各工程項目補助額度均有其上限，且不得超過該項工程經費之65%。"
+  },
+  {
+    "code": "C-14",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "由建築師或相關專業團體協助整合、規劃、設計、執照申請及監造等費用是否可以納入作業補助作業費？",
+    "answer": "可以。公寓共用部分修繕補助，除工程補助外，另提供「共用部分作業費用」補助， \n每棟最高補助新臺幣1萬元，補助內容包括委託專業者辦理整合協調、專業評估及協 \n助提案等相關作業；經地方政府審查核准後撥付。另針對部分額外補助項目，包含 \n「增設昇降設備」及「建築物立面修繕」，每棟各最高得補助新臺幣5萬元，且得累 \n計申請；相關補助款項於工程施工完成，並經地方政府辦理成果備查後撥付。"
+  },
+  {
+    "code": "C-15",
+    "category": "C",
+    "categoryName": "補助項目篇",
+    "question": "施工中或已完工的申請案件，可以申請補助嗎。",
+    "answer": "不行。施工中或已完工的申請案件，不得溯及既往申請補助。 本補助辦法規定，申 \n請⼈申請老宅修繕補助，應檢具相關文  件向直轄市、縣（市）政府申請、經審查及 \n核准後始能施工  及核發補助，故施工中或已完工的申請案件不可以申請補助。 \n \n \n \n  \n \nD \n  \n \n申請流程 \n(5題)"
+  },
+  {
+    "code": "D-01",
+    "category": "D",
+    "categoryName": "申請流程篇",
+    "question": "我申請的補助案件，是由中央還是由地方政府來受理及審查？",
+    "answer": "老宅延壽補助案件之「受理」及「審查」主要係由各直轄市、縣（市）政府辦理。流 \n程包括： \n1.由直轄市、縣（市）政府公告受理補助申請。 \n2.申請⼈向直轄市、縣（市）政府提出補助申請。 \n3.由直轄市、縣（市）政府受理案件並進行審查。 \n4.如資料不足，由地方政府通知限期補正；補正不完全者得駁回申請。 \n5.審查通過後，由地方政府核准補助及後續撥款。 \n至於中央政府（內政部國土管理署）主要係負責政策推動、補助制度建立、評估機構 \n評定及中央輔導機制，實際案件之行政受理與審查作業，仍以地方政府為執行窗口。"
+  },
+  {
+    "code": "D-02",
+    "category": "D",
+    "categoryName": "申請流程篇",
+    "question": "申請修繕補助獲得核准後，申請人需要在多久內完成施工？如果無法如期完成，可以展延嗎？",
+    "answer": "(1)原則上不影響申請，建築物結構安全性能（耐震能力）評估結果，是讓建築物所 \n有權⼈瞭解持有建築物結構安全狀況。 \n(2)如有提高建築物耐震能力之需求，也可以另外向國土署 (住宅組)申請弱層補強工 \n程補助。"
+  },
+  {
+    "code": "D-03",
+    "category": "D",
+    "categoryName": "申請流程篇",
+    "question": "增設昇降設備的補助案，是否有特別的施工期限要求？",
+    "answer": "詳情請依據內政部國土管理署「老宅延壽機能復新補助計畫」手冊規定辦理，或洽連江縣工務處駐府專線 (0836) 25330 #6338。"
+  },
+  {
+    "code": "D-04",
+    "category": "D",
+    "categoryName": "申請流程篇",
+    "question": "申請建築物修繕補助時，需要準備哪些主要的證明文件？",
+    "answer": "(1)申請書、切結書 \n(2)申請⼈身分證明文件:公寓大廈管理組織報備證明文件、管理負責⼈或全體共同代 \n表⼈名冊(含姓名、聯絡地址及身分證明文件影本)、建物所有權⼈或共同代表⼈身分 \n證明文件 (含姓名、聯絡地址及身分證明文件影本)。 \n(2)同意書或區權會議決議證明:區分所有權⼈會議紀錄或區分所有權⼈全體同意修繕 \n同意書。 \n(3)近3個月內建築物登記第1類或第3類謄本。 \n(4)使用執照或舊有房屋證明+建物登記謄本+建物測量成果圖。 \n(5)高齡弱勢證明文件:符合補助辦法第12條第2項各款身份之1證明文件(年滿65歲以 \n上者之戶口名簿影本或戶籍謄本、中低收入戶證明文件、⻑照需要等級2級以上證明 \n文件)。 \n(6)結構安全性能評估報告書影本。 \n(7)施工廠商簽約證明影本(契約書影本或報價單)。 (8)其他證明文件。 \n \n \n答： ⺠眾申請老宅延壽補助步驟可分為3個階段，申請說明及流程圖如下： \n(1)第⼀階段:修繕需求申請，申請⼈填寫基本資料（含聯絡方式、申請範圍）及補助項 \n目，並授權地方服務團隊調閱建物謄本、合法房屋證明、使用執照、竣工圖及測量成 \n果圖等文件由地方政府或服務團隊協助檢核身分是否符合補助規定，並主動接洽社區 \n提供諮詢輔導。 \n(2)第⼆階段：修繕補助計畫申請，申請⼈或申請⼈委託專業者於公告受理期間，向地 \n方政府提出修繕補助計畫申請。 \n(3)第三階段：施工及請款，經地方政府核定補助後，申請案件進入施工階段，原則須 \n於1年內完工，並得視情形申請展延6個月，最多2次為限。"
+  },
+  {
+    "code": "D-05",
+    "category": "D",
+    "categoryName": "申請流程篇",
+    "question": "老宅延壽補助申請步驟為何？",
+    "answer": "民眾申請老宅延壽補助步驟可分為3個階段：\n(1) 第一階段：修繕需求申請，申請人填寫基本資料及補助項目，授權地方服務團隊調閱謄本、舊有房屋證明、使照竣工圖等協助檢核。\n(2) 第二階段：修繕補助計畫申請，由申請人或專業者於公告受理期間向縣府提出計畫書。\n(3) 第三階段：施工及請款，核定後原則1年內完工，得申請展延6個月最多2次。"
+  }
+];
   </script>
 
-  <!-- WebGL / Three.js 核心 3D 願景島引擎 (復興村底圖 + 1號陳玉媛中央放大微縮展台) -->
+  <!-- ==============================================================
+       Three.js 3D 競選微縮群島建置腳本 (Matsu Map精準對齊 + 1號陳玉媛中央放大)
+       ============================================================== -->
   <script type="module">
     import * as THREE from 'three';
     import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
     let scene, camera, renderer, controls;
     let oceanMesh, oceanGeometry;
-    let fuxingBoardMesh, fuxingBaseMesh;
-    let heroGroup, heroGoldRing, heroGlowLight;
-    let lighthouseLightCone;
-    let ships = [];
-    let lightingState = 0; // 0: 晨曦暖陽, 1: 暮色夕照, 2: 藍調夜景
-    let dirLight, hemiLight, ambientLight;
+    let matsuBoardMesh, matsuBaseMesh;
+    let heroMonumentGroup, heroGoldRing, heroGlowLight;
+    let goldParticlesGroup;
+    let dirLight, hemiLight, nightLight;
+    let cruiseShip, fishingBoat;
 
-    const container = document.getElementById('canvas-container');
+    // 地圖與沙盤比例設定 (嚴格依照使用者提供的插畫地圖 1616 x 973)
+    const MAP_W = 32.0;
+    const MAP_H = MAP_W * (973 / 1616); // 19.267
 
-    // 沙盤尺寸 (依照復興村底圖 1536x1024 比例 1.5)
-    const MAP_W = 30.0;
-    const MAP_H = 20.0;
+    // 候選人口號清單
+    const CAMPAIGN_SLOGANS = [
+      {
+        title: "🌟 玉見美好・媛夢連江",
+        desc: "1號 陳玉媛 主張：115-116年全額初評、最高30萬補助、四鄉五島全面普惠！"
+      },
+      {
+        title: "🏠 老宅延壽新願景・幸福馬祖好生活",
+        desc: "落實國土署 32 家權威機構背書，舊屋登記與防水耐震一條龍輔導，傳承百年！"
+      },
+      {
+        title: "🤝 四鄉五島心連心・專業老宅護鄉親",
+        desc: "南竿、北竿、東引、莒光齊心共好！從寬從速審查，讓每一位鄉親住得安全安心！"
+      }
+    ];
+    let currentSloganIdx = 0;
 
-    initEngine();
-    buildCampaignWorld();
-    animate();
+    // 四鄉五島在地圖上的精確對應座標 (經幾何歸一化換算)
+    const ISLAND_COORDS = [
+      { key: 'juguang', name: '莒光鄉 (西莒/東莒)', pos: [-10.85, 0, 4.43], r: 1.6, h: 0.85, desc: '雙子島・東犬燈塔・花崗石屋' },
+      { key: 'nangan', name: '南竿鄉 (核心政經)', pos: [-2.53, 0, 0.86], r: 1.9, h: 0.95, desc: '媽祖巨神像・福澳港・延壽拉皮住宅' },
+      { key: 'beigan', name: '北竿鄉 (芹壁風情)', pos: [3.41, 0, -1.51], r: 1.7, h: 0.9, desc: '芹壁聚落・封火山牆・北竿機場' },
+      { key: 'dongyin', name: '東引鄉 (國之北疆)', pos: [10.73, 0, -5.08], r: 1.5, h: 1.15, desc: '歐風東引島燈塔・安東坑道・旋轉金光' }
+    ];
 
-    function initEngine() {
-      scene = new THREE.Scene();
+    window.addEventListener('DOMContentLoaded', () => {
+      init3D();
+      initUI();
+      animate();
+    });
+
+    function init3D() {
+      const container = document.getElementById('canvas-container');
       
-      camera = new THREE.PerspectiveCamera(38, window.innerWidth / window.innerHeight, 1, 1200);
-      camera.position.set(0, 25, 27);
+      // Scene
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x8bc3db);
+      scene.fog = new THREE.FogExp2(0x8bc3db, 0.015);
 
-      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: 'high-performance' });
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      // Camera
+      camera = new THREE.PerspectiveCamera(42, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(0, 24, 25);
+
+      // Renderer
+      renderer = new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance' });
       renderer.setSize(window.innerWidth, window.innerHeight);
-      renderer.toneMapping = THREE.ACESFilmicToneMapping;
-      renderer.toneMappingExposure = 1.25;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
       renderer.shadowMap.enabled = true;
       renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      renderer.toneMappingExposure = 1.08;
       container.appendChild(renderer.domElement);
 
+      // Controls
       controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
-      controls.maxPolarAngle = Math.PI / 2.05;
-      controls.minDistance = 12;
-      controls.maxDistance = 180;
-      controls.target.set(0, 0.6, 0);
+      controls.maxPolarAngle = Math.PI / 2 - 0.05; // 限制不能看到沙盤底部
+      controls.minDistance = 8;
+      controls.maxDistance = 55;
+      controls.target.set(0, 0, 0);
 
+      // Lighting
       setupLighting();
 
-      window.addEventListener('resize', onResize);
-      setTimeout(() => {
-        const l = document.getElementById('loader');
-        if (l) l.style.display = 'none';
-      }, 500);
+      // 沙盤本體 (包含底圖 + 立體模型基座 + 中央 1號 展台 + 四島模型)
+      buildMatsuCampaignSandbox();
+
+      // 動態船舶巡航
+      setupVessels();
+
+      // 金色粒子特效系統
+      setupGoldParticles();
+
+      window.addEventListener('resize', onWindowResize);
     }
 
     function setupLighting() {
-      ambientLight = new THREE.AmbientLight(0xfff8ee, 1.35);
-      scene.add(ambientLight);
-
-      hemiLight = new THREE.HemisphereLight(0xe8f4fa, 0x8d775f, 1.3);
-      hemiLight.position.set(0, 60, 0);
+      hemiLight = new THREE.HemisphereLight(0xffffff, 0x4fa8bd, 0.9);
       scene.add(hemiLight);
 
-      dirLight = new THREE.DirectionalLight(0xfffaed, 2.8);
-      dirLight.position.set(45, 65, 35);
+      dirLight = new THREE.DirectionalLight(0xfff7e6, 1.8);
+      dirLight.position.set(16, 28, 14);
       dirLight.castShadow = true;
       dirLight.shadow.mapSize.width = 2048;
       dirLight.shadow.mapSize.height = 2048;
-      dirLight.shadow.camera.near = 10;
-      dirLight.shadow.camera.far = 180;
-      dirLight.shadow.camera.left = -50;
-      dirLight.shadow.camera.right = 50;
-      dirLight.shadow.camera.top = 50;
-      dirLight.shadow.camera.bottom = -50;
+      dirLight.shadow.camera.near = 0.5;
+      dirLight.shadow.camera.far = 80;
+      const d = 20;
+      dirLight.shadow.camera.left = -d;
+      dirLight.shadow.camera.right = d;
+      dirLight.shadow.camera.top = d;
+      dirLight.shadow.camera.bottom = -d;
       dirLight.shadow.bias = -0.0004;
       scene.add(dirLight);
+
+      nightLight = new THREE.PointLight(0xffaa44, 0, 30);
+      nightLight.position.set(0, 6, 0);
+      scene.add(nightLight);
     }
 
-    // -----------------------------------------------------------------
-    // 3D 競選微縮沙盤核心施工 (復興村底圖 + 1號陳玉媛中央放大 + 四鄉五島)
-    // -----------------------------------------------------------------
-    function buildCampaignWorld() {
+    // ==============================================================
+    // 3D 競選微縮沙盤核心施工 (Matsu Map 地圖對齊 + 1號陳玉媛中央放大)
+    // ==============================================================
+    function buildMatsuCampaignSandbox() {
       const worldGroup = new THREE.Group();
       scene.add(worldGroup);
 
-      // (1) 復興村 3D 沙盤基底
+      // (1) 載入插畫地圖作為 3D 沙盤頂面
       const texLoader = new THREE.TextureLoader();
-      const fuxingTex = texLoader.load('assets/fuxing_bg.jpg', (t) => {
+      const matsuTex = texLoader.load('assets/matsu_map.png', (t) => {
         t.colorSpace = THREE.SRGBColorSpace;
         renderer.render(scene, camera);
       });
@@ -780,584 +2060,646 @@
       mapGeo.rotateX(-Math.PI / 2);
 
       const mapMat = new THREE.MeshStandardMaterial({
-        map: fuxingTex,
-        roughness: 0.38,
-        metalness: 0.08
+        map: matsuTex,
+        roughness: 0.35,
+        metalness: 0.05
       });
-      fuxingBoardMesh = new THREE.Mesh(mapGeo, mapMat);
-      fuxingBoardMesh.position.y = 0.0;
-      fuxingBoardMesh.receiveShadow = true;
-      worldGroup.add(fuxingBoardMesh);
+      matsuBoardMesh = new THREE.Mesh(mapGeo, mapMat);
+      matsuBoardMesh.position.y = 0.0;
+      matsuBoardMesh.receiveShadow = true;
+      worldGroup.add(matsuBoardMesh);
 
-      // 精緻微縮沙盤厚度底座 (鍍金沉穩邊緣)
-      const baseGeo = new THREE.BoxGeometry(MAP_W + 0.6, 0.45, MAP_H + 0.6);
+      // (2) 奢華微縮沙盤底座 (胡桃木色與金箔包邊)
+      const baseGeo = new THREE.BoxGeometry(MAP_W + 0.6, 0.55, MAP_H + 0.6);
       const baseMat = new THREE.MeshStandardMaterial({
-        color: 0xd4af37,
-        roughness: 0.4,
-        metalness: 0.5
+        color: 0xd4af37, // 榮耀金色飾邊
+        roughness: 0.35,
+        metalness: 0.6
       });
-      fuxingBaseMesh = new THREE.Mesh(baseGeo, baseMat);
-      fuxingBaseMesh.position.y = -0.23;
-      fuxingBaseMesh.receiveShadow = true;
-      worldGroup.add(fuxingBaseMesh);
+      matsuBaseMesh = new THREE.Mesh(baseGeo, baseMat);
+      matsuBaseMesh.position.y = -0.28;
+      matsuBaseMesh.receiveShadow = true;
+      worldGroup.add(matsuBaseMesh);
 
-      // 通透動態微波浪
+      // (3) 通透動態微波浪 (浮於地圖之上，帶來海上微風波動)
       oceanGeometry = new THREE.PlaneGeometry(MAP_W, MAP_H, 48, 32);
       oceanGeometry.rotateX(-Math.PI / 2);
       const oceanMat = new THREE.MeshStandardMaterial({
-        color: 0x4fa8bd,
-        roughness: 0.18,
-        metalness: 0.22,
+        color: 0x58b4d1,
+        roughness: 0.15,
+        metalness: 0.25,
         flatShading: true,
         transparent: true,
-        opacity: 0.18
+        opacity: 0.14
       });
       oceanMesh = new THREE.Mesh(oceanGeometry, oceanMat);
-      oceanMesh.position.y = 0.03;
+      oceanMesh.position.y = 0.025;
       worldGroup.add(oceanMesh);
 
-      // (2) 【核心放大】：地圖正中間「1號 陳玉媛」英雄微縮展台
+      // (4) 【地圖正中間放大】：打造「1號 陳玉媛」微縮核心展台
       buildCenterHeroMonument(worldGroup);
 
-      // (3) 四鄉五島微縮願景島嶼 (環繞分佈於復興村沙盤四方)
-      buildVisionIslands(worldGroup);
+      // (5) 四鄉五島微縮模型（精準坐落在地圖對應位置）
+      buildMatsuIslands(worldGroup);
 
-      // (4) 動態巡弋船隻
-      buildFleet(worldGroup);
+      // (6) 四鄉五島航海跨海航道光束大橋
+      buildSeaRoutes(worldGroup);
     }
 
-    // 【1號 陳玉媛】中央立體動態微縮展台 (在地圖正中間放大)
+    // ==============================================================
+    // 【核心放大】：地圖正中間「1號 陳玉媛」英雄微縮展台
+    // ==============================================================
     function buildCenterHeroMonument(parent) {
-      heroGroup = new THREE.Group();
-      heroGroup.position.set(0, 0, 0);
+      heroMonumentGroup = new THREE.Group();
+      // 正好座落在地圖中心偏開闊海域 (0.4, 0, 0)
+      heroMonumentGroup.position.set(0.4, 0, 0);
 
-      // 1. 三階勝利金階展台 (榮譽金基座)
-      const step1 = new THREE.Mesh(new THREE.CylinderGeometry(3.6, 4.0, 0.35, 12), new THREE.MeshStandardMaterial({ color: 0xd4af37, roughness: 0.3, metalness: 0.6 }));
-      step1.position.y = 0.18;
-      step1.receiveShadow = true;
-      heroGroup.add(step1);
+      // A. 三階金色同心勝利台
+      const tier1 = new THREE.Mesh(
+        new THREE.CylinderGeometry(2.4, 2.7, 0.45, 32),
+        new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.85, roughness: 0.2 })
+      );
+      tier1.position.y = 0.22;
+      tier1.receiveShadow = true;
+      heroMonumentGroup.add(tier1);
 
-      const step2 = new THREE.Mesh(new THREE.CylinderGeometry(2.8, 3.2, 0.35, 12), new THREE.MeshStandardMaterial({ color: 0xc82333, roughness: 0.4 }));
-      step2.position.y = 0.52;
-      step2.receiveShadow = true;
-      heroGroup.add(step2);
+      const tier2 = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.8, 2.1, 0.4, 32),
+        new THREE.MeshStandardMaterial({ color: 0xffffff, metalness: 0.2, roughness: 0.3 })
+      );
+      tier2.position.y = 0.6;
+      heroMonumentGroup.add(tier2);
 
-      const step3 = new THREE.Mesh(new THREE.CylinderGeometry(2.0, 2.4, 0.3, 12), new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.2 }));
-      step3.position.y = 0.82;
-      heroGroup.add(step3);
+      const tier3 = new THREE.Mesh(
+        new THREE.CylinderGeometry(1.3, 1.5, 0.35, 32),
+        new THREE.MeshStandardMaterial({ color: 0xc82333, metalness: 0.4, roughness: 0.3 })
+      );
+      tier3.position.y = 0.95;
+      heroMonumentGroup.add(tier3);
 
-      // 2. 巨大立體金色「1」字雕塑徽章 (旋轉發光)
-      const oneGroup = new THREE.Group();
-      const oneStem = new THREE.Mesh(new THREE.BoxGeometry(0.5, 2.6, 0.5), new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.85, roughness: 0.15 }));
-      oneStem.position.y = 2.2;
-      oneGroup.add(oneStem);
+      // B. 立體「1」號純金雕塑徽章
+      const numOneGroup = new THREE.Group();
+      numOneGroup.position.set(0, 2.3, 0);
 
-      const oneBeak = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.45, 0.5), new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.85, roughness: 0.15 }));
-      oneBeak.position.set(-0.4, 3.1, 0);
-      oneBeak.rotation.z = Math.PI / 4;
-      oneGroup.add(oneBeak);
+      const stem = new THREE.Mesh(
+        new THREE.BoxGeometry(0.35, 1.8, 0.35),
+        new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.95, roughness: 0.15 })
+      );
+      stem.castShadow = true;
+      numOneGroup.add(stem);
 
-      const oneBase = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.3, 0.8), new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.85, roughness: 0.15 }));
-      oneBase.position.y = 1.0;
-      oneGroup.add(oneBase);
+      const hook = new THREE.Mesh(
+        new THREE.BoxGeometry(0.32, 0.7, 0.35),
+        new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.95, roughness: 0.15 })
+      );
+      hook.position.set(-0.35, 0.55, 0);
+      hook.rotation.z = Math.PI / 4;
+      numOneGroup.add(hook);
 
-      heroGroup.add(oneGroup);
+      const foot = new THREE.Mesh(
+        new THREE.BoxGeometry(1.1, 0.25, 0.45),
+        new THREE.MeshStandardMaterial({ color: 0xffd700, metalness: 0.95, roughness: 0.15 })
+      );
+      foot.position.set(0, -0.85, 0);
+      numOneGroup.add(foot);
 
-      // 3. 旋轉金光光環 (Golden Ring)
-      const ringGeo = new THREE.TorusGeometry(1.9, 0.08, 8, 32);
-      ringGeo.rotateX(Math.PI / 2);
-      const ringMat = new THREE.MeshBasicMaterial({ color: 0xffea00, wireframe: true });
+      heroMonumentGroup.add(numOneGroup);
+
+      // C. 1號 陳玉媛 競選立體看板
+      const texLoader = new THREE.TextureLoader();
+      texLoader.load('assets/candidate_logo.png', (logoTex) => {
+        logoTex.colorSpace = THREE.SRGBColorSpace;
+        const bannerMat = new THREE.MeshStandardMaterial({
+          map: logoTex,
+          transparent: true,
+          roughness: 0.2,
+          side: THREE.DoubleSide
+        });
+        const bannerMesh = new THREE.Mesh(new THREE.PlaneGeometry(1.6, 1.6), bannerMat);
+        bannerMesh.position.set(0, 3.8, 0);
+        heroMonumentGroup.add(bannerMesh);
+      });
+
+      // D. 動態旋轉金光環
+      const ringGeo = new THREE.TorusGeometry(2.9, 0.08, 16, 64);
+      const ringMat = new THREE.MeshStandardMaterial({
+        color: 0xffd700,
+        emissive: 0xffaa00,
+        emissiveIntensity: 0.6,
+        metalness: 0.8,
+        roughness: 0.2
+      });
       heroGoldRing = new THREE.Mesh(ringGeo, ringMat);
-      heroGoldRing.position.y = 2.2;
-      heroGroup.add(heroGoldRing);
+      heroGoldRing.rotation.x = Math.PI / 2;
+      heroGoldRing.position.y = 1.3;
+      heroMonumentGroup.add(heroGoldRing);
 
-      // 4. 動態金光聚光燈 (Spotlight)
-      heroGlowLight = new THREE.PointLight(0xffea00, 2.5, 12);
-      heroGlowLight.position.set(0, 3.2, 0);
-      heroGroup.add(heroGlowLight);
+      // E. 展台獨立金色聚光燈
+      heroGlowLight = new THREE.PointLight(0xffd700, 2.5, 12);
+      heroGlowLight.position.set(0, 4.2, 0);
+      heroMonumentGroup.add(heroGlowLight);
 
-      // 5. 四面立體競選旗幟 (紅色錦旗「1號 陳玉媛」)
-      for (let i = 0; i < 4; i++) {
-        const ang = (i * Math.PI) / 2;
-        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.2, 6), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8 }));
-        pole.position.set(Math.cos(ang) * 2.2, 1.1, Math.sin(ang) * 2.2);
-        heroGroup.add(pole);
+      // F. 展台四方旗幟「1號 陳玉媛」
+      const flagMat = new THREE.MeshStandardMaterial({ color: 0xc82333, roughness: 0.5, side: THREE.DoubleSide });
+      [-1.4, 1.4].forEach(x => {
+        const pole = new THREE.Mesh(new THREE.CylinderGeometry(0.04, 0.04, 2.5, 8), new THREE.MeshStandardMaterial({ color: 0xd4af37, metalness: 0.8 }));
+        pole.position.set(x, 1.25, 0);
+        heroMonumentGroup.add(pole);
 
-        const flagGeo = new THREE.PlaneGeometry(0.9, 0.6);
-        const flagMat = new THREE.MeshBasicMaterial({ color: 0xc82333, side: THREE.DoubleSide });
-        const flag = new THREE.Mesh(flagGeo, flagMat);
-        flag.position.set(Math.cos(ang) * 2.2 + 0.45, 1.8, Math.sin(ang) * 2.2);
-        flag.rotation.y = ang + Math.PI / 2;
-        heroGroup.add(flag);
-      }
+        const pennant = new THREE.Mesh(new THREE.PlaneGeometry(0.8, 0.5), flagMat);
+        pennant.position.set(x + (x > 0 ? 0.4 : -0.4), 2.1, 0);
+        heroMonumentGroup.add(pennant);
+      });
 
-      parent.add(heroGroup);
-
-      // 註冊觸發金光粒子函式
-      window.triggerHeroGlow = function() {
-        if (!heroGlowLight) return;
-        heroGlowLight.intensity = 5.0;
-        setTimeout(() => { heroGlowLight.intensity = 2.5; }, 400);
-      };
+      parent.add(heroMonumentGroup);
     }
 
-    // 四鄉五島微縮願景島 (環繞分佈於復興村沙盤)
-    function buildVisionIslands(parent) {
-      const islands = [
-        { key: 'nangan', name: '南竿鄉', pos: [-5.5, 0, 2.2], r: 1.8, h: 0.85, cliff: 0x6e665d, grass: 0x4caf50 },
-        { key: 'beigan', name: '北竿鄉', pos: [3.2, 0, -2.5], r: 1.7, h: 0.9, cliff: 0x756c62, grass: 0x43a047 },
-        { key: 'dongyin', name: '東引鄉', pos: [10.5, 0, -6.2], r: 1.5, h: 1.1, cliff: 0x57514a, grass: 0x388e3c },
-        { key: 'juguang', name: '莒光鄉', pos: [-11.0, 0, 6.5], r: 1.6, h: 0.8, cliff: 0x857a6e, grass: 0x66bb6a }
-      ];
+    // ==============================================================
+    // 四鄉五島微縮模型（精確對齊插畫地圖）
+    // ==============================================================
+    function buildMatsuIslands(parent) {
+      const markersOverlay = document.getElementById('island-markers-overlay');
 
-      islands.forEach(isl => {
+      ISLAND_COORDS.forEach(isl => {
         const g = new THREE.Group();
         g.position.set(isl.pos[0], 0, isl.pos[2]);
 
-        // 基座
-        const cliff = new THREE.Mesh(new THREE.CylinderGeometry(isl.r, isl.r + 0.3, isl.h, 6), new THREE.MeshStandardMaterial({ color: isl.cliff, roughness: 0.9, flatShading: true }));
+        // 微縮小島台基座
+        const cliff = new THREE.Mesh(
+          new THREE.CylinderGeometry(isl.r, isl.r + 0.3, isl.h, 7),
+          new THREE.MeshStandardMaterial({ color: 0x6e665d, roughness: 0.9, flatShading: true })
+        );
         cliff.position.y = isl.h / 2;
         cliff.receiveShadow = true;
         g.add(cliff);
 
-        const grass = new THREE.Mesh(new THREE.CylinderGeometry(isl.r, isl.r + 0.05, 0.15, 6), new THREE.MeshStandardMaterial({ color: isl.grass, roughness: 0.7 }));
+        const grass = new THREE.Mesh(
+          new THREE.CylinderGeometry(isl.r, isl.r + 0.05, 0.15, 7),
+          new THREE.MeshStandardMaterial({ color: 0x4caf50, roughness: 0.7 })
+        );
         grass.position.y = isl.h + 0.07;
         g.add(grass);
 
-        // 各島特色地標
+        // 各島代表性建築微縮地標
         if (isl.key === 'nangan') {
-          // 媽祖巨神像 + 拉皮公寓
-          const statue = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, 2.2, 6), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-          statue.position.set(-0.5, isl.h + 1.1, -0.4);
+          // 媽祖巨神像白色雕塑
+          const statue = new THREE.Mesh(new THREE.CylinderGeometry(0.25, 0.45, 2.2, 6), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+          statue.position.set(-0.5, isl.h + 1.1, -0.3);
           g.add(statue);
 
-          const apt = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.4, 0.9), new THREE.MeshStandardMaterial({ color: 0xfdfcfb }));
-          apt.position.set(0.6, isl.h + 0.7, 0.4);
+          // 延壽拉皮示範集合住宅
+          const apt = new THREE.Mesh(new THREE.BoxGeometry(0.9, 1.3, 0.9), new THREE.MeshStandardMaterial({ color: 0xfdfcfb }));
+          apt.position.set(0.6, isl.h + 0.65, 0.3);
           g.add(apt);
         } else if (isl.key === 'beigan') {
-          // 芹壁石屋 + 紅色馬鞍封火山牆
-          const stoneHouse = new THREE.Mesh(new THREE.BoxGeometry(1.2, 0.9, 1.0), new THREE.MeshStandardMaterial({ color: 0xd7ccc8 }));
-          stoneHouse.position.set(0, isl.h + 0.45, 0);
+          // 芹壁花崗岩石屋 + 紅瓦封火山牆
+          const stoneHouse = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.8, 0.9), new THREE.MeshStandardMaterial({ color: 0xd7ccc8 }));
+          stoneHouse.position.set(0, isl.h + 0.4, 0);
           g.add(stoneHouse);
 
-          const wall = new THREE.Mesh(new THREE.ConeGeometry(0.9, 0.7, 4), new THREE.MeshStandardMaterial({ color: 0xc82333 }));
-          wall.position.set(0, isl.h + 1.25, 0);
-          wall.rotation.y = Math.PI / 4;
-          g.add(wall);
+          const roof = new THREE.Mesh(new THREE.ConeGeometry(0.8, 0.6, 4), new THREE.MeshStandardMaterial({ color: 0xc82333 }));
+          roof.position.set(0, isl.h + 1.1, 0);
+          roof.rotation.y = Math.PI / 4;
+          g.add(roof);
         } else if (isl.key === 'dongyin') {
-          // 歐風燈塔 + 旋轉金光
-          const lightTower = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.45, 2.4, 8), new THREE.MeshStandardMaterial({ color: 0xfafafa }));
+          // 東引純白燈塔 + 旋轉實體夜間光錐
+          const lightTower = new THREE.Mesh(new THREE.CylinderGeometry(0.28, 0.42, 2.4, 8), new THREE.MeshStandardMaterial({ color: 0xfafafa }));
           lightTower.position.set(0, isl.h + 1.2, 0);
           g.add(lightTower);
 
-          const coneGeo = new THREE.ConeGeometry(3.5, 10, 16, 1, true);
-          coneGeo.rotateX(Math.PI / 2);
+          const coneGeo = new THREE.ConeGeometry(2.2, 6.0, 16, 1, true);
           const coneMat = new THREE.MeshBasicMaterial({
-            color: 0xffea00, transparent: true, opacity: 0.35, side: THREE.DoubleSide, blending: THREE.AdditiveBlending
+            color: 0xffecb3,
+            transparent: true,
+            opacity: 0.35,
+            side: THREE.DoubleSide
           });
-          lighthouseLightCone = new THREE.Mesh(coneGeo, coneMat);
-          lighthouseLightCone.position.set(0, isl.h + 2.4, 0);
-          g.add(lighthouseLightCone);
+          const lightBeam = new THREE.Mesh(coneGeo, coneMat);
+          lightBeam.position.set(0, isl.h + 2.2, 3.0);
+          lightBeam.rotation.x = Math.PI / 2;
+          lightTower.add(lightBeam);
+          isl.lightBeam = lightBeam;
         } else if (isl.key === 'juguang') {
-          // 銀髮在宅安老緩坡道
-          const house = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.8, 0.9), new THREE.MeshStandardMaterial({ color: 0xd7ccc8 }));
-          house.position.set(0.4, isl.h + 0.4, -0.3);
+          // 雙子島：西莒紅瓦聚落 + 東莒東犬白色燈塔
+          const house = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.7, 0.7), new THREE.MeshStandardMaterial({ color: 0xef5350 }));
+          house.position.set(-0.4, isl.h + 0.35, 0.2);
           g.add(house);
 
-          const ramp = new THREE.Mesh(new THREE.BoxGeometry(0.7, 0.08, 1.8), new THREE.MeshStandardMaterial({ color: 0xf1c40f }));
-          ramp.position.set(-0.5, isl.h + 0.25, 0.3);
-          ramp.rotation.x = -0.15;
-          g.add(ramp);
+          const dongquanTower = new THREE.Mesh(new THREE.CylinderGeometry(0.2, 0.32, 1.6, 8), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+          dongquanTower.position.set(0.5, isl.h + 0.8, -0.3);
+          g.add(dongquanTower);
         }
 
         parent.add(g);
-      });
+        isl.group = g;
 
-      // 跨島航線石拱大橋 (依序連貫：莒光 -> 南竿 -> 北竿 -> 東引)
-      const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xd9c9be, roughness: 0.9 });
-      const links = [
-        { from: [-11.0, 6.5], to: [-5.5, 2.2] },
-        { from: [-5.5, 2.2], to: [3.2, -2.5] },
-        { from: [3.2, -2.5], to: [10.5, -6.2] }
-      ];
-      links.forEach(l => {
-        const p1 = new THREE.Vector2(l.from[0], l.from[1]);
-        const p2 = new THREE.Vector2(l.to[0], l.to[1]);
-        const midX = (p1.x + p2.x) / 2;
-        const midZ = (p1.y + p2.y) / 2;
-        const dist = p1.distanceTo(p2);
-
-        const bridge = new THREE.Mesh(new THREE.BoxGeometry(0.24, 0.08, dist * 0.75), bridgeMat);
-        bridge.position.set(midX, 0.25, midZ);
-        bridge.lookAt(p2.x, 0.25, p2.y);
-        parent.add(bridge);
+        // 建立對應之 DOM 浮動標籤
+        const markerEl = document.createElement('div');
+        markerEl.className = 'island-marker';
+        markerEl.innerHTML = `
+          <div class="marker-box">
+            <span style="color:#ffd700;">📍</span>
+            <span>${isl.name}</span>
+          </div>
+          <div class="marker-pin"></div>
+        `;
+        markerEl.onclick = () => focusIsland(isl);
+        markersOverlay.appendChild(markerEl);
+        isl.markerEl = markerEl;
       });
     }
 
-    // 動態巡弋船舶 (臺馬之星 + 傳統漁船)
-    function buildFleet(parent) {
-      const ferry = new THREE.Group();
-      const hull = new THREE.Mesh(new THREE.BoxGeometry(1.8, 0.8, 4.8), new THREE.MeshStandardMaterial({ color: 0x1565c0 }));
-      hull.position.y = 0.4;
-      ferry.add(hull);
-
-      const cabin = new THREE.Mesh(new THREE.BoxGeometry(1.4, 0.9, 3.2), new THREE.MeshStandardMaterial({ color: 0xffffff }));
-      cabin.position.set(0, 1.1, -0.3);
-      ferry.add(cabin);
-
-      const funnel = new THREE.Mesh(new THREE.CylinderGeometry(0.16, 0.16, 0.6, 6), new THREE.MeshStandardMaterial({ color: 0xc82333 }));
-      funnel.position.set(0, 1.7, -0.8);
-      ferry.add(funnel);
-
-      ferry.scale.set(0.4, 0.4, 0.4);
-      ferry.position.set(6.0, 0.1, 3.5);
-      parent.add(ferry);
-      ships.push({ mesh: ferry, radius: 7.5, speed: 0.003, angle: 0 });
+    // ==============================================================
+    // 跨海航道大橋 (連接四鄉五島動態虛線航線)
+    // ==============================================================
+    function buildSeaRoutes(parent) {
+      const bridgeMat = new THREE.MeshStandardMaterial({ color: 0xe2e8f0, roughness: 0.4 });
+      // 南竿到北竿
+      const bridgeNtoB = new THREE.Mesh(new THREE.BoxGeometry(0.4, 0.15, 6.2), bridgeMat);
+      bridgeNtoB.position.set(0.4, 0.1, -0.3);
+      bridgeNtoB.rotation.y = -Math.PI / 8;
+      parent.add(bridgeNtoB);
     }
 
-    // -----------------------------------------------------------------
-    // 動態迴圈與動畫
-    // -----------------------------------------------------------------
-    let clock = new THREE.Clock();
+    // ==============================================================
+    // 巡航船舶生態（臺馬之星客輪 + 雙帆木造漁船）
+    // ==============================================================
+    function setupVessels() {
+      // 臺馬之星
+      cruiseShip = new THREE.Group();
+      const hull = new THREE.Mesh(new THREE.BoxGeometry(1.6, 0.45, 0.6), new THREE.MeshStandardMaterial({ color: 0x1e3a8a }));
+      hull.position.y = 0.22;
+      cruiseShip.add(hull);
 
-    function animate() {
+      const deck = new THREE.Mesh(new THREE.BoxGeometry(1.1, 0.35, 0.45), new THREE.MeshStandardMaterial({ color: 0xffffff }));
+      deck.position.set(-0.1, 0.55, 0);
+      cruiseShip.add(deck);
+
+      const chimney = new THREE.Mesh(new THREE.CylinderGeometry(0.08, 0.08, 0.4, 8), new THREE.MeshStandardMaterial({ color: 0xc82333 }));
+      chimney.position.set(-0.2, 0.85, 0);
+      cruiseShip.add(chimney);
+
+      scene.add(cruiseShip);
+
+      // 馬祖雙帆木造漁船
+      fishingBoat = new THREE.Group();
+      const boatHull = new THREE.Mesh(new THREE.BoxGeometry(0.8, 0.25, 0.35), new THREE.MeshStandardMaterial({ color: 0x8d6e63 }));
+      boatHull.position.y = 0.12;
+      fishingBoat.add(boatHull);
+
+      const sail = new THREE.Mesh(new THREE.ConeGeometry(0.3, 0.8, 3), new THREE.MeshStandardMaterial({ color: 0xfff8e1, side: THREE.DoubleSide }));
+      sail.position.set(0, 0.6, 0);
+      sail.rotation.y = Math.PI / 2;
+      fishingBoat.add(sail);
+
+      fishingBoat.position.set(-6.0, 0.05, 3.5);
+      scene.add(fishingBoat);
+    }
+
+    // ==============================================================
+    // 金色粒子噴泉特效
+    // ==============================================================
+    function setupGoldParticles() {
+      const count = 120;
+      const geo = new THREE.BufferGeometry();
+      const positions = new Float32Array(count * 3);
+      const velocities = [];
+
+      for (let i = 0; i < count; i++) {
+        positions[i * 3] = 0.4 + (Math.random() - 0.5) * 1.5;
+        positions[i * 3 + 1] = 1.0 + Math.random() * 2.5;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 1.5;
+        velocities.push({
+          x: (Math.random() - 0.5) * 0.04,
+          y: 0.03 + Math.random() * 0.05,
+          z: (Math.random() - 0.5) * 0.04
+        });
+      }
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+
+      const mat = new THREE.PointsMaterial({
+        color: 0xffd700,
+        size: 0.28,
+        transparent: true,
+        opacity: 0.85,
+        blending: THREE.AdditiveBlending
+      });
+      goldParticlesGroup = new THREE.Points(geo, mat);
+      scene.add(goldParticlesGroup);
+      goldParticlesGroup.userData.velocities = velocities;
+    }
+
+    // ==============================================================
+    // 動態切換候選人口號 (全域可調用)
+    // ==============================================================
+    window.switchCampaignSlogan = function() {
+      currentSloganIdx = (currentSloganIdx + 1) % CAMPAIGN_SLOGANS.length;
+      const item = CAMPAIGN_SLOGANS[currentSloganIdx];
+      document.getElementById('hero-slogan-title').innerHTML = `${item.title} <span class="hero-switch-hint">點擊換口號 ↻</span>`;
+      document.getElementById('hero-slogan-desc').textContent = item.desc;
+
+      // 觸發金光粒子爆發
+      if (goldParticlesGroup) {
+        const pos = goldParticlesGroup.geometry.attributes.position.array;
+        const vel = goldParticlesGroup.userData.velocities;
+        for (let i = 0; i < pos.length / 3; i++) {
+          pos[i * 3] = 0.4;
+          pos[i * 3 + 1] = 2.0;
+          pos[i * 3 + 2] = 0;
+          vel[i].x = (Math.random() - 0.5) * 0.12;
+          vel[i].y = 0.08 + Math.random() * 0.12;
+          vel[i].z = (Math.random() - 0.5) * 0.12;
+        }
+        goldParticlesGroup.geometry.attributes.position.needsUpdate = true;
+      }
+    };
+
+    // ==============================================================
+    // 聚焦島嶼視角
+    // ==============================================================
+    function focusIsland(isl) {
+      const targetPos = new THREE.Vector3(isl.pos[0], 0, isl.pos[2]);
+      controls.target.copy(targetPos);
+      camera.position.set(isl.pos[0], 9, isl.pos[2] + 12);
+    }
+
+    // ==============================================================
+    // 燈光與晨昏情境切換
+    // ==============================================================
+    window.setLighting = function(mode) {
+      document.querySelectorAll('.ctrl-btn').forEach(b => b.classList.remove('active'));
+      event?.currentTarget?.classList.add('active');
+
+      if (mode === 'day') {
+        scene.background.setHex(0x8bc3db);
+        scene.fog.color.setHex(0x8bc3db);
+        dirLight.color.setHex(0xfff7e6);
+        dirLight.intensity = 1.8;
+        hemiLight.intensity = 0.9;
+        nightLight.intensity = 0;
+      } else if (mode === 'sunset') {
+        scene.background.setHex(0xe08b68);
+        scene.fog.color.setHex(0xe08b68);
+        dirLight.color.setHex(0xff7744);
+        dirLight.intensity = 2.2;
+        hemiLight.intensity = 0.7;
+        nightLight.intensity = 0;
+      } else if (mode === 'night') {
+        scene.background.setHex(0x0a192f);
+        scene.fog.color.setHex(0x0a192f);
+        dirLight.intensity = 0.2;
+        hemiLight.intensity = 0.3;
+        nightLight.intensity = 3.5;
+      }
+    };
+
+    window.resetCamera = function() {
+      controls.target.set(0, 0, 0);
+      camera.position.set(0, 24, 25);
+    };
+
+    // ==============================================================
+    // 主渲染循環動畫
+    // ==============================================================
+    function animate(time = 0) {
       requestAnimationFrame(animate);
-      const time = clock.getElapsedTime();
+      const t = time * 0.001;
 
-      // 1. 中央「1號 陳玉媛」金色光環動態旋轉與浮動
+      // 1. 海面多重正弦微波
+      if (oceanGeometry) {
+        const pos = oceanGeometry.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const u = pos.getX(i);
+          const v = pos.getY(i);
+          const z = Math.sin(u * 0.5 + t * 1.5) * 0.04 + Math.cos(v * 0.6 + t * 1.2) * 0.03;
+          pos.setZ(i, z);
+        }
+        pos.needsUpdate = true;
+      }
+
+      // 2. 中央 1號 展台旋轉金光環
       if (heroGoldRing) {
-        heroGoldRing.rotation.z = time * 0.8;
-      }
-      if (heroGroup) {
-        heroGroup.position.y = Math.sin(time * 1.5) * 0.06;
+        heroGoldRing.rotation.z = t * 0.6;
       }
 
-      // 2. 東引燈塔旋轉光錐
-      if (lighthouseLightCone) {
-        lighthouseLightCone.rotation.y = time * 0.8;
+      // 3. 臺馬之星環狀巡弋
+      if (cruiseShip) {
+        const radiusX = 12.0;
+        const radiusZ = 6.5;
+        const speed = 0.25;
+        const shipX = Math.sin(t * speed) * radiusX;
+        const shipZ = Math.cos(t * speed) * radiusZ;
+        cruiseShip.position.set(shipX, 0.05, shipZ);
+        cruiseShip.rotation.y = -(t * speed) - Math.PI / 2;
       }
 
-      // 3. 船舶巡航
-      ships.forEach(s => {
-        s.angle += s.speed;
-        s.mesh.position.x = Math.cos(s.angle) * s.radius;
-        s.mesh.position.z = Math.sin(s.angle) * (s.radius * 0.6) - 1.0;
-        s.mesh.rotation.y = -s.angle + Math.PI / 3;
-      });
+      // 4. 馬祖木造雙帆漁船物理搖曳
+      if (fishingBoat) {
+        fishingBoat.rotation.z = Math.sin(t * 2.0) * 0.06;
+        fishingBoat.rotation.x = Math.cos(t * 1.6) * 0.05;
+        fishingBoat.position.y = 0.06 + Math.sin(t * 1.8) * 0.03;
+      }
+
+      // 5. 金色粒子噴泉
+      if (goldParticlesGroup) {
+        const pos = goldParticlesGroup.geometry.attributes.position.array;
+        const vel = goldParticlesGroup.userData.velocities;
+        for (let i = 0; i < pos.length / 3; i++) {
+          pos[i * 3] += vel[i].x;
+          pos[i * 3 + 1] += vel[i].y;
+          pos[i * 3 + 2] += vel[i].z;
+
+          if (pos[i * 3 + 1] > 6.0) {
+            pos[i * 3] = 0.4 + (Math.random() - 0.5) * 1.5;
+            pos[i * 3 + 1] = 1.2;
+            pos[i * 3 + 2] = (Math.random() - 0.5) * 1.5;
+          }
+        }
+        goldParticlesGroup.geometry.attributes.position.needsUpdate = true;
+      }
+
+      // 6. 更新島嶼浮動 DOM 標籤位置
+      updateIslandMarkers();
 
       controls.update();
       renderer.render(scene, camera);
     }
 
-    function onResize() {
+    function updateIslandMarkers() {
+      const tempV = new THREE.Vector3();
+      ISLAND_COORDS.forEach(isl => {
+        if (!isl.markerEl) return;
+        tempV.set(isl.pos[0], isl.h + 1.2, isl.pos[2]);
+        tempV.project(camera);
+
+        // 超出視角邊界或在背面時隱藏
+        if (tempV.z > 1.0) {
+          isl.markerEl.style.opacity = '0';
+          return;
+        }
+
+        const x = (tempV.x * 0.5 + 0.5) * window.innerWidth;
+        const y = (-(tempV.y * 0.5) + 0.5) * window.innerHeight;
+        isl.markerEl.style.opacity = '1';
+        isl.markerEl.style.left = `${x}px`;
+        isl.markerEl.style.top = `${y}px`;
+      });
+    }
+
+    function onWindowResize() {
       camera.aspect = window.innerWidth / window.innerHeight;
       camera.updateProjectionMatrix();
       renderer.setSize(window.innerWidth, window.innerHeight);
     }
-
-    // 視角切換
-    const CAMERA_PRESETS = {
-      overview: { pos: [0, 25, 27], target: [0, 0.6, 0] },
-      center:   { pos: [0, 6, 8], target: [0, 1.8, 0] },
-      nangan:   { pos: [-5.5, 8, 8], target: [-5.5, 1.0, 2.2] },
-      beigan:   { pos: [3.2, 7, 3], target: [3.2, 1.0, -2.5] },
-      dongyin:  { pos: [10.5, 8, -1], target: [10.5, 1.2, -6.2] },
-      juguang:  { pos: [-11.0, 7, 12], target: [-11.0, 0.8, 6.5] }
-    };
-
-    window.switchView = function(viewKey) {
-      const p = CAMERA_PRESETS[viewKey] || CAMERA_PRESETS.overview;
-      flyTo(p.pos, p.target);
-
-      document.querySelectorAll('.hud-btn').forEach(b => b.classList.remove('active'));
-      const activeBtn = Array.from(document.querySelectorAll('.hud-btn')).find(b => b.textContent.includes(viewKey));
-      if (activeBtn) activeBtn.classList.add('active');
-
-      if (viewKey !== 'overview' && viewKey !== 'center') {
-        showIslandDetail(viewKey);
-      } else {
-        closeDetailCard();
-      }
-    };
-
-    function flyTo(targetPos, lookAtPos) {
-      const startPos = camera.position.clone();
-      const endPos = new THREE.Vector3(...targetPos);
-      const startTarget = controls.target.clone();
-      const endTarget = new THREE.Vector3(...lookAtPos);
-      let progress = 0;
-
-      function step() {
-        progress += 0.04;
-        if (progress > 1) progress = 1;
-        const ease = 0.5 - Math.cos(progress * Math.PI) / 2;
-        camera.position.lerpVectors(startPos, endPos, ease);
-        controls.target.lerpVectors(startTarget, endTarget, ease);
-        controls.update();
-        if (progress < 1) requestAnimationFrame(step);
-      }
-      step();
-    }
-
-    window.cycleLighting = function() {
-      lightingState = (lightingState + 1) % 3;
-      if (lightingState === 0) {
-        // 晨曦暖陽
-        ambientLight.color.set(0xfff8ee);
-        dirLight.color.set(0xfffaed);
-        dirLight.intensity = 2.8;
-        if (fuxingBoardMesh) fuxingBoardMesh.material.color.set(0xffffff);
-      } else if (lightingState === 1) {
-        // 暮色夕照
-        ambientLight.color.set(0xffccbc);
-        dirLight.color.set(0xff7043);
-        dirLight.intensity = 3.2;
-        if (fuxingBoardMesh) fuxingBoardMesh.material.color.set(0xfbe9e7);
-      } else {
-        // 藍調夜景
-        ambientLight.color.set(0x1e3a8a);
-        dirLight.color.set(0x60a5fa);
-        dirLight.intensity = 1.1;
-        if (fuxingBoardMesh) fuxingBoardMesh.material.color.set(0x6b8299);
-      }
-    };
-
-    // 抽屜卡片
-    const ISLAND_DETAILS = {
-      nangan: {
-        badge: '南竿鄉核心政見',
-        title: '媽祖神像・復興聚落活化示範',
-        desc: '以南竿復興村為中心，推動連棟老舊公寓耐震補強、外掛無障礙電梯與公共水電管線全面更新換新，打造現代與文化兼備的示範生活圈。',
-        stats: ['30 年+', '最高 30 萬', '65 %', '3,500 元']
-      },
-      beigan: {
-        badge: '北竿鄉文化政見',
-        title: '芹壁花崗岩石屋・風貌保護補助',
-        desc: '守護芹壁傳統聚落花崗岩人字砌、紅色馬鞍形封火山牆與防風壓石加固，專案爭取文資修繕與老宅延壽加碼雙軌並進。',
-        stats: ['閩東石屋', '最高 30 萬', '65 %', '3,500 元']
-      },
-      dongyin: {
-        badge: '東引鄉國之北疆',
-        title: '燈塔海蝕峭壁・高鹽防風工程',
-        desc: '抗禦強烈東北季風與鹽霧侵蝕，全面補助外牆抿石子防蝕塗料、不銹鋼防風管槽固定與屋頂抗強風結構補強。',
-        stats: ['國之北疆', '最高 30 萬', '65 %', '3,500 元']
-      },
-      juguang: {
-        badge: '莒光鄉銀髮政見',
-        title: '全齡友善無障礙・安心在宅安老',
-        desc: '深耕東西莒銀髮族照護，重點補助室外防滑無障礙緩坡道、雙側安全扶手、室內衛浴地坪平整化，讓長輩在熟悉的故鄉安心安老。',
-        stats: ['銀髮示範', '最高 30 萬', '65 %', '3,500 元']
-      }
-    };
-
-    function showIslandDetail(key) {
-      const d = ISLAND_DETAILS[key];
-      if (!d) return;
-      document.getElementById('card-badge').innerText = d.badge;
-      document.getElementById('card-title').innerText = d.title;
-      document.getElementById('card-desc').innerText = d.desc;
-      document.getElementById('stat-1').innerText = d.stats[0];
-      document.getElementById('stat-2').innerText = d.stats[1];
-      document.getElementById('stat-3').innerText = d.stats[2];
-      document.getElementById('stat-4').innerText = d.stats[3];
-      document.getElementById('detail-card').classList.remove('hidden');
-    }
-
-    window.closeDetailCard = function() {
-      document.getElementById('detail-card').classList.add('hidden');
-    };
   </script>
 
-  <!-- 業務邏輯模組 (40組情境試算、32家初評機構、50題QA) -->
+  <!-- ==============================================================
+       UI 互動與彈窗邏輯
+       ============================================================== -->
   <script>
-    function initScenarioPills() {
-      const container = document.getElementById('scenario-pill-container');
-      container.innerHTML = '';
-      window.DATA.scenarios.forEach((s, idx) => {
-        const pill = document.createElement('div');
-        pill.className = 's-pill' + (idx === 0 ? ' active' : '');
-        pill.innerText = `${s.id} (${s.item})`;
-        pill.onclick = () => {
-          document.querySelectorAll('.s-pill').forEach(p => p.classList.remove('active'));
-          pill.classList.add('active');
-          loadScenario(s);
-        };
-        container.appendChild(pill);
-      });
-    }
-
-    function loadScenario(s) {
-      document.getElementById('calc-bldg-type').value = s.type === 'apartment' ? 'apartment' : 'house';
-      const itemSelect = document.getElementById('calc-item');
-      if (s.item.includes('屋頂')) itemSelect.value = 'roof';
-      else if (s.item.includes('外牆')) itemSelect.value = 'facade';
-      else if (s.item.includes('管線')) itemSelect.value = 'pipe';
-      else if (s.item.includes('無障礙') || s.item.includes('扶手')) itemSelect.value = 'ramp';
-      else itemSelect.value = 'interior';
-
-      document.getElementById('calc-cost').value = s.cost;
-      document.getElementById('calc-area').value = s.area;
-      document.getElementById('calc-vulnerable').checked = s.ceiling === 30 || s.title.includes('弱勢');
-
-      onItemChange();
-      calculateSubsidy();
-    }
-
-    window.onBldgTypeChange = function() { calculateSubsidy(); };
-    window.onItemChange = function() {
-      const item = document.getElementById('calc-item').value;
-      const rowArea = document.getElementById('row-area');
-      const metricArea = document.getElementById('metric-unit-area');
-      if (item === 'roof' || item === 'facade') {
-        rowArea.style.display = 'block';
-        metricArea.style.display = 'flex';
-      } else {
-        rowArea.style.display = 'none';
-        metricArea.style.display = 'none';
-      }
-      calculateSubsidy();
-    };
-
-    window.calculateSubsidy = function() {
-      const item = document.getElementById('calc-item').value;
-      const cost = parseFloat(document.getElementById('calc-cost').value) || 0;
-      const area = parseFloat(document.getElementById('calc-area').value) || 0;
-      const isVulnerable = document.getElementById('calc-vulnerable').checked;
-
-      let ceiling = 20;
-      if (item === 'pipe') ceiling = 10;
-      else if (item === 'ramp') ceiling = 5;
-      else if (item === 'interior') ceiling = isVulnerable ? 30 : 20;
-      else ceiling = isVulnerable ? 30 : 20;
-
-      const calc65 = cost * 0.65;
-      let unitLimit = 999999;
-      if ((item === 'roof' || item === 'facade') && area > 0) {
-        unitLimit = area * 0.35;
-      }
-
-      let grant = Math.min(calc65, ceiling);
-      let bindingReason = '';
-
-      if ((item === 'roof' || item === 'facade') && area > 0 && unitLimit < grant) {
-        grant = unitLimit;
-        bindingReason = `受「施作面積單價上限 3,500元/㎡」箝制（${area} ㎡ × 3,500元 = ${grant.toFixed(2)} 萬元）。`;
-      } else if (calc65 > ceiling) {
-        grant = ceiling;
-        bindingReason = `廠商報價 65%（${calc65.toFixed(2)} 萬元）超過本項「法定補助天花板 ${ceiling} 萬元」，故依上限核定。`;
-      } else {
-        grant = calc65;
-        bindingReason = `未達法定上限，全額依「工程報價之 65% 實支實付」（${cost} 萬 × 65% = ${grant.toFixed(2)} 萬元）核算補助。`;
-      }
-
-      const selfPay = Math.max(0, cost - grant);
-
-      document.getElementById('res-grant').innerText = `${grant.toFixed(2)} 萬元`;
-      document.getElementById('res-selfpay').innerText = `${selfPay.toFixed(2)} 萬元`;
-      document.getElementById('res-calc65').innerText = `${calc65.toFixed(2)} 萬元`;
-      if (unitLimit < 999999) {
-        document.getElementById('res-unitlimit').innerText = `${unitLimit.toFixed(2)} 萬元`;
-      }
-      document.getElementById('res-reason').innerText = bindingReason;
-    };
-
-    function renderAgencies(list) {
-      const tbody = document.getElementById('agencies-tbody');
-      tbody.innerHTML = '';
-      list.forEach(a => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td style="font-weight:800; color:var(--primary);">${a.id}</td>
-          <td style="font-weight:800; color:var(--navy);">${a.name}</td>
-          <td>${a.leader}</td>
-          <td style="font-size:14px;">${a.address}</td>
-          <td>
-            <a href="tel:${a.phone.replace(/[^0-9]/g, '')}" style="color:var(--primary); font-weight:800; text-decoration:none;">
-              📞 ${a.phone}
-            </a>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    window.filterAgencies = function() {
-      const q = document.getElementById('agency-search').value.trim().toLowerCase();
-      const filtered = window.DATA.agencies.filter(a => 
-        a.name.toLowerCase().includes(q) ||
-        a.leader.toLowerCase().includes(q) ||
-        a.address.toLowerCase().includes(q) ||
-        a.phone.includes(q)
-      );
-      renderAgencies(filtered);
-    };
-
-    let curQACategory = 'all';
-    function renderQA(list) {
-      const container = document.getElementById('qa-container');
-      container.innerHTML = '';
-      if (list.length === 0) {
-        container.innerHTML = '<div style="text-align:center; padding:30px; color:#888; font-size:16px;">查無相符之問題。</div>';
-        return;
-      }
-      list.forEach(item => {
-        const box = document.createElement('div');
-        box.className = 'qa-box';
-        box.innerHTML = `
-          <div class="qa-q" onclick="this.parentElement.classList.toggle('open')">
-            <span><strong>${item.id}.</strong> ${item.q}</span>
-            <span style="font-size:18px;">＋</span>
-          </div>
-          <div class="qa-a">${item.a}</div>
-        `;
-        container.appendChild(box);
-      });
-    }
-
-    window.setQACategory = function(cat) {
-      curQACategory = cat;
-      document.querySelectorAll('#modal-qa .s-pill').forEach(p => p.classList.remove('active'));
-      event.target.classList.add('active');
-      filterQA();
-    };
-
-    window.filterQA = function() {
-      const q = document.getElementById('qa-search').value.trim().toLowerCase();
-      let list = window.DATA.qa;
-      if (curQACategory !== 'all') {
-        list = list.filter(item => item.id.startsWith(curQACategory));
-      }
-      if (q) {
-        list = list.filter(item => item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q));
-      }
-      renderQA(list);
-    };
-
-    window.openModal = function(key) {
-      const modal = document.getElementById(`modal-${key}`);
+    window.openModal = function(id) {
+      const modal = document.getElementById('modal-' + id);
       if (modal) {
         modal.classList.add('active');
-        if (key === 'calc') {
-          initScenarioPills();
-          loadScenario(window.DATA.scenarios[0]);
-        } else if (key === 'agencies') {
-          renderAgencies(window.DATA.agencies);
-        } else if (key === 'qa') {
-          renderQA(window.DATA.qa);
+        if (id === 'video') {
+          const vid = document.getElementById('campaign-video-player');
+          if (vid) vid.play();
         }
       }
     };
 
-    window.closeModal = function(key) {
-      const modal = document.getElementById(`modal-${key}`);
-      if (modal) modal.classList.remove('active');
+    window.closeModal = function(id) {
+      const modal = document.getElementById('modal-' + id);
+      if (modal) {
+        modal.classList.remove('active');
+        if (id === 'video') {
+          const vid = document.getElementById('campaign-video-player');
+          if (vid) vid.pause();
+        }
+      }
     };
 
+    // 點擊彈窗外部關閉
     document.querySelectorAll('.modal-overlay').forEach(overlay => {
       overlay.addEventListener('click', (e) => {
-        if (e.target === overlay) overlay.classList.remove('active');
+        if (e.target === overlay) {
+          overlay.classList.remove('active');
+          const vid = overlay.querySelector('video');
+          if (vid) vid.pause();
+        }
       });
     });
+
+    // 初始化 UI 資料
+    function initUI() {
+      initScenarios();
+      renderAgencies(AGENCIES_DATA);
+      renderQA(QA_DATA);
+    }
+
+    // -------------------------------------------------------------
+    // 試算器邏輯 (40組情境)
+    // -------------------------------------------------------------
+    let currentScenario = null;
+    function initScenarios() {
+      const selector = document.getElementById('scenario-selector');
+      if (!selector || !SCENARIOS_DATA || !SCENARIOS_DATA.length) return;
+
+      selector.innerHTML = '';
+      SCENARIOS_DATA.forEach((sc, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.textContent = `${sc.id} - ${sc.category} (${sc.items || sc.title || '標準案'})`;
+        selector.appendChild(opt);
+      });
+
+      applyScenario();
+    }
+
+    window.applyScenario = function() {
+      const selector = document.getElementById('scenario-selector');
+      const idx = parseInt(selector.value, 10);
+      currentScenario = SCENARIOS_DATA[idx];
+      recalculateSubsidy();
+    };
+
+    window.recalculateSubsidy = function() {
+      if (!currentScenario) return;
+      const isSenior = document.getElementById('calc-household-type').value === 'senior';
+      
+      const quote = currentScenario.quote || 0;
+      const area = currentScenario.area || 0;
+      const ruleCap = isSenior ? 300000 : 200000;
+
+      // min( 報價 * 65%, 面積 * 3500, 上限 )
+      const c1 = Math.round(quote * 0.65);
+      const c2 = Math.round(area * 3500);
+      const finalSubsidy = Math.min(c1, c2, ruleCap);
+      const selfPay = Math.max(0, quote - finalSubsidy);
+
+      document.getElementById('calc-result-title').textContent = `${currentScenario.id}：${currentScenario.category}（${currentScenario.items || '修繕項目'}）`;
+      document.getElementById('res-quote').textContent = `$${quote.toLocaleString()} 元`;
+      document.getElementById('res-area').textContent = `${area} ㎡ (${(area * 0.3025).toFixed(1)} 坪)`;
+      document.getElementById('res-subsidy').textContent = `$${finalSubsidy.toLocaleString()} 元`;
+      document.getElementById('res-self').textContent = `$${selfPay.toLocaleString()} 元`;
+
+      let reason = `依公式裁定：工程報價 65% 為 $${c1.toLocaleString()} 元；施作面積單價上限為 $${c2.toLocaleString()} 元；${isSenior ? '長者/弱勢戶加碼天花板 $300,000 元' : '一般戶天花板 $200,000 元'}。最終取三者最小值核定 $${finalSubsidy.toLocaleString()} 元補助。`;
+      document.getElementById('res-reason').textContent = reason;
+    };
+
+    // -------------------------------------------------------------
+    // 初評機構搜尋
+    // -------------------------------------------------------------
+    function renderAgencies(list) {
+      const c = document.getElementById('agencies-list-container');
+      if (!c) return;
+      c.innerHTML = list.map(a => `
+        <div style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:14px; padding:14px;">
+          <div style="font-weight:900; color:#0f2b48; font-size:15px;">${a.name}</div>
+          <div style="font-size:13px; color:#64748b; margin-top:4px;">📍 ${a.address || '全台駐點'}</div>
+          <div style="font-size:13px; color:#c82333; font-weight:700; margin-top:3px;">📞 ${a.phone || '洽連江駐府台'}</div>
+        </div>
+      `).join('');
+    }
+
+    window.filterAgencies = function() {
+      const kw = document.getElementById('agency-search-input').value.trim().toLowerCase();
+      const filtered = AGENCIES_DATA.filter(a => 
+        (a.name && a.name.toLowerCase().includes(kw)) ||
+        (a.address && a.address.toLowerCase().includes(kw)) ||
+        (a.phone && a.phone.includes(kw))
+      );
+      renderAgencies(filtered);
+    };
+
+    // -------------------------------------------------------------
+    // QA 50題搜尋
+    // -------------------------------------------------------------
+    function renderQA(list) {
+      const c = document.getElementById('qa-list-container');
+      if (!c) return;
+      c.innerHTML = list.map(q => `
+        <details style="background:#f8fafc; border:1.5px solid #e2e8f0; border-radius:12px; padding:12px;">
+          <summary style="font-weight:800; color:#0f2b48; cursor:pointer; font-size:14.5px;">
+            <span style="color:#c82333; font-weight:900;">Q:</span> ${q.q || q.question}
+          </summary>
+          <div style="margin-top:10px; font-size:13.5px; color:#334155; line-height:1.6; border-top:1px dashed #cbd5e1; padding-top:8px;">
+            <strong style="color:#059669;">A:</strong> ${q.a || q.answer}
+          </div>
+        </details>
+      `).join('');
+    }
+
+    window.filterQA = function() {
+      const kw = document.getElementById('qa-search-input').value.trim().toLowerCase();
+      const filtered = QA_DATA.filter(q => 
+        (q.q && q.q.toLowerCase().includes(kw)) ||
+        (q.question && q.question.toLowerCase().includes(kw)) ||
+        (q.a && q.a.toLowerCase().includes(kw)) ||
+        (q.answer && q.answer.toLowerCase().includes(kw))
+      );
+      renderQA(filtered);
+    };
   </script>
 </body>
 </html>
